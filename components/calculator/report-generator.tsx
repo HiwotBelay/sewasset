@@ -1,27 +1,34 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { FileText, Download, Loader2 } from "lucide-react"
-import html2pdf from "html2pdf.js"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { FileText, Download, Loader2 } from "lucide-react";
 
 interface ReportGeneratorProps {
-  results: any
-  formData: any
-  reportRef: React.RefObject<HTMLDivElement>
+  results: any;
+  formData: any;
+  reportRef: React.RefObject<HTMLDivElement>;
 }
 
-export function ReportGenerator({ results, formData, reportRef }: ReportGeneratorProps) {
-  const [isGenerating, setIsGenerating] = useState(false)
+export function ReportGenerator({
+  results,
+  formData,
+  reportRef,
+}: ReportGeneratorProps) {
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const generatePDF = async () => {
-    setIsGenerating(true)
+    setIsGenerating(true);
 
-    const element = document.createElement("div")
-    element.innerHTML = `
+    try {
+      // Dynamically import html2pdf only on client side
+      const html2pdf = (await import("html2pdf.js")).default;
+
+      const element = document.createElement("div");
+      element.innerHTML = `
       <div style="font-family: Arial, sans-serif; padding: 40px; background: white;">
         <div style="text-align: center; margin-bottom: 40px; border-bottom: 3px solid #FDC700; padding-bottom: 20px;">
           <h1 style="color: #2E4059; margin: 0; font-size: 32px;">ROI Analysis Report</h1>
@@ -39,19 +46,27 @@ export function ReportGenerator({ results, formData, reportRef }: ReportGenerato
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px;">
           <div style="background: #F8F9FA; padding: 20px; border-radius: 8px; border-left: 4px solid #FDC700;">
             <p style="color: #6B7280; font-size: 12px; margin: 0 0 10px 0; text-transform: uppercase;">Return on Investment</p>
-            <p style="color: #2E4059; font-size: 28px; font-weight: bold; margin: 0;">${results.roi}%</p>
+            <p style="color: #2E4059; font-size: 28px; font-weight: bold; margin: 0;">${
+              results.roi
+            }%</p>
           </div>
           <div style="background: #F8F9FA; padding: 20px; border-radius: 8px; border-left: 4px solid #3B5998;">
             <p style="color: #6B7280; font-size: 12px; margin: 0 0 10px 0; text-transform: uppercase;">Total Gain</p>
-            <p style="color: #2E4059; font-size: 28px; font-weight: bold; margin: 0;">$${Number.parseFloat(results.gain).toLocaleString()}</p>
+            <p style="color: #2E4059; font-size: 28px; font-weight: bold; margin: 0;">$${Number.parseFloat(
+              results.gain
+            ).toLocaleString()}</p>
           </div>
           <div style="background: #F8F9FA; padding: 20px; border-radius: 8px; border-left: 4px solid #10B981;">
             <p style="color: #6B7280; font-size: 12px; margin: 0 0 10px 0; text-transform: uppercase;">Annual ROI</p>
-            <p style="color: #2E4059; font-size: 28px; font-weight: bold; margin: 0;">${results.annualROI}%</p>
+            <p style="color: #2E4059; font-size: 28px; font-weight: bold; margin: 0;">${
+              results.annualROI
+            }%</p>
           </div>
           <div style="background: #F8F9FA; padding: 20px; border-radius: 8px; border-left: 4px solid #06B6D4;">
             <p style="color: #6B7280; font-size: 12px; margin: 0 0 10px 0; text-transform: uppercase;">Current Value</p>
-            <p style="color: #2E4059; font-size: 28px; font-weight: bold; margin: 0;">$${Number.parseFloat(results.currentValue).toLocaleString()}</p>
+            <p style="color: #2E4059; font-size: 28px; font-weight: bold; margin: 0;">$${Number.parseFloat(
+              results.currentValue
+            ).toLocaleString()}</p>
           </div>
         </div>
 
@@ -60,15 +75,21 @@ export function ReportGenerator({ results, formData, reportRef }: ReportGenerato
           <table style="width: 100%; border-collapse: collapse;">
             <tr style="background: #F8F9FA;">
               <td style="padding: 12px; border: 1px solid #E5E7EB; color: #6B7280; font-weight: bold;">Initial Investment</td>
-              <td style="padding: 12px; border: 1px solid #E5E7EB; color: #2E4059; font-weight: bold;">$${Number.parseFloat(formData?.initialInvestment || 0).toLocaleString()}</td>
+              <td style="padding: 12px; border: 1px solid #E5E7EB; color: #2E4059; font-weight: bold;">$${Number.parseFloat(
+                formData?.initialInvestment || 0
+              ).toLocaleString()}</td>
             </tr>
             <tr>
               <td style="padding: 12px; border: 1px solid #E5E7EB; color: #6B7280; font-weight: bold;">Additional Costs</td>
-              <td style="padding: 12px; border: 1px solid #E5E7EB; color: #2E4059; font-weight: bold;">$${Number.parseFloat(formData?.additionalCosts || 0).toLocaleString()}</td>
+              <td style="padding: 12px; border: 1px solid #E5E7EB; color: #2E4059; font-weight: bold;">$${Number.parseFloat(
+                formData?.additionalCosts || 0
+              ).toLocaleString()}</td>
             </tr>
             <tr style="background: #F8F9FA;">
               <td style="padding: 12px; border: 1px solid #E5E7EB; color: #6B7280; font-weight: bold;">Investment Period</td>
-              <td style="padding: 12px; border: 1px solid #E5E7EB; color: #2E4059; font-weight: bold;">${formData?.investmentPeriod || 0} Year(s)</td>
+              <td style="padding: 12px; border: 1px solid #E5E7EB; color: #2E4059; font-weight: bold;">${
+                formData?.investmentPeriod || 0
+              } Year(s)</td>
             </tr>
           </table>
         </div>
@@ -88,19 +109,25 @@ export function ReportGenerator({ results, formData, reportRef }: ReportGenerato
           <p style="margin: 5px 0 0 0;">SewAsset ROI Calculator - Trusted by 500+ Companies</p>
         </div>
       </div>
-    `
+    `;
 
-    const options = {
-      margin: 10,
-      filename: `SewAsset-ROI-Report-${new Date().toISOString().split("T")[0]}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { orientation: "portrait", unit: "mm", format: "a4" },
+      const options = {
+        margin: 10,
+        filename: `SewAsset-ROI-Report-${
+          new Date().toISOString().split("T")[0]
+        }.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: "portrait", unit: "mm", format: "a4" },
+      };
+
+      html2pdf().set(options).from(element).save();
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsGenerating(false);
     }
-
-    html2pdf().set(options).from(element).save()
-    setIsGenerating(false)
-  }
+  };
 
   return (
     <Card className="p-8 bg-white border-2 border-[#FDC700]/30">
@@ -110,7 +137,9 @@ export function ReportGenerator({ results, formData, reportRef }: ReportGenerato
         </div>
         <div>
           <h3 className="font-bold text-[#2E4059]">Generate Report</h3>
-          <p className="text-sm text-[#6B7280]">Download detailed PDF with all insights</p>
+          <p className="text-sm text-[#6B7280]">
+            Download detailed PDF with all insights
+          </p>
         </div>
       </div>
 
@@ -133,8 +162,9 @@ export function ReportGenerator({ results, formData, reportRef }: ReportGenerato
       </Button>
 
       <p className="text-xs text-[#6B7280] mt-4 text-center">
-        Your report includes detailed analysis, projections, and actionable recommendations
+        Your report includes detailed analysis, projections, and actionable
+        recommendations
       </p>
     </Card>
-  )
+  );
 }
