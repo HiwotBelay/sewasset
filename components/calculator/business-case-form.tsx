@@ -419,11 +419,11 @@ export function BusinessCaseForm() {
         {/* Form Content */}
         <Card className="p-4 sm:p-6 md:p-8 bg-white shadow-lg mb-4 sm:mb-6">
           {errors[currentStep] && errors[currentStep].length > 0 && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <h3 className="text-red-800 font-semibold mb-2">
+            <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
+              <h3 className="text-sm sm:text-base text-red-800 font-semibold mb-2">
                 Please fix the following errors:
               </h3>
-              <ul className="list-disc list-inside space-y-1 text-red-700">
+              <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm text-red-700">
                 {errors[currentStep].map((error, idx) => (
                   <li key={idx}>{error}</li>
                 ))}
@@ -499,7 +499,10 @@ export function BusinessCaseForm() {
 
       {/* Thank You Dialog */}
       <Dialog open={showThankYou} onOpenChange={setShowThankYou}>
-        <DialogContent className="w-[90vw] sm:max-w-md mx-4" showCloseButton={false}>
+        <DialogContent
+          className="w-[90vw] sm:max-w-md mx-4"
+          showCloseButton={false}
+        >
           <DialogHeader className="text-center">
             <div className="mx-auto mb-3 sm:mb-4 w-12 h-12 sm:w-16 sm:h-16 bg-[#FFC72F] rounded-full flex items-center justify-center">
               <CheckCircle2 className="w-6 h-6 sm:w-10 sm:h-10 text-[#2E4059]" />
@@ -548,7 +551,7 @@ function DiscoveryStep({
       </h2>
       <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
         <div>
-          <Label className="text-[#2E4059] font-semibold">
+          <Label className="text-sm sm:text-base text-[#2E4059] font-semibold">
             Company Name <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -1611,7 +1614,9 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
     <div className="space-y-4 sm:space-y-6">
       {/* Business Case Summary */}
       <Card className="p-4 sm:p-6 bg-gradient-to-br from-[#2E4059] to-slate-700 text-white">
-        <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Business Case Summary</h2>
+        <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
+          Business Case Summary
+        </h2>
         <div className="grid md:grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
           <div>
             <span className="text-sm opacity-80">Client:</span>
@@ -1656,25 +1661,33 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
         </h2>
         <div className="space-y-2">
           <div className="flex justify-between py-2 border-b">
-            <span className="text-slate-600">Program(s) Base Cost</span>
+            <span className="text-xs sm:text-sm md:text-base text-slate-600">
+              Program(s) Base Cost
+            </span>
             <span className="font-semibold text-[#2E4059]">
               {formatCurrency(evals.baseCost)}
             </span>
           </div>
           <div className="flex justify-between py-2 border-b">
-            <span className="text-slate-600">Add-ons (variable + flat)</span>
+            <span className="text-xs sm:text-sm md:text-base text-slate-600">
+              Add-ons (variable + flat)
+            </span>
             <span className="font-semibold text-[#2E4059]">
               {formatCurrency(evals.addOnsTotal)}
             </span>
           </div>
           <div className="flex justify-between py-2 border-b">
-            <span className="text-slate-600">Urgency Multiplier</span>
+            <span className="text-xs sm:text-sm md:text-base text-slate-600">
+              Urgency Multiplier
+            </span>
             <span className="font-semibold text-[#2E4059]">
               {urgencyMap[data.urgency] || 1}×
             </span>
           </div>
           <div className="flex justify-between py-2 border-b">
-            <span className="text-slate-600">Consulting Add-on</span>
+            <span className="text-xs sm:text-sm md:text-base text-slate-600">
+              Consulting Add-on
+            </span>
             <span className="font-semibold text-[#2E4059]">
               {formatCurrency(evals.consultingCost)}
             </span>
@@ -1698,13 +1711,17 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
           </h2>
           <div className="space-y-3">
             <div>
-              <span className="text-sm sm:text-base text-slate-600">Annual Benefit (Expected)</span>
+              <span className="text-sm sm:text-base text-slate-600">
+                Annual Benefit (Expected)
+              </span>
               <p className="text-xl sm:text-2xl font-bold text-[#2E4059]">
                 {formatCurrency(evals.annualBenefit.expected)}
               </p>
             </div>
             <div>
-              <span className="text-sm sm:text-base text-slate-600">ROI % (Expected)</span>
+              <span className="text-sm sm:text-base text-slate-600">
+                ROI % (Expected)
+              </span>
               <p
                 className={`text-xl sm:text-2xl font-bold ${
                   (evals.roi.expected || 0) >= 0.5
