@@ -33,14 +33,7 @@ import {
   formatCurrency,
   formatPercent,
 } from "@/lib/business-case-calculations";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Download,
-  Upload,
-  Printer,
-  CheckCircle2,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export interface BusinessCaseData {
   // Step 0 - Discovery
@@ -48,11 +41,18 @@ export interface BusinessCaseData {
   contactName: string;
   phone: string;
   email: string;
+  isRegisteredBusiness: string; // "Yes" | "No"
+  tinNumber: string;
+  physicalAddress: string;
+  officeNumber: string;
+  subcity: string;
+  placeName: string;
+  region: string;
   biggestChallenge: string;
-  kpiPain: string;
+  kpiPain: string[]; // Changed to array for multi-select
   rootCause: string;
   enableIfSolved: string;
-  currentImpact: string;
+  currentImpact: string[]; // Changed to array for multi-select
   urgency: string;
 
   // Step 1 - Strategic Alignment
@@ -116,11 +116,18 @@ const initialData: BusinessCaseData = {
   contactName: "",
   phone: "",
   email: "",
+  isRegisteredBusiness: "",
+  tinNumber: "",
+  physicalAddress: "",
+  officeNumber: "",
+  subcity: "",
+  placeName: "",
+  region: "",
   biggestChallenge: "",
-  kpiPain: "",
+  kpiPain: [],
   rootCause: "",
   enableIfSolved: "",
-  currentImpact: "",
+  currentImpact: [],
   urgency: "Standard (4+ weeks lead time)",
   strategicPriority: "",
   stakeholders: [],
@@ -219,13 +226,19 @@ export function BusinessCaseForm() {
           stepErrors.push("Company Name is required");
         if (!data.contactName.trim()) stepErrors.push("Your Name is required");
         if (!data.email.trim()) stepErrors.push("Company Email is required");
+        if (!data.isRegisteredBusiness)
+          stepErrors.push("Business registration status is required");
+        if (data.isRegisteredBusiness === "Yes" && !data.tinNumber.trim())
+          stepErrors.push("TIN Number is required for registered businesses");
         if (!data.biggestChallenge.trim())
           stepErrors.push("Biggest Challenge is required");
-        if (!data.kpiPain) stepErrors.push("KPI Pain is required");
+        if (!data.kpiPain || data.kpiPain.length === 0)
+          stepErrors.push("At least one KPI Pain is required");
         if (!data.rootCause.trim()) stepErrors.push("Root Cause is required");
         if (!data.enableIfSolved.trim())
           stepErrors.push("Enable If Solved is required");
-        if (!data.currentImpact) stepErrors.push("Current Impact is required");
+        if (!data.currentImpact || data.currentImpact.length === 0)
+          stepErrors.push("At least one Current Impact is required");
         break;
 
       case 1: // Strategic Alignment
@@ -330,39 +343,6 @@ export function BusinessCaseForm() {
     }
   };
 
-  const handleSave = () => {
-    const blob = new Blob([JSON.stringify(data, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "sewasset_business_case.json";
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const handleLoad = () => {
-    const inp = document.createElement("input");
-    inp.type = "file";
-    inp.accept = "application/json";
-    inp.onchange = () => {
-      const file = inp.files?.[0];
-      if (!file) return;
-      const fr = new FileReader();
-      fr.onload = () => {
-        try {
-          const loaded = JSON.parse(fr.result as string);
-          setData((prev) => ({ ...prev, ...loaded }));
-        } catch (e) {
-          alert("Invalid JSON file");
-        }
-      };
-      fr.readAsText(file);
-    };
-    inp.click();
-  };
-
   const renderStep = () => {
     switch (currentStep) {
       case 0:
@@ -428,6 +408,14 @@ export function BusinessCaseForm() {
                   <li key={idx}>{error}</li>
                 ))}
               </ul>
+              {currentStep === 0 && (
+                <div className="mt-3 p-3 bg-yellow-50 border border-yellow-300 rounded-lg">
+                  <p className="text-xs sm:text-sm text-yellow-800 font-semibold">
+                    ⚠️ Please make sure to fill all the required fields before
+                    proceeding.
+                  </p>
+                </div>
+              )}
             </div>
           )}
           {renderStep()}
@@ -435,36 +423,7 @@ export function BusinessCaseForm() {
 
         {/* Navigation Bar */}
         <div className="sticky bottom-0 bg-white/95 backdrop-blur-sm border-t border-slate-200 p-2 sm:p-3 md:p-4 rounded-t-lg shadow-lg -mx-3 sm:-mx-4 md:mx-0">
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 sm:gap-4 max-w-6xl mx-auto">
-            <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center sm:justify-start">
-              <Button
-                variant="outline"
-                onClick={handleSave}
-                className="border-[#2E4059] text-[#2E4059] hover:bg-[#2E4059]/10 text-xs sm:text-sm px-2 sm:px-3 md:px-4 py-1.5 sm:py-2"
-              >
-                <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Save JSON</span>
-                <span className="sm:hidden">Save</span>
-              </Button>
-              <Button
-                variant="outline"
-                onClick={handleLoad}
-                className="border-[#2E4059] text-[#2E4059] hover:bg-[#2E4059]/10 text-xs sm:text-sm px-2 sm:px-3 md:px-4 py-1.5 sm:py-2"
-              >
-                <Upload className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Load JSON</span>
-                <span className="sm:hidden">Load</span>
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => window.print()}
-                className="border-[#2E4059] text-[#2E4059] hover:bg-[#2E4059]/10 text-xs sm:text-sm px-2 sm:px-3 md:px-4 py-1.5 sm:py-2"
-              >
-                <Printer className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Print</span>
-                <span className="sm:hidden">Print</span>
-              </Button>
-            </div>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-4 max-w-6xl mx-auto">
             <div className="flex gap-2 justify-center sm:justify-end">
               <Button
                 variant="outline"
@@ -547,8 +506,26 @@ function DiscoveryStep({
   return (
     <div className="space-y-4 sm:space-y-6">
       <h2 className="text-xl sm:text-2xl font-bold text-[#2E4059] mb-3 sm:mb-4">
-        Company Information
+        Your Company Information
       </h2>
+      {/* Data Accuracy Warning */}
+      <Card className="p-4 bg-yellow-50 border-yellow-200 border-2 mb-4 sm:mb-6">
+        <div className="flex items-start gap-3">
+          <div className="text-yellow-600 font-bold text-lg">⚠️</div>
+          <div className="flex-1">
+            <p className="text-sm sm:text-base font-semibold text-yellow-800 mb-1">
+              Important Notice
+            </p>
+            <p className="text-xs sm:text-sm text-yellow-700">
+              Please make sure you input the correct data because your report
+              will be sent personally to your office and our team will be in
+              contact with you. If you provide accurate information, you will
+              get accurate results.
+            </p>
+          </div>
+        </div>
+      </Card>
+
       <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
         <div>
           <Label className="text-sm sm:text-base text-[#2E4059] font-semibold">
@@ -593,6 +570,87 @@ function DiscoveryStep({
             required
           />
         </div>
+        <div>
+          <Label className="text-[#2E4059] font-semibold">
+            Are you a legally Registered business in Ethiopia?{" "}
+            <span className="text-red-500">*</span>
+          </Label>
+          <Select
+            value={data.isRegisteredBusiness}
+            onValueChange={(v) => {
+              updateData("isRegisteredBusiness", v);
+              if (v === "No") updateData("tinNumber", "");
+            }}
+          >
+            <SelectTrigger className="mt-1">
+              <SelectValue placeholder="Select" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Yes">Yes</SelectItem>
+              <SelectItem value="No">No</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        {data.isRegisteredBusiness === "Yes" && (
+          <div>
+            <Label className="text-[#2E4059] font-semibold">
+              TIN Number <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              value={data.tinNumber}
+              onChange={(e) => updateData("tinNumber", e.target.value)}
+              className="mt-1"
+              placeholder="Enter TIN Number"
+            />
+          </div>
+        )}
+        <div>
+          <Label className="text-[#2E4059] font-semibold">
+            Physical Address
+          </Label>
+          <Input
+            value={data.physicalAddress}
+            onChange={(e) => updateData("physicalAddress", e.target.value)}
+            className="mt-1"
+            placeholder="Enter physical address"
+          />
+        </div>
+        <div>
+          <Label className="text-[#2E4059] font-semibold">Office Number</Label>
+          <Input
+            value={data.officeNumber}
+            onChange={(e) => updateData("officeNumber", e.target.value)}
+            className="mt-1"
+            placeholder="Enter office number"
+          />
+        </div>
+        <div>
+          <Label className="text-[#2E4059] font-semibold">Subcity</Label>
+          <Input
+            value={data.subcity}
+            onChange={(e) => updateData("subcity", e.target.value)}
+            className="mt-1"
+            placeholder="Enter subcity"
+          />
+        </div>
+        <div>
+          <Label className="text-[#2E4059] font-semibold">Place Name</Label>
+          <Input
+            value={data.placeName}
+            onChange={(e) => updateData("placeName", e.target.value)}
+            className="mt-1"
+            placeholder="Enter place name"
+          />
+        </div>
+        <div>
+          <Label className="text-[#2E4059] font-semibold">Region</Label>
+          <Input
+            value={data.region}
+            onChange={(e) => updateData("region", e.target.value)}
+            className="mt-1"
+            placeholder="Enter region"
+          />
+        </div>
       </div>
 
       <div className="mt-6 sm:mt-8">
@@ -614,30 +672,42 @@ function DiscoveryStep({
           </div>
           <div>
             <Label className="text-[#2E4059] font-semibold">
-              Which KPI is most underperforming?{" "}
+              Which KPI(s) is/are most underperforming? (Select multiple){" "}
               <span className="text-red-500">*</span>
             </Label>
-            <Select
-              value={data.kpiPain}
-              onValueChange={(v) => updateData("kpiPain", v)}
-            >
-              <SelectTrigger className="mt-1">
-                <SelectValue placeholder="Select KPI" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Sales">Sales</SelectItem>
-                <SelectItem value="Productivity">Productivity</SelectItem>
-                <SelectItem value="Retention">Retention</SelectItem>
-                <SelectItem value="Customer Experience">
-                  Customer Experience
-                </SelectItem>
-                <SelectItem value="Compliance">Compliance</SelectItem>
-                <SelectItem value="Innovation">Innovation</SelectItem>
-                <SelectItem value="Cost">Cost</SelectItem>
-                <SelectItem value="Quality">Quality</SelectItem>
-                <SelectItem value="Other">Other</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-wrap gap-3 mt-2 p-3 border border-slate-200 rounded-lg bg-slate-50">
+              {[
+                "Sales",
+                "Productivity",
+                "Retention",
+                "Customer Experience",
+                "Compliance",
+                "Innovation",
+                "Cost",
+                "Quality",
+                "Other",
+              ].map((kpi) => (
+                <div key={kpi} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`kpi-${kpi}`}
+                    checked={data.kpiPain?.includes(kpi) || false}
+                    onCheckedChange={(checked) => {
+                      const current = data.kpiPain || [];
+                      const updated = checked
+                        ? [...current, kpi]
+                        : current.filter((k) => k !== kpi);
+                      updateData("kpiPain", updated);
+                    }}
+                  />
+                  <Label
+                    htmlFor={`kpi-${kpi}`}
+                    className="font-normal cursor-pointer text-sm"
+                  >
+                    {kpi}
+                  </Label>
+                </div>
+              ))}
+            </div>
           </div>
           <div>
             <Label className="text-[#2E4059] font-semibold">
@@ -665,29 +735,40 @@ function DiscoveryStep({
           </div>
           <div>
             <Label className="text-[#2E4059] font-semibold">
-              Current Impact <span className="text-red-500">*</span>
+              Current Impact (Select multiple){" "}
+              <span className="text-red-500">*</span>
             </Label>
-            <Select
-              value={data.currentImpact}
-              onValueChange={(v) => updateData("currentImpact", v)}
-            >
-              <SelectTrigger className="mt-1">
-                <SelectValue placeholder="Select impact" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Lost revenue">Lost revenue</SelectItem>
-                <SelectItem value="Reduced efficiency">
-                  Reduced efficiency
-                </SelectItem>
-                <SelectItem value="Low morale">Low morale</SelectItem>
-                <SelectItem value="High turnover">High turnover</SelectItem>
-                <SelectItem value="Poor customer satisfaction">
-                  Poor customer satisfaction
-                </SelectItem>
-                <SelectItem value="Compliance risk">Compliance risk</SelectItem>
-                <SelectItem value="Other">Other</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-wrap gap-3 mt-2 p-3 border border-slate-200 rounded-lg bg-slate-50">
+              {[
+                "Lost revenue",
+                "Reduced efficiency",
+                "Low morale",
+                "High turnover",
+                "Poor customer satisfaction",
+                "Compliance risk",
+                "Other",
+              ].map((impact) => (
+                <div key={impact} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`impact-${impact}`}
+                    checked={data.currentImpact?.includes(impact) || false}
+                    onCheckedChange={(checked) => {
+                      const current = data.currentImpact || [];
+                      const updated = checked
+                        ? [...current, impact]
+                        : current.filter((i) => i !== impact);
+                      updateData("currentImpact", updated);
+                    }}
+                  />
+                  <Label
+                    htmlFor={`impact-${impact}`}
+                    className="font-normal cursor-pointer text-sm"
+                  >
+                    {impact}
+                  </Label>
+                </div>
+              ))}
+            </div>
           </div>
           <div>
             <Label className="text-[#2E4059] font-semibold">
@@ -1587,7 +1668,9 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
       `We propose addressing your core challenge — "${
         data.biggestChallenge || "—"
       }" — which currently impacts the business through ${
-        data.currentImpact || "—"
+        Array.isArray(data.currentImpact)
+          ? data.currentImpact.join(", ")
+          : data.currentImpact || "—"
       }.`,
       `This initiative aligns with your strategic priority "${
         data.strategicPriority || "—"
@@ -1632,7 +1715,10 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
             <strong>Problem:</strong> {data.biggestChallenge || "—"}
           </p>
           <p>
-            <strong>Impact:</strong> {data.currentImpact || "—"}
+            <strong>Impact:</strong>{" "}
+            {Array.isArray(data.currentImpact)
+              ? data.currentImpact.join(", ")
+              : data.currentImpact || "—"}
           </p>
           <p>
             <strong>If solved, this enables:</strong>{" "}

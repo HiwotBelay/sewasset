@@ -26,14 +26,14 @@ export function HeroSection() {
                 </span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-[#6B7280] leading-relaxed">
-                Stop guessing. Get detailed insights into your investment
-                returns with AI-powered predictions and comprehensive analysis.
+                Stop guessing. Get detailed insights into your business needs
+                with AI-powered predictions and comprehensive analysis.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link
-                href="/calculator"
+                href="/disclaimer"
                 className="px-6 py-3 md:px-8 md:py-4 bg-[#2E4059] text-white font-bold rounded-lg hover:bg-[#1A1F2E] transition-smooth flex items-center justify-center gap-2 group text-sm md:text-base"
               >
                 Start Free Analysis
@@ -50,15 +50,25 @@ export function HeroSection() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-6 md:pt-8 border-t border-[#E5E7EB]">
               <div>
-                <div className="text-2xl sm:text-3xl font-bold text-[#FDC700]">98%</div>
-                <p className="text-xs sm:text-sm text-[#6B7280]">Accuracy Rate</p>
+                <div className="text-2xl sm:text-3xl font-bold text-[#FDC700]">
+                  98%
+                </div>
+                <p className="text-xs sm:text-sm text-[#6B7280]">
+                  Accuracy Rate
+                </p>
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-bold text-[#10B981]">2M+</div>
-                <p className="text-xs sm:text-sm text-[#6B7280]">Calculations</p>
+                <div className="text-2xl sm:text-3xl font-bold text-[#10B981]">
+                  2M+
+                </div>
+                <p className="text-xs sm:text-sm text-[#6B7280]">
+                  Calculations
+                </p>
               </div>
               <div>
-                <div className="text-2xl sm:text-3xl font-bold text-[#3B5998]">15min</div>
+                <div className="text-2xl sm:text-3xl font-bold text-[#3B5998]">
+                  15min
+                </div>
                 <p className="text-xs sm:text-sm text-[#6B7280]">Avg. Setup</p>
               </div>
             </div>
