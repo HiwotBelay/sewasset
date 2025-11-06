@@ -138,6 +138,14 @@
   .transition-smooth {
     @apply transition-all duration-300 ease-out;
   }
+
+  /* Custom animation delays */
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+  .delay-300 {
+    animation-delay: 300ms;
+  }
 }
 
 /* Custom scrollbar */
