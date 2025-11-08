@@ -56,23 +56,28 @@ export interface BusinessCaseData {
   urgency: string;
 
   // Step 1 - Strategic Alignment
+  hasStrategicAlignment: string; // "Yes" | "No"
   strategicPriority: string;
   stakeholders: string[];
+  csuiteDetails: string;
+  departmentHeadsDetails: string;
+  frontlineManagersDetails: string;
+  employeesDetails: string;
   costOfInaction: number;
   strategyTimeline: string;
   alignmentNarrative: string;
 
   // Step 2 - Dept & Goals
-  department: string;
-  trainingGoal: string;
+  department: string[]; // Changed to array for multi-select
+  trainingGoal: string[]; // Changed to array for multi-select
   customGoal: string;
   behaviorGoal: string;
   competencyRequired: string;
   knowledgeSkills: string;
 
   // Step 3 - Program Selection
-  programGroup: string;
-  programName: string;
+  programGroup: string[]; // Changed to array for multi-select
+  programName: string[]; // Changed to array for multi-select
   additionalTrainingTitle: string;
   softSkillSelections: string[];
   durationOverrideHours: string;
@@ -94,7 +99,7 @@ export interface BusinessCaseData {
   avgMonthlySalary: number;
   totalEmployees: number;
   industry: string;
-  trainingFormat: string;
+  trainingFormat: string[]; // Changed to array for multi-select
   annualBudget: number;
   annualHoursPerEmployee: number;
   initiativesPerYear: number;
@@ -129,19 +134,24 @@ const initialData: BusinessCaseData = {
   enableIfSolved: "",
   currentImpact: [],
   urgency: "Standard (4+ weeks lead time)",
+  hasStrategicAlignment: "",
   strategicPriority: "",
   stakeholders: [],
+  csuiteDetails: "",
+  departmentHeadsDetails: "",
+  frontlineManagersDetails: "",
+  employeesDetails: "",
   costOfInaction: 0,
   strategyTimeline: "",
   alignmentNarrative: "",
-  department: "",
-  trainingGoal: "",
+  department: [],
+  trainingGoal: [],
   customGoal: "",
   behaviorGoal: "",
   competencyRequired: "",
   knowledgeSkills: "",
-  programGroup: "",
-  programName: "",
+  programGroup: [],
+  programName: [],
   additionalTrainingTitle: "",
   softSkillSelections: [],
   durationOverrideHours: "",
@@ -159,7 +169,7 @@ const initialData: BusinessCaseData = {
   avgMonthlySalary: 0,
   totalEmployees: 0,
   industry: "",
-  trainingFormat: "Instructor-Led Training (ILT)",
+  trainingFormat: [],
   annualBudget: 0,
   annualHoursPerEmployee: 0,
   initiativesPerYear: 0,
@@ -175,14 +185,15 @@ const initialData: BusinessCaseData = {
 };
 
 const stepDefs = [
-  { key: "discovery", title: "Discovery (Why)", number: 1 },
-  { key: "align", title: "Strategic Alignment", number: 2 },
-  { key: "deptGoals", title: "Department & Goals", number: 3 },
-  { key: "program", title: "Solution Mapping", number: 4 },
-  { key: "metrics", title: "Metrics & Impact", number: 5 },
-  { key: "org", title: "Organization Details", number: 6 },
-  { key: "budget", title: "Training & Budget", number: 7 },
-  { key: "pricing", title: "Pricing & ROI", number: 8 },
+  { key: "companyInfo", title: "Company Information", number: 1 },
+  { key: "problemContext", title: "Problem & Context", number: 2 },
+  { key: "align", title: "Strategic Alignment", number: 3 },
+  { key: "deptGoals", title: "Department & Goals", number: 4 },
+  { key: "program", title: "Solution Mapping", number: 5 },
+  { key: "metrics", title: "Metrics & Impact", number: 6 },
+  { key: "org", title: "Organization Details", number: 7 },
+  { key: "budget", title: "Training & Budget", number: 8 },
+  { key: "pricing", title: "Pricing & ROI", number: 9 },
 ];
 
 export function BusinessCaseForm() {
@@ -191,6 +202,7 @@ export function BusinessCaseForm() {
   const [data, setData] = useState<BusinessCaseData>(initialData);
   const [errors, setErrors] = useState<Record<number, string[]>>({});
   const [showThankYou, setShowThankYou] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Auto-redirect after showing thank you message
   useEffect(() => {
@@ -221,7 +233,7 @@ export function BusinessCaseForm() {
     const stepErrors: string[] = [];
 
     switch (step) {
-      case 0: // Discovery
+      case 0: // Company Information
         if (!data.companyName.trim())
           stepErrors.push("Company Name is required");
         if (!data.contactName.trim()) stepErrors.push("Your Name is required");
@@ -230,6 +242,9 @@ export function BusinessCaseForm() {
           stepErrors.push("Business registration status is required");
         if (data.isRegisteredBusiness === "Yes" && !data.tinNumber.trim())
           stepErrors.push("TIN Number is required for registered businesses");
+        break;
+
+      case 1: // Problem & Context
         if (!data.biggestChallenge.trim())
           stepErrors.push("Biggest Challenge is required");
         if (!data.kpiPain || data.kpiPain.length === 0)
@@ -241,26 +256,64 @@ export function BusinessCaseForm() {
           stepErrors.push("At least one Current Impact is required");
         break;
 
-      case 1: // Strategic Alignment
-        if (!data.strategicPriority)
-          stepErrors.push("Strategic Priority is required");
-        if (!data.costOfInaction || data.costOfInaction <= 0)
-          stepErrors.push("Cost of Inaction must be greater than 0");
-        if (!data.strategyTimeline)
-          stepErrors.push("Strategic Timeline is required");
+      case 2: // Strategic Alignment
+        if (!data.hasStrategicAlignment) {
+          stepErrors.push(
+            "Please select Yes or No for Strategic Goal Alignment"
+          );
+        } else if (data.hasStrategicAlignment === "Yes") {
+          if (!data.strategicPriority)
+            stepErrors.push("Strategic Priority is required");
+          if (!data.costOfInaction || data.costOfInaction <= 0)
+            stepErrors.push("Cost of Inaction must be greater than 0");
+          if (!data.strategyTimeline)
+            stepErrors.push("Strategic Timeline is required");
+          if (
+            data.stakeholders?.includes("C-suite") &&
+            !data.csuiteDetails.trim()
+          )
+            stepErrors.push(
+              "Please specify which C-suite executive(s) are involved"
+            );
+          if (
+            data.stakeholders?.includes("Department Heads") &&
+            !data.departmentHeadsDetails.trim()
+          )
+            stepErrors.push(
+              "Please specify which Department Head(s) are responsible"
+            );
+          if (
+            data.stakeholders?.includes("Frontline Managers") &&
+            !data.frontlineManagersDetails.trim()
+          )
+            stepErrors.push(
+              "Please specify which Frontline Manager(s) are involved"
+            );
+          if (
+            data.stakeholders?.includes("Employees") &&
+            !data.employeesDetails.trim()
+          )
+            stepErrors.push(
+              "Please specify which Employee group(s) are involved"
+            );
+        }
         break;
 
-      case 2: // Dept & Goals
-        if (!data.department) stepErrors.push("Department is required");
-        if (!data.trainingGoal && !data.customGoal.trim())
+      case 3: // Dept & Goals
+        if (!data.department || data.department.length === 0)
+          stepErrors.push("At least one Department is required");
+        if (
+          (!data.trainingGoal || data.trainingGoal.length === 0) &&
+          !data.customGoal.trim()
+        )
           stepErrors.push("Training Goal or Custom Goal is required");
         if (!data.behaviorGoal.trim())
           stepErrors.push("Behavior Goal is required");
         break;
 
-      case 3: // Program Selection
+      case 4: // Program Selection
         if (
-          !data.programName &&
+          (!data.programName || data.programName.length === 0) &&
           !data.additionalTrainingTitle.trim() &&
           (!data.softSkillSelections || data.softSkillSelections.length === 0)
         ) {
@@ -275,7 +328,7 @@ export function BusinessCaseForm() {
         }
         break;
 
-      case 4: // Metrics & Impact
+      case 5: // Metrics & Impact
         if (!data.metricName.trim())
           stepErrors.push("Primary Metric Name is required");
         if (!data.currentMetric || parseFloat(data.currentMetric) <= 0)
@@ -290,7 +343,7 @@ export function BusinessCaseForm() {
           stepErrors.push("Success Looks Like is required");
         break;
 
-      case 5: // Org Details
+      case 6: // Org Details
         if (!data.participants || data.participants <= 0)
           stepErrors.push(
             "Number of Participants is required and must be greater than 0"
@@ -306,11 +359,10 @@ export function BusinessCaseForm() {
         if (!data.industry) stepErrors.push("Industry is required");
         break;
 
-      case 6: // Budget (urgency already has default, so just check if it exists)
-        if (!data.urgency) stepErrors.push("Urgency Level is required");
+      case 7: // Budget - no validation needed (add-ons are optional)
         break;
 
-      case 7: // Pricing - no validation needed (read-only)
+      case 8: // Pricing - no validation needed (read-only)
         break;
     }
 
@@ -343,23 +395,75 @@ export function BusinessCaseForm() {
     }
   };
 
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      // Calculate pricing and ROI
+      const pricing = computePricingAndROI(data);
+
+      // Prepare submission data
+      const submissionData = {
+        ...data,
+        pricing: pricing,
+        submittedAt: new Date().toISOString(),
+      };
+
+      // Submit to API
+      const response = await fetch("/api/submissions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        // Show the actual error message from the API
+        const errorMessage =
+          result.error ||
+          result.details ||
+          "Failed to submit. Please try again.";
+        alert(
+          `Error: ${errorMessage}\n\nCheck the terminal/console for more details.`
+        );
+        console.error("API Error:", result);
+        return;
+      }
+
+      setShowThankYou(true);
+    } catch (error: any) {
+      console.error("Error submitting form:", error);
+      const errorMessage =
+        error.message || "Failed to submit. Please try again.";
+      alert(
+        `Error: ${errorMessage}\n\nCheck the terminal/console for more details.`
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 0:
-        return <DiscoveryStep data={data} updateData={updateData} />;
+        return <CompanyInfoStep data={data} updateData={updateData} />;
       case 1:
-        return <AlignmentStep data={data} updateData={updateData} />;
+        return <ProblemContextStep data={data} updateData={updateData} />;
       case 2:
-        return <DeptGoalsStep data={data} updateData={updateData} />;
+        return <AlignmentStep data={data} updateData={updateData} />;
       case 3:
-        return <ProgramStep data={data} updateData={updateData} />;
+        return <DeptGoalsStep data={data} updateData={updateData} />;
       case 4:
-        return <MetricsStep data={data} updateData={updateData} />;
+        return <ProgramStep data={data} updateData={updateData} />;
       case 5:
-        return <OrgStep data={data} updateData={updateData} />;
+        return <MetricsStep data={data} updateData={updateData} />;
       case 6:
-        return <BudgetStep data={data} updateData={updateData} />;
+        return <OrgStep data={data} updateData={updateData} />;
       case 7:
+        return <BudgetStep data={data} updateData={updateData} />;
+      case 8:
         return <PricingStep data={data} />;
       default:
         return null;
@@ -444,10 +548,11 @@ export function BusinessCaseForm() {
                 </Button>
               ) : (
                 <Button
-                  onClick={() => setShowThankYou(true)}
-                  className="bg-[#FFC72F] text-[#2E4059] font-bold hover:bg-[#FFC72F]/90 text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 flex-1 sm:flex-initial"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="bg-[#FFC72F] text-[#2E4059] font-bold hover:bg-[#FFC72F]/90 disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 flex-1 sm:flex-initial"
                 >
-                  Finish
+                  {isSubmitting ? "Submitting..." : "Finish"}
                   <CheckCircle2 className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
                 </Button>
               )}
@@ -496,7 +601,7 @@ export function BusinessCaseForm() {
 }
 
 // Step Components
-function DiscoveryStep({
+function CompanyInfoStep({
   data,
   updateData,
 }: {
@@ -652,143 +757,153 @@ function DiscoveryStep({
           />
         </div>
       </div>
-
       <div className="mt-6 sm:mt-8">
-        <h2 className="text-xl sm:text-2xl font-bold text-[#2E4059] mb-3 sm:mb-4">
-          Problem & Context
-        </h2>
-        <div className="space-y-4 sm:space-y-6">
-          <div>
-            <Label className="text-[#2E4059] font-semibold">
-              What is the single biggest challenge your team/organization is
-              facing right now? <span className="text-red-500">*</span>
-            </Label>
-            <Textarea
-              value={data.biggestChallenge}
-              onChange={(e) => updateData("biggestChallenge", e.target.value)}
-              className="mt-1 min-h-[100px]"
-              required
-            />
-          </div>
-          <div>
-            <Label className="text-[#2E4059] font-semibold">
-              Which KPI(s) is/are most underperforming? (Select multiple){" "}
-              <span className="text-red-500">*</span>
-            </Label>
-            <div className="flex flex-wrap gap-3 mt-2 p-3 border border-slate-200 rounded-lg bg-slate-50">
-              {[
-                "Sales",
-                "Productivity",
-                "Retention",
-                "Customer Experience",
-                "Compliance",
-                "Innovation",
-                "Cost",
-                "Quality",
-                "Other",
-              ].map((kpi) => (
-                <div key={kpi} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`kpi-${kpi}`}
-                    checked={data.kpiPain?.includes(kpi) || false}
-                    onCheckedChange={(checked) => {
-                      const current = data.kpiPain || [];
-                      const updated = checked
-                        ? [...current, kpi]
-                        : current.filter((k) => k !== kpi);
-                      updateData("kpiPain", updated);
-                    }}
-                  />
-                  <Label
-                    htmlFor={`kpi-${kpi}`}
-                    className="font-normal cursor-pointer text-sm"
-                  >
-                    {kpi}
-                  </Label>
-                </div>
+        <div>
+          <Label className="text-[#2E4059] font-semibold">Urgency Level</Label>
+          <Select
+            value={data.urgency}
+            onValueChange={(v) => updateData("urgency", v)}
+          >
+            <SelectTrigger className="mt-1">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.keys(urgencyMap).map((key) => (
+                <SelectItem key={key} value={key}>
+                  {key}
+                </SelectItem>
               ))}
-            </div>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProblemContextStep({
+  data,
+  updateData,
+}: {
+  data: BusinessCaseData;
+  updateData: (field: keyof BusinessCaseData, value: any) => void;
+}) {
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      <h2 className="text-xl sm:text-2xl font-bold text-[#2E4059] mb-3 sm:mb-4">
+        Problem & Context
+      </h2>
+      <div className="space-y-4 sm:space-y-6">
+        <div>
+          <Label className="text-[#2E4059] font-semibold">
+            What is the single biggest challenge your team/organization is
+            facing right now? <span className="text-red-500">*</span>
+          </Label>
+          <Textarea
+            value={data.biggestChallenge}
+            onChange={(e) => updateData("biggestChallenge", e.target.value)}
+            className="mt-1 min-h-[100px]"
+            required
+          />
+        </div>
+        <div>
+          <Label className="text-[#2E4059] font-semibold">
+            Which KPI(s) is/are most underperforming? (Select multiple){" "}
+            <span className="text-red-500">*</span>
+          </Label>
+          <div className="flex flex-wrap gap-3 mt-2 p-3 border border-slate-200 rounded-lg bg-slate-50">
+            {[
+              "Sales",
+              "Productivity",
+              "Retention",
+              "Customer Experience",
+              "Compliance",
+              "Innovation",
+              "Cost",
+              "Quality",
+              "Other",
+            ].map((kpi) => (
+              <div key={kpi} className="flex items-center space-x-2">
+                <Checkbox
+                  id={`kpi-${kpi}`}
+                  checked={data.kpiPain?.includes(kpi) || false}
+                  onCheckedChange={(checked) => {
+                    const current = data.kpiPain || [];
+                    const updated = checked
+                      ? [...current, kpi]
+                      : current.filter((k) => k !== kpi);
+                    updateData("kpiPain", updated);
+                  }}
+                />
+                <Label
+                  htmlFor={`kpi-${kpi}`}
+                  className="font-normal cursor-pointer text-sm"
+                >
+                  {kpi}
+                </Label>
+              </div>
+            ))}
           </div>
-          <div>
-            <Label className="text-[#2E4059] font-semibold">
-              Root cause (client view): why is this happening?{" "}
-              <span className="text-red-500">*</span>
-            </Label>
-            <Textarea
-              value={data.rootCause}
-              onChange={(e) => updateData("rootCause", e.target.value)}
-              className="mt-1 min-h-[100px]"
-              required
-            />
-          </div>
-          <div>
-            <Label className="text-[#2E4059] font-semibold">
-              If solved, what would this enable your company to do?{" "}
-              <span className="text-red-500">*</span>
-            </Label>
-            <Textarea
-              value={data.enableIfSolved}
-              onChange={(e) => updateData("enableIfSolved", e.target.value)}
-              className="mt-1 min-h-[100px]"
-              required
-            />
-          </div>
-          <div>
-            <Label className="text-[#2E4059] font-semibold">
-              Current Impact (Select multiple){" "}
-              <span className="text-red-500">*</span>
-            </Label>
-            <div className="flex flex-wrap gap-3 mt-2 p-3 border border-slate-200 rounded-lg bg-slate-50">
-              {[
-                "Lost revenue",
-                "Reduced efficiency",
-                "Low morale",
-                "High turnover",
-                "Poor customer satisfaction",
-                "Compliance risk",
-                "Other",
-              ].map((impact) => (
-                <div key={impact} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`impact-${impact}`}
-                    checked={data.currentImpact?.includes(impact) || false}
-                    onCheckedChange={(checked) => {
-                      const current = data.currentImpact || [];
-                      const updated = checked
-                        ? [...current, impact]
-                        : current.filter((i) => i !== impact);
-                      updateData("currentImpact", updated);
-                    }}
-                  />
-                  <Label
-                    htmlFor={`impact-${impact}`}
-                    className="font-normal cursor-pointer text-sm"
-                  >
-                    {impact}
-                  </Label>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <Label className="text-[#2E4059] font-semibold">
-              Urgency Level
-            </Label>
-            <Select
-              value={data.urgency}
-              onValueChange={(v) => updateData("urgency", v)}
-            >
-              <SelectTrigger className="mt-1">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.keys(urgencyMap).map((key) => (
-                  <SelectItem key={key} value={key}>
-                    {key}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+        </div>
+        <div>
+          <Label className="text-[#2E4059] font-semibold">
+            Root cause (client view): why is this happening?{" "}
+            <span className="text-red-500">*</span>
+          </Label>
+          <Textarea
+            value={data.rootCause}
+            onChange={(e) => updateData("rootCause", e.target.value)}
+            className="mt-1 min-h-[100px]"
+            required
+          />
+        </div>
+        <div>
+          <Label className="text-[#2E4059] font-semibold">
+            If solved, what would this enable your company to do?{" "}
+            <span className="text-red-500">*</span>
+          </Label>
+          <Textarea
+            value={data.enableIfSolved}
+            onChange={(e) => updateData("enableIfSolved", e.target.value)}
+            className="mt-1 min-h-[100px]"
+            required
+          />
+        </div>
+        <div>
+          <Label className="text-[#2E4059] font-semibold">
+            Current Impact (Select multiple){" "}
+            <span className="text-red-500">*</span>
+          </Label>
+          <div className="flex flex-wrap gap-3 mt-2 p-3 border border-slate-200 rounded-lg bg-slate-50">
+            {[
+              "Lost revenue",
+              "Reduced efficiency",
+              "Low morale",
+              "High turnover",
+              "Poor customer satisfaction",
+              "Compliance risk",
+              "Other",
+            ].map((impact) => (
+              <div key={impact} className="flex items-center space-x-2">
+                <Checkbox
+                  id={`impact-${impact}`}
+                  checked={data.currentImpact?.includes(impact) || false}
+                  onCheckedChange={(checked) => {
+                    const current = data.currentImpact || [];
+                    const updated = checked
+                      ? [...current, impact]
+                      : current.filter((i) => i !== impact);
+                    updateData("currentImpact", updated);
+                  }}
+                />
+                <Label
+                  htmlFor={`impact-${impact}`}
+                  className="font-normal cursor-pointer text-sm"
+                >
+                  {impact}
+                </Label>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -805,6 +920,7 @@ function AlignmentStep({
 }) {
   const stakeholders = [
     "CEO",
+    "C-suite",
     "HR",
     "Department Heads",
     "L&D Team",
@@ -819,6 +935,19 @@ function AlignmentStep({
       ? current.filter((s) => s !== stakeholder)
       : [...current, stakeholder];
     updateData("stakeholders", updated);
+
+    // Clear details when unchecking
+    if (!updated.includes(stakeholder)) {
+      if (stakeholder === "C-suite") {
+        updateData("csuiteDetails", "");
+      } else if (stakeholder === "Department Heads") {
+        updateData("departmentHeadsDetails", "");
+      } else if (stakeholder === "Frontline Managers") {
+        updateData("frontlineManagersDetails", "");
+      } else if (stakeholder === "Employees") {
+        updateData("employeesDetails", "");
+      }
+    }
   };
 
   return (
@@ -826,104 +955,241 @@ function AlignmentStep({
       <h2 className="text-xl sm:text-2xl font-bold text-[#2E4059] mb-3 sm:mb-4">
         Strategic Alignment
       </h2>
-      <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
-        <div>
-          <Label className="text-[#2E4059] font-semibold">
-            Strategic Priority <span className="text-red-500">*</span>
-          </Label>
-          <Select
-            value={data.strategicPriority}
-            onValueChange={(v) => updateData("strategicPriority", v)}
-          >
-            <SelectTrigger className="mt-1">
-              <SelectValue placeholder="Select priority" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Growth">Growth</SelectItem>
-              <SelectItem value="Operational Excellence">
-                Operational Excellence
-              </SelectItem>
-              <SelectItem value="Innovation">Innovation</SelectItem>
-              <SelectItem value="Talent Development">
-                Talent Development
-              </SelectItem>
-              <SelectItem value="Digital Transformation">
-                Digital Transformation
-              </SelectItem>
-              <SelectItem value="Customer Experience">
-                Customer Experience
-              </SelectItem>
-              <SelectItem value="Other">Other</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label className="text-[#2E4059] font-semibold">
-            Cost of Inaction (Annual, ETB){" "}
-            <span className="text-red-500">*</span>
-          </Label>
-          <Input
-            type="number"
-            value={data.costOfInaction || ""}
-            onChange={(e) =>
-              updateData("costOfInaction", parseFloat(e.target.value) || 0)
-            }
-            className="mt-1"
-          />
-        </div>
-        <div>
-          <Label className="text-[#2E4059] font-semibold">
-            Strategic Timeline Fit <span className="text-red-500">*</span>
-          </Label>
-          <Select
-            value={data.strategyTimeline}
-            onValueChange={(v) => updateData("strategyTimeline", v)}
-          >
-            <SelectTrigger className="mt-1">
-              <SelectValue placeholder="Select timeline" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Next 3 months">Next 3 months</SelectItem>
-              <SelectItem value="Next 6 months">Next 6 months</SelectItem>
-              <SelectItem value="Next 12 months">Next 12 months</SelectItem>
-              <SelectItem value="1–3 years">1–3 years</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-      <div>
-        <Label className="text-[#2E4059] font-semibold text-sm sm:text-base">
-          Key Stakeholders (select multiple)
+      <div className="mb-6">
+        <Label className="text-[#2E4059] font-semibold text-base sm:text-lg mb-3 block">
+          Does this challenge your organization is facing have a Strategic Goal
+          Alignment? <span className="text-red-500">*</span>
         </Label>
-        <div className="flex flex-wrap gap-2 sm:gap-3 mt-2">
-          {stakeholders.map((stakeholder) => (
-            <div key={stakeholder} className="flex items-center space-x-2">
-              <Checkbox
-                id={`stakeholder-${stakeholder}`}
-                checked={data.stakeholders?.includes(stakeholder) || false}
-                onCheckedChange={() => toggleStakeholder(stakeholder)}
-              />
-              <Label
-                htmlFor={`stakeholder-${stakeholder}`}
-                className="font-normal cursor-pointer"
-              >
-                {stakeholder}
+        <div className="flex gap-4">
+          <div className="flex items-center space-x-2">
+            <input
+              type="radio"
+              id="hasAlignmentYes"
+              name="hasStrategicAlignment"
+              value="Yes"
+              checked={data.hasStrategicAlignment === "Yes"}
+              onChange={(e) =>
+                updateData("hasStrategicAlignment", e.target.value)
+              }
+              className="w-4 h-4"
+            />
+            <Label
+              htmlFor="hasAlignmentYes"
+              className="font-normal cursor-pointer"
+            >
+              Yes
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="radio"
+              id="hasAlignmentNo"
+              name="hasStrategicAlignment"
+              value="No"
+              checked={data.hasStrategicAlignment === "No"}
+              onChange={(e) =>
+                updateData("hasStrategicAlignment", e.target.value)
+              }
+              className="w-4 h-4"
+            />
+            <Label
+              htmlFor="hasAlignmentNo"
+              className="font-normal cursor-pointer"
+            >
+              No
+            </Label>
+          </div>
+        </div>
+        {data.hasStrategicAlignment === "No" && (
+          <p className="text-sm text-slate-600 mt-2">
+            If No, you can proceed to the next step.
+          </p>
+        )}
+      </div>
+      {data.hasStrategicAlignment === "Yes" && (
+        <>
+          <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+            <div>
+              <Label className="text-[#2E4059] font-semibold">
+                Strategic Priority <span className="text-red-500">*</span>
               </Label>
+              <Select
+                value={data.strategicPriority}
+                onValueChange={(v) => updateData("strategicPriority", v)}
+              >
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder="Select priority" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Growth">Growth</SelectItem>
+                  <SelectItem value="Operational Excellence">
+                    Operational Excellence
+                  </SelectItem>
+                  <SelectItem value="Innovation">Innovation</SelectItem>
+                  <SelectItem value="Talent Development">
+                    Talent Development
+                  </SelectItem>
+                  <SelectItem value="Digital Transformation">
+                    Digital Transformation
+                  </SelectItem>
+                  <SelectItem value="Customer Experience">
+                    Customer Experience
+                  </SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          ))}
-        </div>
-      </div>
-      <div>
-        <Label className="text-[#2E4059] font-semibold">
-          Alignment Narrative (how this supports strategy)
-        </Label>
-        <Textarea
-          value={data.alignmentNarrative}
-          onChange={(e) => updateData("alignmentNarrative", e.target.value)}
-          className="mt-1 min-h-[100px]"
-          placeholder="eg. Supports 3-year talent strategy by reducing attrition by 50%"
-        />
-      </div>
+            <div>
+              <Label className="text-[#2E4059] font-semibold">
+                Cost of Inaction (Annual, ETB){" "}
+                <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                type="number"
+                value={data.costOfInaction || ""}
+                onChange={(e) =>
+                  updateData("costOfInaction", parseFloat(e.target.value) || 0)
+                }
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label className="text-[#2E4059] font-semibold">
+                Strategic Timeline Fit <span className="text-red-500">*</span>
+              </Label>
+              <Select
+                value={data.strategyTimeline}
+                onValueChange={(v) => updateData("strategyTimeline", v)}
+              >
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder="Select timeline" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Next 3 months">Next 3 months</SelectItem>
+                  <SelectItem value="Next 6 months">Next 6 months</SelectItem>
+                  <SelectItem value="Next 12 months">Next 12 months</SelectItem>
+                  <SelectItem value="1–3 years">1–3 years</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div>
+            <Label className="text-[#2E4059] font-semibold text-sm sm:text-base">
+              Key Stakeholders (select multiple)
+            </Label>
+            <div className="flex flex-wrap gap-2 sm:gap-3 mt-2">
+              {stakeholders.map((stakeholder) => (
+                <div key={stakeholder} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`stakeholder-${stakeholder}`}
+                    checked={data.stakeholders?.includes(stakeholder) || false}
+                    onCheckedChange={() => toggleStakeholder(stakeholder)}
+                  />
+                  <Label
+                    htmlFor={`stakeholder-${stakeholder}`}
+                    className="font-normal cursor-pointer"
+                  >
+                    {stakeholder}
+                  </Label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Conditional fields for specific stakeholders */}
+          {data.stakeholders?.includes("C-suite") && (
+            <div>
+              <Label className="text-[#2E4059] font-semibold">
+                Which C-suite executive(s) are involved?{" "}
+                <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                value={data.csuiteDetails}
+                onChange={(e) => updateData("csuiteDetails", e.target.value)}
+                className="mt-1"
+                placeholder="e.g., CFO, COO, CMO, CTO"
+                required
+              />
+              <p className="text-xs text-slate-500 mt-1">
+                Please specify which C-suite executives are involved
+              </p>
+            </div>
+          )}
+
+          {data.stakeholders?.includes("Department Heads") && (
+            <div>
+              <Label className="text-[#2E4059] font-semibold">
+                Which Department Head(s) are responsible?{" "}
+                <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                value={data.departmentHeadsDetails}
+                onChange={(e) =>
+                  updateData("departmentHeadsDetails", e.target.value)
+                }
+                className="mt-1"
+                placeholder="e.g., Head of Sales, Head of Operations, Head of HR"
+                required
+              />
+              <p className="text-xs text-slate-500 mt-1">
+                Please specify which department heads are involved
+              </p>
+            </div>
+          )}
+
+          {data.stakeholders?.includes("Frontline Managers") && (
+            <div>
+              <Label className="text-[#2E4059] font-semibold">
+                Which Frontline Manager(s) are involved?{" "}
+                <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                value={data.frontlineManagersDetails}
+                onChange={(e) =>
+                  updateData("frontlineManagersDetails", e.target.value)
+                }
+                className="mt-1"
+                placeholder="e.g., Sales Managers, Customer Service Managers"
+                required
+              />
+              <p className="text-xs text-slate-500 mt-1">
+                Please specify which frontline managers are involved
+              </p>
+            </div>
+          )}
+
+          {data.stakeholders?.includes("Employees") && (
+            <div>
+              <Label className="text-[#2E4059] font-semibold">
+                Which Employee group(s) are involved?{" "}
+                <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                value={data.employeesDetails}
+                onChange={(e) => updateData("employeesDetails", e.target.value)}
+                className="mt-1"
+                placeholder="e.g., Sales Team, Customer Service Team, Operations Staff"
+                required
+              />
+              <p className="text-xs text-slate-500 mt-1">
+                Please specify which employee groups are involved
+              </p>
+            </div>
+          )}
+
+          <div>
+            <Label className="text-[#2E4059] font-semibold">
+              Alignment Narrative (how this supports strategy)
+            </Label>
+            <Textarea
+              value={data.alignmentNarrative}
+              onChange={(e) => updateData("alignmentNarrative", e.target.value)}
+              className="mt-1 min-h-[100px]"
+              placeholder="eg. Supports 3-year talent strategy by reducing attrition by 50%"
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -936,62 +1202,93 @@ function DeptGoalsStep({
   updateData: (field: keyof BusinessCaseData, value: any) => void;
 }) {
   const deptList = Object.keys(deptGoals);
-  const goals = data.department ? deptGoals[data.department] || [] : [];
+  const selectedDepts = Array.isArray(data.department) ? data.department : [];
+
+  // Aggregate all goals from all selected departments
+  const allGoals = selectedDepts.reduce((acc: string[], dept: string) => {
+    const deptGoalsList = deptGoals[dept] || [];
+    return [...acc, ...deptGoalsList];
+  }, []);
+  // Remove duplicates
+  const uniqueGoals = [...new Set(allGoals)];
+
+  const toggleDepartment = (dept: string) => {
+    const current = Array.isArray(data.department) ? data.department : [];
+    const updated = current.includes(dept)
+      ? current.filter((d) => d !== dept)
+      : [...current, dept];
+    updateData("department", updated);
+    // Clear training goals when departments change
+    updateData("trainingGoal", []);
+  };
+
+  const toggleTrainingGoal = (goal: string) => {
+    const current = Array.isArray(data.trainingGoal) ? data.trainingGoal : [];
+    const updated = current.includes(goal)
+      ? current.filter((g) => g !== goal)
+      : [...current, goal];
+    updateData("trainingGoal", updated);
+  };
 
   return (
     <div className="space-y-4 sm:space-y-6">
       <h2 className="text-xl sm:text-2xl font-bold text-[#2E4059] mb-3 sm:mb-4">
         Department & Training Goals
       </h2>
-      <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+      <div className="space-y-4 sm:space-y-6">
         <div>
           <Label className="text-[#2E4059] font-semibold">
-            Department <span className="text-red-500">*</span>
+            Department (Select multiple) <span className="text-red-500">*</span>
           </Label>
-          <Select
-            value={data.department}
-            onValueChange={(v) => {
-              updateData("department", v);
-              updateData("trainingGoal", "");
-            }}
-          >
-            <SelectTrigger className="mt-1">
-              <SelectValue placeholder="Select department" />
-            </SelectTrigger>
-            <SelectContent>
-              {deptList.map((dept) => (
-                <SelectItem key={dept} value={dept}>
+          <div className="flex flex-wrap gap-3 mt-2 p-3 border border-slate-200 rounded-lg bg-slate-50">
+            {deptList.map((dept) => (
+              <div key={dept} className="flex items-center space-x-2">
+                <Checkbox
+                  id={`dept-${dept}`}
+                  checked={selectedDepts.includes(dept)}
+                  onCheckedChange={() => toggleDepartment(dept)}
+                />
+                <Label
+                  htmlFor={`dept-${dept}`}
+                  className="font-normal cursor-pointer text-sm"
+                >
                   {dept}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+                </Label>
+              </div>
+            ))}
+          </div>
         </div>
         <div>
           <Label className="text-[#2E4059] font-semibold">
-            Training Goal (dynamic by department){" "}
-            <span className="text-red-500">*</span>
+            Training Goal (Select multiple - shows goals from all selected
+            departments) <span className="text-red-500">*</span>
           </Label>
-          <Select
-            value={data.trainingGoal}
-            onValueChange={(v) => updateData("trainingGoal", v)}
-            disabled={!data.department}
-          >
-            <SelectTrigger className="mt-1">
-              <SelectValue
-                placeholder={
-                  data.department ? "Select goal" : "Select department first"
-                }
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {goals.map((goal) => (
-                <SelectItem key={goal} value={goal}>
-                  {goal}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="flex flex-wrap gap-3 mt-2 p-3 border border-slate-200 rounded-lg bg-slate-50 min-h-[100px]">
+            {selectedDepts.length === 0 ? (
+              <p className="text-sm text-slate-500">
+                Please select at least one department first
+              </p>
+            ) : (
+              uniqueGoals.map((goal) => (
+                <div key={goal} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`goal-${goal}`}
+                    checked={
+                      Array.isArray(data.trainingGoal) &&
+                      data.trainingGoal.includes(goal)
+                    }
+                    onCheckedChange={() => toggleTrainingGoal(goal)}
+                  />
+                  <Label
+                    htmlFor={`goal-${goal}`}
+                    className="font-normal cursor-pointer text-sm"
+                  >
+                    {goal}
+                  </Label>
+                </div>
+              ))
+            )}
+          </div>
         </div>
         <div>
           <Label className="text-[#2E4059] font-semibold">
@@ -1047,9 +1344,38 @@ function ProgramStep({
   updateData: (field: keyof BusinessCaseData, value: any) => void;
 }) {
   const groups = [...new Set(programs.map((p) => p.group))];
-  const programNamesByGroup = (grp: string) =>
-    programs.filter((p) => p.group === grp).map((p) => p.name);
+  const selectedGroups = Array.isArray(data.programGroup)
+    ? data.programGroup
+    : [];
+
+  // Get all programs from all selected groups
+  const allPrograms = selectedGroups.reduce((acc: string[], grp: string) => {
+    const groupPrograms = programs
+      .filter((p) => p.group === grp)
+      .map((p) => p.name);
+    return [...acc, ...groupPrograms];
+  }, []);
+  const uniquePrograms = [...new Set(allPrograms)];
+
   const softTitles = softSkills.map((s) => s.title);
+
+  const toggleProgramGroup = (grp: string) => {
+    const current = Array.isArray(data.programGroup) ? data.programGroup : [];
+    const updated = current.includes(grp)
+      ? current.filter((g) => g !== grp)
+      : [...current, grp];
+    updateData("programGroup", updated);
+    // Clear program names when groups change
+    updateData("programName", []);
+  };
+
+  const toggleProgramName = (name: string) => {
+    const current = Array.isArray(data.programName) ? data.programName : [];
+    const updated = current.includes(name)
+      ? current.filter((n) => n !== name)
+      : [...current, name];
+    updateData("programName", updated);
+  };
 
   const toggleSoftSkill = (title: string) => {
     const current = data.softSkillSelections || [];
@@ -1064,51 +1390,60 @@ function ProgramStep({
       <h2 className="text-xl sm:text-2xl font-bold text-[#2E4059] mb-3 sm:mb-4">
         Solution Mapping — Programs
       </h2>
-      <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+      <div className="space-y-4 sm:space-y-6">
         <div>
-          <Label className="text-[#2E4059] font-semibold">Program Group</Label>
-          <Select
-            value={data.programGroup}
-            onValueChange={(v) => {
-              updateData("programGroup", v);
-              updateData("programName", "");
-            }}
-          >
-            <SelectTrigger className="mt-1">
-              <SelectValue placeholder="Select group" />
-            </SelectTrigger>
-            <SelectContent>
-              {groups.map((grp) => (
-                <SelectItem key={grp} value={grp}>
+          <Label className="text-[#2E4059] font-semibold">
+            Program Group (Select multiple)
+          </Label>
+          <div className="flex flex-wrap gap-3 mt-2 p-3 border border-slate-200 rounded-lg bg-slate-50">
+            {groups.map((grp) => (
+              <div key={grp} className="flex items-center space-x-2">
+                <Checkbox
+                  id={`group-${grp}`}
+                  checked={selectedGroups.includes(grp)}
+                  onCheckedChange={() => toggleProgramGroup(grp)}
+                />
+                <Label
+                  htmlFor={`group-${grp}`}
+                  className="font-normal cursor-pointer text-sm"
+                >
                   {grp}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+                </Label>
+              </div>
+            ))}
+          </div>
         </div>
         <div>
-          <Label className="text-[#2E4059] font-semibold">Program Name</Label>
-          <Select
-            value={data.programName}
-            onValueChange={(v) => updateData("programName", v)}
-            disabled={!data.programGroup}
-          >
-            <SelectTrigger className="mt-1">
-              <SelectValue
-                placeholder={
-                  data.programGroup ? "Select program" : "Select group first"
-                }
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {data.programGroup &&
-                programNamesByGroup(data.programGroup).map((name) => (
-                  <SelectItem key={name} value={name}>
+          <Label className="text-[#2E4059] font-semibold">
+            Program Name (Select multiple - shows programs from all selected
+            groups)
+          </Label>
+          <div className="flex flex-wrap gap-3 mt-2 p-3 border border-slate-200 rounded-lg bg-slate-50 min-h-[100px]">
+            {selectedGroups.length === 0 ? (
+              <p className="text-sm text-slate-500">
+                Please select at least one program group first
+              </p>
+            ) : (
+              uniquePrograms.map((name) => (
+                <div key={name} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`program-${name}`}
+                    checked={
+                      Array.isArray(data.programName) &&
+                      data.programName.includes(name)
+                    }
+                    onCheckedChange={() => toggleProgramName(name)}
+                  />
+                  <Label
+                    htmlFor={`program-${name}`}
+                    className="font-normal cursor-pointer text-sm"
+                  >
                     {name}
-                  </SelectItem>
-                ))}
-            </SelectContent>
-          </Select>
+                  </Label>
+                </div>
+              ))
+            )}
+          </div>
         </div>
         <div>
           <Label className="text-[#2E4059] font-semibold">
@@ -1417,42 +1752,47 @@ function OrgStep({
         </div>
         <div>
           <Label className="text-[#2E4059] font-semibold">
-            Training Format
+            Training Format (Select multiple)
           </Label>
-          <Select
-            value={data.trainingFormat}
-            onValueChange={(v) => updateData("trainingFormat", v)}
-          >
-            <SelectTrigger className="mt-1">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Instructor-Led Training (ILT)">
-                Instructor-Led Training (ILT)
-              </SelectItem>
-              <SelectItem value="eLearning / Online Courses">
-                eLearning / Online Courses
-              </SelectItem>
-              <SelectItem value="Blended Learning">Blended Learning</SelectItem>
-              <SelectItem value="Microlearning">Microlearning</SelectItem>
-              <SelectItem value="Video-Based Learning">
-                Video-Based Learning
-              </SelectItem>
-              <SelectItem value="Coaching/Mentoring">
-                Coaching/Mentoring
-              </SelectItem>
-              <SelectItem value="Simulations (VR/AR or Scenario-Based)">
-                Simulations (VR/AR or Scenario-Based)
-              </SelectItem>
-              <SelectItem value="Gamified Learning">
-                Gamified Learning
-              </SelectItem>
-              <SelectItem value="Social Learning">Social Learning</SelectItem>
-              <SelectItem value="On-the-Job Training (OJT)">
-                On-the-Job Training (OJT)
-              </SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex flex-wrap gap-3 mt-2 p-3 border border-slate-200 rounded-lg bg-slate-50">
+            {[
+              "Instructor-Led Training (ILT)",
+              "eLearning / Online Courses",
+              "Blended Learning",
+              "Microlearning",
+              "Video-Based Learning",
+              "Coaching/Mentoring",
+              "Simulations (VR/AR or Scenario-Based)",
+              "Gamified Learning",
+              "Social Learning",
+              "On-the-Job Training (OJT)",
+            ].map((format) => (
+              <div key={format} className="flex items-center space-x-2">
+                <Checkbox
+                  id={`format-${format}`}
+                  checked={
+                    Array.isArray(data.trainingFormat) &&
+                    data.trainingFormat.includes(format)
+                  }
+                  onCheckedChange={(checked) => {
+                    const current = Array.isArray(data.trainingFormat)
+                      ? data.trainingFormat
+                      : [];
+                    const updated = checked
+                      ? [...current, format]
+                      : current.filter((f) => f !== format);
+                    updateData("trainingFormat", updated);
+                  }}
+                />
+                <Label
+                  htmlFor={`format-${format}`}
+                  className="font-normal cursor-pointer text-sm"
+                >
+                  {format}
+                </Label>
+              </div>
+            ))}
+          </div>
         </div>
         <div>
           <Label className="text-[#2E4059] font-semibold">
@@ -1573,89 +1913,66 @@ function BudgetStep({
   return (
     <div className="space-y-4 sm:space-y-6">
       <h2 className="text-xl sm:text-2xl font-bold text-[#2E4059] mb-3 sm:mb-4">
-        Urgency & Extras
+        Training Add-ons
       </h2>
       <div className="space-y-3 sm:space-y-4">
-        <div>
-          <Label className="text-[#2E4059] font-semibold">Urgency Level</Label>
-          <Select
-            value={data.urgency}
-            onValueChange={(v) => updateData("urgency", v)}
-          >
-            <SelectTrigger className="mt-1">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.keys(urgencyMap).map((key) => (
-                <SelectItem key={key} value={key}>
-                  {key}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="addPreAssess"
+            checked={data.addPreAssess}
+            onCheckedChange={(checked) => updateData("addPreAssess", checked)}
+          />
+          <Label htmlFor="addPreAssess" className="font-normal cursor-pointer">
+            Pre-assessment (+5,000 ETB per participant)
+          </Label>
         </div>
-        <div className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="addPreAssess"
-              checked={data.addPreAssess}
-              onCheckedChange={(checked) => updateData("addPreAssess", checked)}
-            />
-            <Label
-              htmlFor="addPreAssess"
-              className="font-normal cursor-pointer"
-            >
-              Pre-assessment (+5,000 ETB per participant)
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="addCoaching"
-              checked={data.addCoaching}
-              onCheckedChange={(checked) => updateData("addCoaching", checked)}
-            />
-            <Label htmlFor="addCoaching" className="font-normal cursor-pointer">
-              Post-program coaching (+15,000 ETB per participant)
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="addPrinted"
-              checked={data.addPrinted}
-              onCheckedChange={(checked) => updateData("addPrinted", checked)}
-            />
-            <Label htmlFor="addPrinted" className="font-normal cursor-pointer">
-              Printed materials/workbooks (+2,500 ETB per participant)
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="addDigital"
-              checked={data.addDigital}
-              onCheckedChange={(checked) => updateData("addDigital", checked)}
-            />
-            <Label htmlFor="addDigital" className="font-normal cursor-pointer">
-              Digital learning follow-ups (+8,000 ETB per participant)
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="addVenue"
-              checked={data.addVenue}
-              onCheckedChange={(checked) => updateData("addVenue", checked)}
-            />
-            <Label htmlFor="addVenue" className="font-normal cursor-pointer">
-              Venue & catering (25,000 ETB flat)
-            </Label>
-          </div>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="addCoaching"
+            checked={data.addCoaching}
+            onCheckedChange={(checked) => updateData("addCoaching", checked)}
+          />
+          <Label htmlFor="addCoaching" className="font-normal cursor-pointer">
+            Post-program coaching (+15,000 ETB per participant)
+          </Label>
         </div>
-        <Card className="p-4 bg-slate-50 border-slate-200">
-          <p className="text-sm text-slate-600">
-            <strong>Note:</strong> Urgency automatically applies a surcharge
-            (Priority +15%, Rush +25%).
-          </p>
-        </Card>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="addPrinted"
+            checked={data.addPrinted}
+            onCheckedChange={(checked) => updateData("addPrinted", checked)}
+          />
+          <Label htmlFor="addPrinted" className="font-normal cursor-pointer">
+            Printed materials/workbooks (+2,500 ETB per participant)
+          </Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="addDigital"
+            checked={data.addDigital}
+            onCheckedChange={(checked) => updateData("addDigital", checked)}
+          />
+          <Label htmlFor="addDigital" className="font-normal cursor-pointer">
+            Digital learning follow-ups (+8,000 ETB per participant)
+          </Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="addVenue"
+            checked={data.addVenue}
+            onCheckedChange={(checked) => updateData("addVenue", checked)}
+          />
+          <Label htmlFor="addVenue" className="font-normal cursor-pointer">
+            Venue & catering (25,000 ETB flat)
+          </Label>
+        </div>
       </div>
+      <Card className="p-4 bg-slate-50 border-slate-200">
+        <p className="text-sm text-slate-600">
+          <strong>Note:</strong> Urgency automatically applies a surcharge
+          (Priority +15%, Rush +25%).
+        </p>
+      </Card>
     </div>
   );
 }
@@ -1681,9 +1998,13 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
         data.costOfInaction
       )} per year.`,
       `Our solution maps your department ("${
-        data.department || "—"
+        Array.isArray(data.department)
+          ? data.department.join(", ")
+          : data.department || "—"
       }") & goal ("${
-        data.trainingGoal || data.customGoal || "—"
+        Array.isArray(data.trainingGoal)
+          ? data.trainingGoal.join(", ")
+          : data.trainingGoal || data.customGoal || "—"
       }") to the selected programs, with expected ROI of ${formatPercent(
         evals.roi.expected
       )} and payback in ${evals.payback.expected?.toFixed(1) || "—"} months.`,
@@ -1707,7 +2028,11 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
           </div>
           <div>
             <span className="text-sm opacity-80">Department:</span>
-            <p className="font-semibold">{data.department || "—"}</p>
+            <p className="font-semibold">
+              {Array.isArray(data.department)
+                ? data.department.join(", ")
+                : data.department || "—"}
+            </p>
           </div>
         </div>
         <div className="border-t border-white/20 pt-4 space-y-2 text-sm">

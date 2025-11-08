@@ -30,9 +30,10 @@ export function computePricingAndROI(data: BusinessCaseData): PricingAndROI {
   // Program base
   let baseCost = 0;
 
-  // Main program (group+name)
-  if (data.programName) {
-    const prg = programs.find(p => p.name === data.programName);
+  // Main program (group+name) - handle both single string and array
+  const programNames = Array.isArray(data.programName) ? data.programName : (data.programName ? [data.programName] : []);
+  programNames.forEach(programName => {
+    const prg = programs.find(p => p.name === programName);
     if (prg) {
       if (prg.priceMode === "perParticipant") {
         baseCost += prg.base * participants;
@@ -43,7 +44,7 @@ export function computePricingAndROI(data: BusinessCaseData): PricingAndROI {
         baseCost += prg.base * Math.max(1, Math.ceil(days));
       }
     }
-  }
+  });
 
   // Additional soft skills (sum)
   if (Array.isArray(data.softSkillSelections)) {
@@ -80,9 +81,15 @@ export function computePricingAndROI(data: BusinessCaseData): PricingAndROI {
   const avgAnnual = avgMonthly * 12;
 
   // Use entered gains if provided else benchmarks
-  const dept = data.department || "Generic Employee Development";
-  const prodGainPct = (parseFloat(String(data.estProductivityGain || 0)) || (benchmarkGains.productivity[dept] * 100)) / 100;
-  const retGainPct = (parseFloat(String(data.estRetentionImprovement || 0)) || (benchmarkGains.retention[dept] * 100)) / 100;
+  // Handle both single string and array for department
+  const dept = Array.isArray(data.department) && data.department.length > 0 
+    ? data.department[0] // Use first department for benchmark if multiple selected
+    : (data.department || "Generic Employee Development");
+  // Check if value is provided (not empty string), if so use it, otherwise use benchmark
+  const prodGainValue = parseFloat(String(data.estProductivityGain || ""));
+  const prodGainPct = !isNaN(prodGainValue) ? prodGainValue / 100 : benchmarkGains.productivity[dept];
+  const retGainValue = parseFloat(String(data.estRetentionImprovement || ""));
+  const retGainPct = !isNaN(retGainValue) ? retGainValue / 100 : benchmarkGains.retention[dept];
   const directSavePerPerson = parseFloat(String(data.directCostSavingPerPerson || 0));
 
   // Annual benefit components
