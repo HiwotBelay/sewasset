@@ -15,7 +15,7 @@ export default function DisclaimerPage() {
               <Shield className="w-8 h-8 text-[#2E4059]" />
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-4">
-              Terms & Conditions
+              Privacy & Engagement Terms
             </h1>
             <p className="text-slate-600 text-lg">
               Please read and accept the following terms before proceeding
@@ -26,31 +26,13 @@ export default function DisclaimerPage() {
             <section>
               <h2 className="text-xl font-bold text-[#2E4059] mb-3 flex items-center gap-2">
                 <FileText className="w-5 h-5" />
-                Notice & Terms of Use
+                The SewAsset Value Exchange: Terms for Strategic Analysis
               </h2>
               <div className="space-y-3 text-slate-700">
                 <p>
                   By using the Sew Asset Strategic Business Case Builder, you
                   acknowledge and agree to the following terms and conditions:
                 </p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li>
-                    The ROI calculations and business case analysis provided are
-                    estimates based on the information you provide.
-                  </li>
-                  <li>
-                    Results are for informational purposes and should not be
-                    considered as financial or legal advice.
-                  </li>
-                  <li>
-                    Sew Asset is not responsible for decisions made based on the
-                    calculator results.
-                  </li>
-                  <li>
-                    All calculations are based on industry benchmarks and
-                    assumptions that may vary in practice.
-                  </li>
-                </ul>
               </div>
             </section>
 
@@ -60,31 +42,30 @@ export default function DisclaimerPage() {
                 Confidentiality & Data Protection
               </h2>
               <div className="space-y-3 text-slate-700">
-                <p>We take your privacy and data security seriously:</p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>
-                    All information you provide is treated with strict
-                    confidentiality.
+                    Your proprietary organizational data (salaries, turnover,
+                    goals) is <strong>exclusively</strong> used to generate your{" "}
+                    <strong>
+                      Executive-Ready Business Case and Strategic Proposal.
+                    </strong>
                   </li>
                   <li>
-                    Your business data will only be used to generate your
-                    personalized ROI analysis.
+                    Your detailed report, including the{" "}
+                    <strong>Scenario ROI Forecast</strong>, will be{" "}
+                    <strong>instantly emailed</strong> to the professional
+                    address provided.
                   </li>
                   <li>
-                    Reports will be sent directly to the email address you
-                    provide.
+                    <strong>Guaranteed Follow-Up:</strong> A SewAsset Senior
+                    Consultant will contact you within <strong>24 hours</strong>{" "}
+                    to walk through your detailed results and finalize your
+                    Strategic Proposal.
                   </li>
                   <li>
-                    Our team will contact you using the information provided to
-                    discuss your business case.
-                  </li>
-                  <li>
-                    We do not share your information with third parties without
-                    your explicit consent.
-                  </li>
-                  <li>
-                    Data is stored securely and in compliance with data
-                    protection regulations.
+                    We adhere to strict data privacy protocols. Your information
+                    is <strong>never</strong> shared, sold, or distributed to
+                    third parties.
                   </li>
                 </ul>
               </div>
@@ -93,36 +74,53 @@ export default function DisclaimerPage() {
             <section>
               <h2 className="text-xl font-bold text-[#2E4059] mb-3 flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5" />
-                Data Accuracy
+                Data Integrity Notice
               </h2>
               <div className="space-y-3 text-slate-700">
-                <p>
-                  <strong>Important:</strong> The accuracy of your ROI
-                  calculation depends on the accuracy of the information you
-                  provide.
-                </p>
                 <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                  <p className="text-sm font-semibold text-yellow-800 mb-2">
-                    ⚠️ Please ensure all data is correct
+                  <p className="text-sm font-semibold text-yellow-800 mb-2 flex items-center gap-2">
+                    ⚠️ Warning
                   </p>
                   <p className="text-sm text-yellow-700">
-                    Your report will be sent personally to your office, and our
-                    team will be in contact with you. Providing accurate
-                    information ensures you receive accurate results.
+                    The predictive power of your <strong>ROI</strong> forecast
+                    and the accuracy of your{" "}
+                    <strong>7-Pillar Competency Map</strong> depends entirely on
+                    the integrity of the data you enter. Please ensure all
+                    financial and organizational inputs are verified.{" "}
+                    <strong>
+                      Inaccurate data will result in an inaccurate,
+                      non-actionable Strategic Proposal.
+                    </strong>
                   </p>
                 </div>
               </div>
             </section>
 
             <section>
-              <h2 className="text-xl font-bold text-[#2E4059] mb-3">
-                Contact & Support
+              <h2 className="text-xl font-bold text-[#2E4059] mb-3 flex items-center gap-2">
+                <FileText className="w-5 h-5" />
+                Strategic Analysis Notice
               </h2>
-              <div className="space-y-2 text-slate-700">
-                <p>
-                  If you have any questions about these terms or need
-                  assistance, please contact our support team before proceeding.
-                </p>
+              <div className="space-y-3 text-slate-700">
+                <ul className="list-disc list-inside space-y-2 ml-4">
+                  <li>
+                    The ROI projections, business case analysis, SPSC
+                    diagnostic, and Competency Mapping are strategic estimates
+                    derived from your input, compared against our 7-Pillar
+                    industry benchmarks.
+                  </li>
+                  <li>
+                    Results constitute a strategic diagnostic proposal and
+                    should not be interpreted as certified financial, tax, or
+                    legal advice.
+                  </li>
+                  <li>
+                    Sew Asset provides this tool to support your internal
+                    decision-making process. We are not liable for subsequent
+                    business decisions, outcomes, or variances from the
+                    projected ROI.
+                  </li>
+                </ul>
               </div>
             </section>
           </div>
@@ -143,7 +141,7 @@ export default function DisclaimerPage() {
               }}
               className="bg-[#FFC72F] text-[#2E4059] font-bold hover:bg-[#FFC72F]/90"
             >
-              I Accept - Proceed to Calculator
+              I Accept - Build My Strategic Business Case
             </Button>
           </div>
         </Card>

@@ -20,14 +20,23 @@ export function HeroSection() {
                 ✨ Trusted by 500+ Companies
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#2E4059] leading-tight">
-                Calculate Your{" "}
+                Justify Your{" "}
                 <span className="bg-gradient-accent bg-clip-text text-transparent">
-                  Real ROI
-                </span>
+                  L&D Investment.
+                </span>{" "}
+                Start with Strategy.
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-[#6B7280] leading-relaxed">
-                Stop guessing. Get detailed insights into your business needs
-                with AI-powered predictions and comprehensive analysis.
+                Transform training conversations from 'cost' to 'investment.'
+                Use our{" "}
+                <span className="font-semibold text-[#2E4059]">
+                  SPSC diagnostic
+                </span>{" "}
+                and{" "}
+                <span className="font-semibold text-[#2E4059]">
+                  7-Pillar methodology
+                </span>{" "}
+                to map competency gaps to quantifiable business impact.
               </p>
             </div>
 
@@ -36,7 +45,7 @@ export function HeroSection() {
                 href="/disclaimer"
                 className="px-6 py-3 md:px-8 md:py-4 bg-[#2E4059] text-white font-bold rounded-lg hover:bg-[#1A1F2E] transition-smooth flex items-center justify-center gap-2 group text-sm md:text-base"
               >
-                Start Free Analysis
+                Build My Strategic Business Case
                 <ArrowRight
                   size={18}
                   className="group-hover:translate-x-1 transition-smooth"

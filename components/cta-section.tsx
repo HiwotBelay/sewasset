@@ -8,7 +8,7 @@ export function CTASection() {
     <section className="py-12 sm:py-16 md:py-20 bg-gradient-premium text-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6 sm:space-y-8">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight px-2">
-          Ready to Unlock Your Investment Potential?
+          Ready to Transform Competency Gaps into Competitive Edge?
         </h2>
         <p className="text-base sm:text-lg md:text-xl text-white/80 px-2">
           Join hundreds of companies making smarter investment decisions every

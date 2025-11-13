@@ -6,21 +6,21 @@ export function WhySection() {
   const reasons = [
     {
       icon: AlertCircle,
-      title: "Stop Guessing on Returns",
+      title: "Map Competency Gaps to ROI",
       description:
-        "No more uncertainty. Get precise, data-driven ROI calculations backed by AI analysis and predictive models.",
+        "Pinpoint the exact competency shortfall (e.g., Delegation, Process Adherence) causing your business pain, then quantify the financial return of fixing it.",
     },
     {
       icon: Lightbulb,
-      title: "Data-Driven Decisions",
+      title: "Strategic Alignment Framework",
       description:
-        "Make confident business decisions with comprehensive insights that reveal hidden opportunities and risks.",
+        "Ensure every learning hour supports your top priority (Growth, Operational Excellence, Talent Retention) using our proprietary 7-Pillar methodology.",
     },
     {
       icon: CheckCircle2,
-      title: "Detailed Reports",
+      title: "Executive-Ready Proposal",
       description:
-        "Export professional PDF reports with visual charts, forecasts, and actionable recommendations for stakeholders.",
+        "Generate a clear, story-driven business case that contextualizes investment cost against risk and the Cost of Inaction for your CFO and board.",
     },
   ];
 
@@ -29,7 +29,7 @@ export function WhySection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold text-[#2E4059]">
-            Why Choose SewAsset ROI?
+            The SewAsset Diagnostic Advantage
           </h2>
           <p className="text-xl text-[#6B7280] max-w-2xl mx-auto">
             Every business needs clarity on their strategic training needs. We
