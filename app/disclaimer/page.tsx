@@ -1,11 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle2, Shield, FileText, Lock } from "lucide-react";
 
 export default function DisclaimerPage() {
+  const router = useRouter();
+
+  const handleAccept = () => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("disclaimerAccepted", "true");
+      router.push("/route-selection");
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -133,12 +142,7 @@ export default function DisclaimerPage() {
               <Link href="/">Back to Home</Link>
             </Button>
             <Button
-              onClick={() => {
-                if (typeof window !== "undefined") {
-                  sessionStorage.setItem("disclaimerAccepted", "true");
-                  window.location.href = "/route-selection";
-                }
-              }}
+              onClick={handleAccept}
               className="bg-[#FFC72F] text-[#2E4059] font-bold hover:bg-[#FFC72F]/90"
             >
               I Accept - Build My Strategic Business Case
