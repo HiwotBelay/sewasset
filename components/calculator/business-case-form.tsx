@@ -1,5 +1,5 @@
+// @ts-nocheck
 "use client";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
@@ -289,7 +289,16 @@ const stepDefs = [
   { key: "pricing", title: "Pricing & Strategic ROI Proposal", number: 8 },
 ];
 
-export function BusinessCaseForm() {
+/* ============================================
+   COMMENTED OUT - PRESERVED FOR LATER USE
+   This form code is commented out as we're implementing
+   the new Training/Consulting route system.
+   ============================================ */
+
+// @ts-nocheck
+// The following code is commented out but preserved for later use
+/*
+export function BusinessCaseForm_ORIGINAL() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState<BusinessCaseData>(initialData);
@@ -674,7 +683,7 @@ export function BusinessCaseForm() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
-        {/* Header */}
+        // Header
         <div className="mb-4 sm:mb-6 md:mb-8">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#2E4059] mb-2">
             Sew Asset — Strategic Business Case Builder
@@ -685,7 +694,7 @@ export function BusinessCaseForm() {
           </p>
         </div>
 
-        {/* Step Pills */}
+        // Step Pills
         <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6 overflow-x-auto pb-2 -mx-3 sm:-mx-4 md:mx-0 px-3 sm:px-4 md:px-0">
           {stepDefs.map((step, idx) => (
             <div
@@ -701,7 +710,7 @@ export function BusinessCaseForm() {
           ))}
         </div>
 
-        {/* Form Content */}
+        // Form Content
         <Card className="p-4 sm:p-6 md:p-8 bg-white shadow-lg mb-4 sm:mb-6">
           {errors[currentStep] && errors[currentStep].length > 0 && (
             <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -726,7 +735,7 @@ export function BusinessCaseForm() {
           {renderStep()}
         </Card>
 
-        {/* Navigation Bar */}
+        // Navigation Bar
         <div className="sticky bottom-0 bg-white/95 backdrop-blur-sm border-t border-slate-200 p-2 sm:p-3 md:p-4 rounded-t-lg shadow-lg -mx-3 sm:-mx-4 md:mx-0">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-4 max-w-6xl mx-auto">
             <div className="flex gap-2 justify-center sm:justify-end">
@@ -762,7 +771,7 @@ export function BusinessCaseForm() {
         </div>
       </div>
 
-      {/* Thank You Dialog */}
+      // Thank You Dialog
       <Dialog open={showThankYou} onOpenChange={setShowThankYou}>
         <DialogContent
           className="w-[90vw] sm:max-w-md mx-4"
@@ -800,8 +809,12 @@ export function BusinessCaseForm() {
     </div>
   );
 }
+// END OF ORIGINAL BusinessCaseForm FUNCTION
+*/
 
-// Step Components
+// Step Components (commented out - preserved for later use)
+// @ts-nocheck
+/*
 function CompanyInfoStep({
   data,
   updateData,
@@ -814,7 +827,7 @@ function CompanyInfoStep({
       <h2 className="text-xl sm:text-2xl font-bold text-[#2E4059] mb-3 sm:mb-4">
         Your Company Information
       </h2>
-      {/* Data Accuracy Warning */}
+      // Data Accuracy Warning
       <Card className="p-4 bg-yellow-50 border-yellow-200 border-2 mb-4 sm:mb-6">
         <div className="flex items-start gap-3">
           <div className="text-yellow-600 font-bold text-lg">⚠️</div>
@@ -1278,7 +1291,7 @@ function ProblemContextStep({
           </Select>
         </div>
 
-        {/* SPSC Root Cause Diagnostic */}
+        // SPSC Root Cause Diagnostic
         <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
           <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
             SPSC Root Cause Diagnostic
@@ -1526,13 +1539,13 @@ function AlignmentStep({
       </div>
       {data.hasStrategicAlignment === "Yes" && (
         <>
-          {/* A. Core Strategy Alignment */}
+          // A. Core Strategy Alignment
           <div className="mb-6 pt-4 border-t-2 border-[#2E4059]">
             <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
               A. Core Strategy Alignment
             </h3>
 
-            {/* Cost of Inaction - Moved Up and Bolded */}
+            // Cost of Inaction - Moved Up and Bolded
             <div className="mb-6">
               <Label className="text-[#2E4059] font-bold text-base sm:text-lg">
                 Cost of Inaction (Annual, ETB){" "}
@@ -1629,7 +1642,7 @@ function AlignmentStep({
             </div>
           </div>
 
-          {/* Conditional fields for specific stakeholders */}
+          // Conditional fields for specific stakeholders
           {data.stakeholders?.includes("C-suite") && (
             <div>
               <Label className="text-[#2E4059] font-semibold">
@@ -1722,7 +1735,7 @@ function AlignmentStep({
             />
           </div>
 
-          {/* B. People Alignment */}
+          // B. People Alignment
           <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
             <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
               B. People Alignment (The Sponsorship Check)
@@ -1785,7 +1798,7 @@ function AlignmentStep({
             </div>
           </div>
 
-          {/* C. System/Process Alignment */}
+          // C. System/Process Alignment
           <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
             <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
               C. System/Process Alignment (The Bottleneck Check)
@@ -1842,7 +1855,7 @@ function AlignmentStep({
             </div>
           </div>
 
-          {/* D. Culture Alignment */}
+          // D. Culture Alignment
           <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
             <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
               D. Culture Alignment (The Sustainability Check)
@@ -1905,7 +1918,7 @@ function AlignmentStep({
             </div>
           </div>
 
-          {/* Solution Risk Assessment */}
+          // Solution Risk Assessment
           <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
             <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
               Solution Risk Assessment (SewAsset Perspective)
@@ -2115,7 +2128,7 @@ function DeptGoalsStep({
             )}
           </div>
         </div>
-        {/* B. Mandatory Competency Mapping */}
+        // B. Mandatory Competency Mapping
         {data.trainingGoal && data.trainingGoal.length > 0 && (
           <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
             <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
@@ -2162,7 +2175,7 @@ function DeptGoalsStep({
         )}
       </div>
 
-      {/* Implementation Scope and Audience Detail */}
+      // Implementation Scope and Audience Detail
       <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           Implementation Scope and Audience Detail
@@ -2295,7 +2308,7 @@ function DeptGoalsStep({
         </div>
       </div>
 
-      {/* C. Behavioral and Contextual Depth */}
+      // C. Behavioral and Contextual Depth
       <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           C. Behavioral and Contextual Depth
@@ -2420,7 +2433,7 @@ function ProgramStep({
         </p>
       </div>
 
-      {/* A. Training Programs */}
+      // A. Training Programs
       <div className="mb-6 pt-4 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           A. Training Programs (Filtered by Competency & Pillar)
@@ -2535,7 +2548,7 @@ function ProgramStep({
         </div>
       </div>
 
-      {/* Soft Skills Section */}
+      // Soft Skills Section
       <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
         <div className="mb-4">
           <Label className="text-[#2E4059] font-semibold text-base sm:text-lg">
@@ -2605,7 +2618,7 @@ function ProgramStep({
         )}
       </div>
 
-      {/* B. Training Customization */}
+      // B. Training Customization
       <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           B. Training Customization (Impacts Cost)
@@ -2682,7 +2695,7 @@ function ProgramStep({
         </div>
       </div>
 
-      {/* C. SPSC Consulting Validation */}
+      // C. SPSC Consulting Validation
       <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           C. SPSC Consulting Validation (Holistic Solution)
@@ -2762,7 +2775,7 @@ function ProgramStep({
         </div>
       </div>
 
-      {/* D. Consulting Add-ons by SPSC Dimensions */}
+      // D. Consulting Add-ons by SPSC Dimensions
       <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           D. Strategic Consulting Add-ons (SPSC-Driven)
@@ -2775,7 +2788,7 @@ function ProgramStep({
         </p>
 
         <div className="space-y-6">
-          {/* People & Culture Consulting */}
+          // People & Culture Consulting
           <div className="p-4 border border-slate-200 rounded-lg bg-slate-50">
             <div className="flex items-center gap-2 mb-3">
               <h4 className="text-base font-bold text-[#2E4059]">
@@ -2825,7 +2838,7 @@ function ProgramStep({
             </p>
           </div>
 
-          {/* System & Process Consulting */}
+          // System & Process Consulting
           <div className="p-4 border border-slate-200 rounded-lg bg-slate-50">
             <div className="flex items-center gap-2 mb-3">
               <h4 className="text-base font-bold text-[#2E4059]">
@@ -2872,7 +2885,7 @@ function ProgramStep({
             </p>
           </div>
 
-          {/* Strategy & Leadership Consulting */}
+          // Strategy & Leadership Consulting
           <div className="p-4 border border-slate-200 rounded-lg bg-slate-50">
             <div className="flex items-center gap-2 mb-3">
               <h4 className="text-base font-bold text-[#2E4059]">
@@ -2919,7 +2932,7 @@ function ProgramStep({
         </div>
       </div>
 
-      {/* E. Training Add-ons (Refined from Old Step 8) */}
+      // E. Training Add-ons (Refined from Old Step 8)
       <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           E. Training Add-ons (Refined)
@@ -3099,7 +3112,7 @@ function MetricsStep({
         </p>
       </div>
 
-      {/* A. Metric Readiness Gate */}
+      // A. Metric Readiness Gate
       <div className="mb-6 pt-4 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           A. Metric Data Readiness Gate
@@ -3179,7 +3192,7 @@ function MetricsStep({
         </div>
       </div>
 
-      {/* B. Primary Metric Input (Refined) */}
+      // B. Primary Metric Input (Refined)
       <div className="mb-6 pt-4 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           B. Primary Metric Input (Read-Only / Auto-Populated)
@@ -3270,7 +3283,7 @@ function MetricsStep({
         </div>
       </div>
 
-      {/* C. Level 3 & 4 (Behavior & Results: The Financial Drivers) */}
+      // C. Level 3 & 4 (Behavior & Results: The Financial Drivers)
       <div className="mb-6 pt-4 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           C. Level 3 & 4 (Behavior & Results: The Financial Drivers)
@@ -3379,7 +3392,7 @@ function MetricsStep({
         </div>
       </div>
 
-      {/* D. SPSC Validation Metrics (Conditional) */}
+      // D. SPSC Validation Metrics (Conditional)
       {(hasSystemConsulting || hasCultureConsulting) && (
         <div className="mb-6 pt-4 border-t-2 border-[#2E4059]">
           <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
@@ -3437,7 +3450,7 @@ function MetricsStep({
         </div>
       )}
 
-      {/* E. Executive Impact Summary */}
+      // E. Executive Impact Summary
       <div className="mb-6 pt-4 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           E. Executive Impact Summary (The Final Story)
@@ -3501,7 +3514,7 @@ function OrgStep({
         </p>
       </div>
 
-      {/* A. Budget Affordability & Contingency */}
+      // A. Budget Affordability & Contingency
       <div className="mb-6 pt-4 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           A. Budget Affordability & Contingency (Addressing Client Fear)
@@ -3619,7 +3632,7 @@ function OrgStep({
         </div>
       </div>
 
-      {/* B. L&D Capacity and Internal Cost */}
+      // B. L&D Capacity and Internal Cost
       <div className="mb-6 pt-4 border-t-2 border-[#2E4059]">
         <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
           B. L&D Capacity and Internal Cost (SewAsset Context)
@@ -3797,7 +3810,7 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Business Case Summary */}
+      // Business Case Summary
       <Card className="p-4 sm:p-6 bg-gradient-to-br from-[#2E4059] to-slate-700 text-white">
         <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
           Business Case Summary
@@ -3846,7 +3859,7 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
         </div>
       </Card>
 
-      {/* Pricing Breakdown */}
+      // Pricing Breakdown
       <Card className="p-4 sm:p-6 bg-white border-2 border-[#FFC72F]">
         <h2 className="text-xl sm:text-2xl font-bold text-[#2E4059] mb-3 sm:mb-4">
           Pricing Breakdown
@@ -3895,7 +3908,7 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
         </div>
       </Card>
 
-      {/* ROI Section */}
+      // ROI Section
       <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
         <Card className="p-4 sm:p-6 bg-white">
           <h2 className="text-xl sm:text-2xl font-bold text-[#2E4059] mb-3 sm:mb-4">
@@ -4010,7 +4023,7 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
         </Card>
       </div>
 
-      {/* Proposal Narrative */}
+      // Proposal Narrative
       <Card className="p-6 bg-white">
         <h2 className="text-2xl font-bold text-[#2E4059] mb-4">
           Proposal-Ready Narrative
@@ -4020,3 +4033,7 @@ function PricingStep({ data }: { data: BusinessCaseData }) {
     </div>
   );
 }
+*/
+// ============================================
+// END OF ALL COMMENTED CODE
+// ============================================

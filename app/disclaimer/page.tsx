@@ -137,7 +137,7 @@ export default function DisclaimerPage() {
                 if (typeof window !== "undefined") {
                   sessionStorage.setItem("disclaimerAccepted", "true");
                 }
-                window.location.href = "/calculator";
+                window.location.href = "/route-selection";
               }}
               className="bg-[#FFC72F] text-[#2E4059] font-bold hover:bg-[#FFC72F]/90"
             >
