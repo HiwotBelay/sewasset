@@ -136,8 +136,8 @@ export default function DisclaimerPage() {
               onClick={() => {
                 if (typeof window !== "undefined") {
                   sessionStorage.setItem("disclaimerAccepted", "true");
+                  window.location.href = "/route-selection";
                 }
-                window.location.href = "/route-selection";
               }}
               className="bg-[#FFC72F] text-[#2E4059] font-bold hover:bg-[#FFC72F]/90"
             >
