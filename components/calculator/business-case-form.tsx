@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -295,10 +294,7 @@ const stepDefs = [
    the new Training/Consulting route system.
    ============================================ */
 
-// @ts-nocheck
-// The following code is commented out but preserved for later use
-/*
-export function BusinessCaseForm_ORIGINAL() {
+export function BusinessCaseForm() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState<BusinessCaseData>(initialData);
@@ -693,7 +689,6 @@ export function BusinessCaseForm_ORIGINAL() {
             cost discussions into strategic investments.
           </p>
         </div>
-
         // Step Pills
         <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-6 overflow-x-auto pb-2 -mx-3 sm:-mx-4 md:mx-0 px-3 sm:px-4 md:px-0">
           {stepDefs.map((step, idx) => (
@@ -709,7 +704,6 @@ export function BusinessCaseForm_ORIGINAL() {
             </div>
           ))}
         </div>
-
         // Form Content
         <Card className="p-4 sm:p-6 md:p-8 bg-white shadow-lg mb-4 sm:mb-6">
           {errors[currentStep] && errors[currentStep].length > 0 && (
@@ -734,7 +728,6 @@ export function BusinessCaseForm_ORIGINAL() {
           )}
           {renderStep()}
         </Card>
-
         // Navigation Bar
         <div className="sticky bottom-0 bg-white/95 backdrop-blur-sm border-t border-slate-200 p-2 sm:p-3 md:p-4 rounded-t-lg shadow-lg -mx-3 sm:-mx-4 md:mx-0">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-4 max-w-6xl mx-auto">
@@ -770,7 +763,6 @@ export function BusinessCaseForm_ORIGINAL() {
           </div>
         </div>
       </div>
-
       // Thank You Dialog
       <Dialog open={showThankYou} onOpenChange={setShowThankYou}>
         <DialogContent
@@ -809,8 +801,6 @@ export function BusinessCaseForm_ORIGINAL() {
     </div>
   );
 }
-// END OF ORIGINAL BusinessCaseForm FUNCTION
-*/
 
 // Step Components (commented out - preserved for later use)
 // @ts-nocheck

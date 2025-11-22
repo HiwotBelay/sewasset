@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { Card } from "@/components/ui/card";
 import { TrendingUp, DollarSign, BarChart3 } from "lucide-react";
 
@@ -16,39 +17,75 @@ interface ResultsProps {
   };
 }
 
+// Create a chart component that imports all recharts components
+const ChartComponent = dynamic(
+  () =>
+    import("recharts").then((mod) => {
+      const {
+        ResponsiveContainer,
+        AreaChart,
+        Area,
+        XAxis,
+        YAxis,
+        CartesianGrid,
+        Tooltip,
+      } = mod;
+
+      const Chart = ({ data }: { data: any[] }) => {
+        return (
+          <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={data}>
+              <defs>
+                <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#FDC700" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#FDC700" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+              <XAxis dataKey="month" stroke="#9CA3AF" />
+              <YAxis stroke="#9CA3AF" />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#F8F9FA",
+                  border: "1px solid #E5E7EB",
+                  borderRadius: "8px",
+                }}
+              />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="#FDC700"
+                strokeWidth={2}
+                fillOpacity={1}
+                fill="url(#colorValue)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        );
+      };
+
+      return Chart;
+    }),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-[300px] flex items-center justify-center text-[#6B7280]">
+        Loading chart...
+      </div>
+    ),
+  }
+);
+
 export const ResultsDashboard = forwardRef<HTMLDivElement, ResultsProps>(
   ({ results }, ref) => {
     const [isClient, setIsClient] = useState(false);
-    const [ChartComponents, setChartComponents] = useState<any>(null);
 
     useEffect(() => {
       setIsClient(true);
-      // Dynamically import recharts only on client side
-      import("recharts").then((recharts) => {
-        setChartComponents({
-          ResponsiveContainer: recharts.ResponsiveContainer,
-          AreaChart: recharts.AreaChart,
-          Area: recharts.Area,
-          XAxis: recharts.XAxis,
-          YAxis: recharts.YAxis,
-          CartesianGrid: recharts.CartesianGrid,
-          Tooltip: recharts.Tooltip,
-        });
-      });
     }, []);
 
     const roiPercentage = Number.parseFloat(results.roi);
     const isPositive = roiPercentage >= 0;
-
-    const {
-      ResponsiveContainer,
-      AreaChart,
-      Area,
-      XAxis,
-      YAxis,
-      CartesianGrid,
-      Tooltip,
-    } = ChartComponents || {};
 
     return (
       <div ref={ref} className="space-y-6">
@@ -115,40 +152,7 @@ export const ResultsDashboard = forwardRef<HTMLDivElement, ResultsProps>(
         {/* Chart */}
         <Card className="p-6 bg-white">
           <h3 className="font-bold text-[#2E4059] mb-6">12-Month Projection</h3>
-          {isClient && ChartComponents && ResponsiveContainer && AreaChart ? (
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={results.projections}>
-                <defs>
-                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#FDC700" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#FDC700" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                <XAxis dataKey="month" stroke="#9CA3AF" />
-                <YAxis stroke="#9CA3AF" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#F8F9FA",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: "8px",
-                  }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#FDC700"
-                  strokeWidth={2}
-                  fillOpacity={1}
-                  fill="url(#colorValue)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="h-[300px] flex items-center justify-center text-[#6B7280]">
-              Loading chart...
-            </div>
-          )}
+          {isClient && <ChartComponent data={results.projections} />}
         </Card>
       </div>
     );
