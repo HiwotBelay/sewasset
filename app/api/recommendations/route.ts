@@ -132,10 +132,18 @@ function getRuleBasedRecommendations(
   // If no matches found, return all topics as last resort
   if (recommendedIds.length === 0) {
     console.warn("No rule-based matches found, returning all topics");
-    return allTrainingTopics.map(t => t.id);
+    return allTrainingTopics.map(t => t.id).slice(0, 5);
   }
   
-  return recommendedIds;
+  // Ensure we return 4-5 recommendations
+  if (recommendedIds.length < 4) {
+    // Add more topics from all available
+    const allIds = allTrainingTopics.map(t => t.id);
+    const additional = allIds.filter(id => !recommendedIds.includes(id)).slice(0, 5 - recommendedIds.length);
+    return [...recommendedIds, ...additional].slice(0, 5);
+  }
+  
+  return recommendedIds.slice(0, 5); // Return max 5
 }
 
 // AI-powered recommendation using Google Gemini (FREE TIER)
@@ -221,14 +229,16 @@ ${allTrainingTopics.map((t, i) => `${i + 1}. ${t.title} (ID: ${t.id})
    - Related Outcomes: ${t.relatedOutcomes?.join(", ") || "N/A"}`).join("\n\n")}
 
 **YOUR TASK:**
-Based on the user's specific selections above, recommend ONLY the topics that are MOST RELEVANT to their actual needs. 
-- If they selected "Leadership & Management" and want "Improve leadership capability", recommend leadership topics
-- If they selected "Soft Skills" and want "Improve communication", recommend communication topics
-- If they selected "Technical Skills" and want "Improve digital skills", recommend technical topics
-- Be selective - recommend 3-8 topics that truly match their needs, not generic recommendations
+Based on the user's specific selections above, recommend EXACTLY 4-5 topics that are MOST RELEVANT to their actual needs. 
+- If they selected "Leadership & Management" and want "Improve leadership capability", recommend 4-5 leadership topics
+- If they selected "Soft Skills" and want "Improve communication", recommend 4-5 communication topics
+- If they selected "Technical Skills" and want "Improve digital skills", recommend 4-5 technical topics
+- ALWAYS return EXACTLY 4-5 topic IDs, not more, not less
+- Prioritize topics that match multiple criteria (both support category AND outcomes)
+- Be specific to the user's actual needs, not generic recommendations
 
-Return ONLY a valid JSON array of topic IDs. Example format: ["managing-teams-effectively", "effective-communication"]
-IMPORTANT: Return different recommendations based on different user selections. Do not return the same topics for everyone.`;
+Return ONLY a valid JSON array of EXACTLY 4-5 topic IDs. Example format: ["managing-teams-effectively", "effective-communication", "team-collaboration", "decision-making-uncertainty", "delegation-empowerment"]
+CRITICAL: You MUST return exactly 4-5 topic IDs. Return different recommendations based on different user selections. Do not return the same topics for everyone.`;
 
     // Call Google Gemini API (FREE TIER)
     // Using gemini-pro (free tier model)

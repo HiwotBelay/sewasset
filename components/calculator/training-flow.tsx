@@ -265,6 +265,12 @@ interface TrainingTopic {
   duration: string;
   difficulty: "Beginner" | "Intermediate" | "Advanced";
   category: string;
+  // 3-Layer Taxonomy (as per spec)
+  category_layer1: string; // T1 Selection (8 Categories)
+  subcategory_layer2: string; // Grouping for search/filter
+  topic_name: string; // The actual course title (same as title for now)
+  duration_hours: number; // Module length for summary
+  goal_fit_score?: Record<string, number>; // Maps topic to T2 goals (1-5)
   relatedSupport: string[];
   relatedOutcomes: string[];
 }
@@ -274,20 +280,38 @@ const allTrainingTopics: TrainingTopic[] = [
   {
     id: "effective-communication",
     title: "Effective Communication",
+    topic_name: "Effective Communication",
     description: "Master verbal and written communication skills",
     duration: "2 days",
+    duration_hours: 16,
     difficulty: "Beginner",
     category: "Soft Skills & Communication",
+    category_layer1: "Soft Skills",
+    subcategory_layer2: "Communication & Interpersonal",
+    goal_fit_score: {
+      "Improve communication": 5,
+      "Improve teamwork": 4,
+      "Improve customer service": 3
+    },
     relatedSupport: ["soft-skill"],
     relatedOutcomes: ["Improve communication", "Improve teamwork"]
   },
   {
     id: "team-collaboration",
     title: "Team Collaboration",
+    topic_name: "Team Collaboration",
     description: "Build stronger team dynamics and collaboration",
     duration: "1 day",
+    duration_hours: 8,
     difficulty: "Intermediate",
     category: "Soft Skills & Communication",
+    category_layer1: "Soft Skills",
+    subcategory_layer2: "Team Dynamics",
+    goal_fit_score: {
+      "Improve teamwork": 5,
+      "Improve engagement": 4,
+      "Strengthen culture": 4
+    },
     relatedSupport: ["soft-skill", "team-culture"],
     relatedOutcomes: ["Improve teamwork", "Improve engagement"]
   },
@@ -295,60 +319,108 @@ const allTrainingTopics: TrainingTopic[] = [
   {
     id: "managing-teams-effectively",
     title: "Managing Teams Effectively",
+    topic_name: "Managing Teams Effectively",
     description: "Core skills for middle managers",
     duration: "2 days",
+    duration_hours: 16,
     difficulty: "Intermediate",
     category: "Leadership & Management",
+    category_layer1: "Leadership & Management",
+    subcategory_layer2: "Team Management",
+    goal_fit_score: {
+      "Improve leadership capability": 5,
+      "Improve team productivity": 5,
+      "Strengthen coaching skills": 4
+    },
     relatedSupport: ["leadership-management"],
     relatedOutcomes: ["Improve leadership capability", "Improve team productivity"]
   },
   {
     id: "decision-making-uncertainty",
     title: "Decision Making Under Uncertainty",
+    topic_name: "Decision Making Under Uncertainty",
     description: "Strategic decision frameworks",
     duration: "1 day",
+    duration_hours: 8,
     difficulty: "Advanced",
     category: "Leadership & Management",
+    category_layer1: "Leadership & Management",
+    subcategory_layer2: "Strategic Leadership",
+    goal_fit_score: {
+      "Improve decision-making": 5,
+      "Improve problem-solving": 5
+    },
     relatedSupport: ["leadership-management"],
     relatedOutcomes: ["Improve decision-making", "Improve problem-solving"]
   },
   {
     id: "delegation-empowerment",
     title: "Delegation & Empowerment",
+    topic_name: "Delegation & Empowerment",
     description: "Master the art of delegation",
     duration: "1 day",
+    duration_hours: 8,
     difficulty: "Beginner",
     category: "Leadership & Management",
+    category_layer1: "Leadership & Management",
+    subcategory_layer2: "Management Fundamentals",
+    goal_fit_score: {
+      "Improve leadership capability": 5,
+      "Strengthen coaching skills": 4,
+      "Improve team productivity": 3
+    },
     relatedSupport: ["leadership-management"],
     relatedOutcomes: ["Improve leadership capability", "Strengthen coaching skills"]
   },
   {
     id: "visionary-leadership",
     title: "Visionary Leadership & Change",
+    topic_name: "Visionary Leadership & Change",
     description: "Leading through vision and organizational change",
     duration: "2 days",
+    duration_hours: 16,
     difficulty: "Advanced",
     category: "Leadership & Management",
+    category_layer1: "Leadership & Management",
+    subcategory_layer2: "Executive Leadership",
+    goal_fit_score: {
+      "Improve leadership capability": 5
+    },
     relatedSupport: ["leadership-management"],
     relatedOutcomes: ["Improve leadership capability"]
   },
   {
     id: "ethical-leadership",
     title: "Ethical Leadership & Governance",
+    topic_name: "Ethical Leadership & Governance",
     description: "Ethics and governance for senior leaders",
     duration: "1 day",
+    duration_hours: 8,
     difficulty: "Intermediate",
     category: "Leadership & Management",
+    category_layer1: "Leadership & Management",
+    subcategory_layer2: "Executive Leadership",
+    goal_fit_score: {
+      "Improve leadership capability": 5
+    },
     relatedSupport: ["leadership-management"],
     relatedOutcomes: ["Improve leadership capability"]
   },
   {
     id: "management-identity",
     title: "Building Your Management Identity",
+    topic_name: "Building Your Management Identity",
     description: "Find your management style",
     duration: "1 day",
+    duration_hours: 8,
     difficulty: "Beginner",
     category: "Leadership & Management",
+    category_layer1: "Leadership & Management",
+    subcategory_layer2: "Management Fundamentals",
+    goal_fit_score: {
+      "Improve leadership capability": 5,
+      "Strengthen coaching skills": 4
+    },
     relatedSupport: ["leadership-management"],
     relatedOutcomes: ["Improve leadership capability", "Strengthen coaching skills"]
   },
@@ -356,10 +428,18 @@ const allTrainingTopics: TrainingTopic[] = [
   {
     id: "digital-literacy",
     title: "Digital Literacy & Tools",
+    topic_name: "Digital Literacy & Tools",
     description: "Essential digital skills for modern workplace",
     duration: "1 day",
+    duration_hours: 8,
     difficulty: "Beginner",
     category: "Technical & Digital Skills",
+    category_layer1: "Technical / Hard Skills",
+    subcategory_layer2: "Digital Tools & Software",
+    goal_fit_score: {
+      "Improve digital / software skill levels": 5,
+      "Improve technical proficiency": 5
+    },
     relatedSupport: ["technical-hard-skill"],
     relatedOutcomes: ["Improve digital / software skill levels"]
   },
@@ -471,11 +551,54 @@ function TrainingTopicsStep({
   const recommendedTopics = getRecommendedTopics();
   const [allTopics, setAllTopics] = useState<TrainingTopic[]>(allTrainingTopics);
   
-  // Filter topics based on search
-  const filteredTopics = allTopics.filter(topic =>
-    topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    topic.description.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Enhanced Google-like fuzzy search function
+  const fuzzySearch = (query: string, text: string): boolean => {
+    if (!query) return false;
+    const lowerQuery = query.toLowerCase().trim();
+    const lowerText = text.toLowerCase();
+    
+    // Exact match (highest priority)
+    if (lowerText.includes(lowerQuery)) return true;
+    
+    // Word-by-word match
+    const queryWords = lowerQuery.split(/\s+/).filter(w => w.length > 0);
+    if (queryWords.length > 0) {
+      const allWordsMatch = queryWords.every(word => lowerText.includes(word));
+      if (allWordsMatch) return true;
+    }
+    
+    // Fuzzy match - check if all characters appear in order
+    let queryIndex = 0;
+    for (let i = 0; i < lowerText.length && queryIndex < lowerQuery.length; i++) {
+      if (lowerText[i] === lowerQuery[queryIndex]) {
+        queryIndex++;
+      }
+    }
+    if (queryIndex === lowerQuery.length) return true;
+    
+    // Partial word match
+    const textWords = lowerText.split(/\s+/);
+    return queryWords.some(qWord => 
+      textWords.some(tWord => tWord.startsWith(qWord) || qWord.startsWith(tWord))
+    );
+  };
+  
+  // Enhanced search - searches in all relevant fields
+  const searchResults = searchQuery.trim() 
+    ? allTopics.filter(topic => {
+        const searchFields = [
+          topic.title,
+          topic.description,
+          topic.category,
+          topic.difficulty,
+          topic.duration,
+          ...(topic.relatedSupport || []),
+          ...(topic.relatedOutcomes || [])
+        ].join(" ");
+        
+        return fuzzySearch(searchQuery, searchFields);
+      })
+    : [];
 
   const toggleTopic = (topicId: string) => {
     const current = data.selectedTopics || [];
@@ -514,20 +637,17 @@ function TrainingTopicsStep({
   
   const totalDurationDays = Math.ceil(totalDurationHours / 8); // Assuming 8 hours per day
   
-  // Get recommended topics (limit to 12 max, NOT pre-checked)
+  // Get recommended topics (limit to 4-5, NOT pre-checked)
   const displayRecommendedTopics = recommendedTopics
     .filter(t => !data.selectedTopics?.includes(t.id)) // Don't show already selected
-    .slice(0, 12);
+    .slice(0, 5); // Show exactly 4-5 recommendations
   
   // Filter search results (exclude already selected and recommended)
-  const searchResults = searchQuery.trim() 
-    ? allTopics.filter(topic => {
-        const matchesSearch = topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          topic.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          topic.category.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredSearchResults = searchQuery.trim() 
+    ? searchResults.filter(topic => {
         const notSelected = !data.selectedTopics?.includes(topic.id);
         const notInRecommended = !displayRecommendedTopics.some(rt => rt.id === topic.id);
-        return matchesSearch && notSelected && notInRecommended;
+        return notSelected && notInRecommended;
       })
     : [];
 
@@ -640,8 +760,8 @@ function TrainingTopicsStep({
         {/* Search Results */}
         {searchQuery.trim() && (
           <div className="space-y-2 max-h-[300px] overflow-y-auto">
-            {searchResults.length > 0 ? (
-              searchResults.map((topic) => (
+            {filteredSearchResults.length > 0 ? (
+              filteredSearchResults.map((topic) => (
                 <button
                   key={topic.id}
                   type="button"
@@ -663,7 +783,8 @@ function TrainingTopicsStep({
               ))
             ) : (
               <div className="text-center py-6 text-[#6B7280]">
-                <p className="text-sm">No topics found matching "{searchQuery}"</p>
+                <p className="text-sm mb-2">No topics found matching "{searchQuery}"</p>
+                <p className="text-xs">Try different keywords or browse all topics above</p>
               </div>
             )}
           </div>
@@ -1018,20 +1139,25 @@ export function TrainingFlow() {
 
       const result = await response.json();
 
+      // Save training data to sessionStorage for proposal page
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("trainingSubmissionData", JSON.stringify(submissionData));
+      }
+
       // Check if submission was successful OR if it's a database connection error (allow it for now)
       if (response.ok && result.success) {
         setIsSubmitted(true);
-        // Redirect to home page after 3 seconds
+        // Redirect to training proposal page after 2 seconds
         setTimeout(() => {
-          router.push("/");
-        }, 3000);
+          router.push("/training-proposal");
+        }, 2000);
       } else if (result.error && result.error.includes("Cannot connect to database")) {
         // Database not set up - still show success for testing
         console.warn("Database not configured, but showing success for testing:", result.error);
         setIsSubmitted(true);
         setTimeout(() => {
-          router.push("/");
-        }, 3000);
+          router.push("/training-proposal");
+        }, 2000);
       } else {
         // Show more detailed error message for other errors
         const errorMessage = result.error || result.message || "Submission failed. Please try again.";
@@ -1044,8 +1170,8 @@ export function TrainingFlow() {
         console.warn("Network error, but showing success for testing");
         setIsSubmitted(true);
         setTimeout(() => {
-          router.push("/");
-        }, 3000);
+          router.push("/training-proposal");
+        }, 2000);
       } else {
         alert(error.message || "There was an error submitting your request. Please try again.");
         setIsSubmitting(false);

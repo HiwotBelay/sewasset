@@ -21,7 +21,9 @@ import {
   BarChart3,
   DollarSign,
   FileText,
-  CheckCircle2
+  CheckCircle2,
+  Download,
+  Loader2
 } from "lucide-react";
 
 // Data Types
@@ -197,8 +199,9 @@ export function ConsultingFlow() {
   const [data, setData] = useState<ConsultingData>(initialData);
   const [errors, setErrors] = useState<Record<number, string[]>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
-  // Load saved data from sessionStorage
+  // Load saved data from sessionStorage and check for existing identity
   useEffect(() => {
     if (typeof window !== "undefined") {
       const saved = sessionStorage.getItem("consultingData");
@@ -208,6 +211,11 @@ export function ConsultingFlow() {
         } catch (e) {
           console.error("Error loading saved data:", e);
         }
+      }
+      // Check if identity was already selected in route selection
+      const selectedRole = sessionStorage.getItem("selectedRole");
+      if (selectedRole) {
+        setUserIdentity(selectedRole);
       }
     }
   }, []);
@@ -1038,6 +1046,112 @@ export function ConsultingFlow() {
     </div>
   );
 
+  const generatePDF = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      const html2pdf = (await import("html2pdf.js")).default;
+      
+      // Check if user is consultant for watermark
+      const isConsultant = userIdentity === "consultant";
+      const watermark = isConsultant 
+        ? '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 48px; color: rgba(0,0,0,0.1); font-weight: bold; pointer-events: none;">CONFIDENTIAL - CONSULTANT USE ONLY</div>'
+        : '';
+
+      const element = document.createElement("div");
+      element.innerHTML = `
+        <div style="font-family: Arial, sans-serif; padding: 40px; background: white; position: relative;">
+          ${watermark}
+          <div style="text-align: center; margin-bottom: 40px; border-bottom: 3px solid #FDC700; padding-bottom: 20px;">
+            <h1 style="color: #2E4059; margin: 0; font-size: 32px;">SewAsset Diagnostic Report</h1>
+            <p style="color: #6B7280; margin: 10px 0 0 0;">Business Case & ROI Analysis</p>
+          </div>
+
+          <div style="margin-bottom: 30px;">
+            <h2 style="color: #2E4059; font-size: 24px; border-left: 4px solid #FDC700; padding-left: 15px; margin: 0 0 20px 0;">Problem Summary</h2>
+            <p style="color: #6B7280; line-height: 1.6;">${data.problem || "Not specified"}</p>
+            <p style="color: #6B7280; margin-top: 10px;"><strong>Location:</strong> ${data.problemLocation.join(", ") || "Not specified"}</p>
+            <p style="color: #6B7280;"><strong>Urgency Level:</strong> ${data.urgency}/5</p>
+          </div>
+
+          <div style="margin-bottom: 30px;">
+            <h2 style="color: #2E4059; font-size: 24px; border-left: 4px solid #FDC700; padding-left: 15px; margin: 0 0 20px 0;">SPSC Root Cause Analysis</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+              <div style="background: #F8F9FA; padding: 15px; border-radius: 8px;">
+                <p style="color: #6B7280; font-size: 12px; margin: 0 0 5px 0;">STRATEGY</p>
+                <p style="color: #2E4059; font-size: 24px; font-weight: bold; margin: 0;">${data.spscScores.strategy}/5</p>
+              </div>
+              <div style="background: #F8F9FA; padding: 15px; border-radius: 8px;">
+                <p style="color: #6B7280; font-size: 12px; margin: 0 0 5px 0;">PEOPLE</p>
+                <p style="color: #2E4059; font-size: 24px; font-weight: bold; margin: 0;">${data.spscScores.people}/5</p>
+              </div>
+              <div style="background: #F8F9FA; padding: 15px; border-radius: 8px;">
+                <p style="color: #6B7280; font-size: 12px; margin: 0 0 5px 0;">SYSTEMS</p>
+                <p style="color: #2E4059; font-size: 24px; font-weight: bold; margin: 0;">${data.spscScores.systems}/5</p>
+              </div>
+              <div style="background: #F8F9FA; padding: 15px; border-radius: 8px;">
+                <p style="color: #6B7280; font-size: 12px; margin: 0 0 5px 0;">CULTURE</p>
+                <p style="color: #2E4059; font-size: 24px; font-weight: bold; margin: 0;">${data.spscScores.culture}/5</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 30px;">
+            <h2 style="color: #2E4059; font-size: 24px; border-left: 4px solid #FDC700; padding-left: 15px; margin: 0 0 20px 0;">Recommended Solution Pathway</h2>
+            <p style="color: #6B7280; line-height: 1.6; font-weight: bold; font-size: 18px;">${data.recommendedPathway || "Comprehensive Transformation Pathway"}</p>
+          </div>
+
+          <div style="margin-bottom: 30px;">
+            <h2 style="color: #2E4059; font-size: 24px; border-left: 4px solid #FDC700; padding-left: 15px; margin: 0 0 20px 0;">Investment Range</h2>
+            <p style="color: #2E4059; font-size: 32px; font-weight: bold; margin: 0;">
+              ${data.priceBand.min.toLocaleString()} - ${data.priceBand.max.toLocaleString()} ETB
+            </p>
+            <p style="color: #6B7280; margin-top: 5px;">Complexity Score: ${data.complexityScore.toFixed(1)}/5.0</p>
+          </div>
+
+          ${data.kpis.length > 0 ? `
+          <div style="margin-bottom: 30px;">
+            <h2 style="color: #2E4059; font-size: 24px; border-left: 4px solid #FDC700; padding-left: 15px; margin: 0 0 20px 0;">KPI Baseline</h2>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr style="background: #F8F9FA;">
+                <th style="padding: 12px; border: 1px solid #E5E7EB; text-align: left; color: #2E4059;">KPI Name</th>
+                <th style="padding: 12px; border: 1px solid #E5E7EB; text-align: left; color: #2E4059;">Current</th>
+                <th style="padding: 12px; border: 1px solid #E5E7EB; text-align: left; color: #2E4059;">Target</th>
+              </tr>
+              ${data.kpis.map(kpi => `
+                <tr>
+                  <td style="padding: 12px; border: 1px solid #E5E7EB; color: #6B7280;">${kpi.name || "N/A"}</td>
+                  <td style="padding: 12px; border: 1px solid #E5E7EB; color: #6B7280;">${kpi.currentValue || "N/A"}</td>
+                  <td style="padding: 12px; border: 1px solid #E5E7EB; color: #6B7280;">${kpi.targetValue || "N/A"}</td>
+                </tr>
+              `).join('')}
+            </table>
+          </div>
+          ` : ''}
+
+          <div style="background: #F8F9FA; padding: 20px; border-radius: 8px; text-align: center; color: #6B7280; font-size: 12px; margin-top: 40px;">
+            <p style="margin: 0;">Report Generated: ${new Date().toLocaleString()}</p>
+            <p style="margin: 5px 0 0 0;">SewAsset Catalyst™ - Strategic Business Diagnostics</p>
+            ${isConsultant ? '<p style="margin: 5px 0 0 0; color: #EF4444; font-weight: bold;">CONFIDENTIAL - For Consultant Use Only</p>' : ''}
+          </div>
+        </div>
+      `;
+
+      const options = {
+        margin: 10,
+        filename: `SewAsset-Diagnostic-Report-${new Date().toISOString().split("T")[0]}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: "portrait", unit: "mm", format: "a4" },
+      };
+
+      html2pdf().set(options).from(element).save();
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
+
   const renderStage10 = () => (
     <div className="space-y-6 animate-fade-in-up">
       <div>
@@ -1081,13 +1195,33 @@ export function ConsultingFlow() {
           </div>
         </div>
 
-        <Button
-          onClick={handleSubmit}
-          disabled={isSubmitted}
-          className="w-full bg-[#FDC700] text-[#2E4059] hover:bg-[#F5AF19] font-bold py-6 text-lg rounded-xl"
-        >
-          {isSubmitted ? "Submitting..." : "Book Diagnostic Call"}
-        </Button>
+        <div className="flex gap-4">
+          <Button
+            onClick={generatePDF}
+            disabled={isGeneratingPDF}
+            variant="outline"
+            className="flex-1 border-2 border-[#FDC700] text-[#FDC700] hover:bg-[#FDC700]/10 font-bold py-6 text-lg rounded-xl"
+          >
+            {isGeneratingPDF ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              <>
+                <Download className="w-5 h-5 mr-2" />
+                Download PDF Report
+              </>
+            )}
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            disabled={isSubmitted}
+            className="flex-1 bg-[#FDC700] text-[#2E4059] hover:bg-[#F5AF19] font-bold py-6 text-lg rounded-xl"
+          >
+            {isSubmitted ? "Submitting..." : "Book Diagnostic Call"}
+          </Button>
+        </div>
       </Card>
     </div>
   );
@@ -1132,8 +1266,19 @@ export function ConsultingFlow() {
             type="button"
             onClick={() => {
               setConsultingType(option.id);
-              setShowIdentityGate(true);
-              setCurrentStage(-1);
+              // Check if identity was already selected in route selection
+              if (typeof window !== "undefined") {
+                const selectedRole = sessionStorage.getItem("selectedRole");
+                if (selectedRole) {
+                  setUserIdentity(selectedRole);
+                  setCurrentStage(1); // Skip identity gate, go directly to Stage 1
+                } else {
+                  setShowIdentityGate(true);
+                  setCurrentStage(-1);
+                }
+              } else {
+                setCurrentStage(1); // Go directly to Stage 1
+              }
             }}
             className={`p-6 rounded-xl border-2 transition-all duration-300 text-left group ${
               consultingType === option.id
@@ -1195,7 +1340,26 @@ export function ConsultingFlow() {
   // Main render
   const renderCurrentStage = () => {
     if (currentStage === 0) return renderConsultingTypeSelection();
-    if (currentStage === -1) return renderIdentityGate();
+    // Skip identity gate if user already selected identity in route selection
+    if (currentStage === -1) {
+      // Check sessionStorage one more time
+      if (typeof window !== "undefined") {
+        const selectedRole = sessionStorage.getItem("selectedRole");
+        if (selectedRole && !userIdentity) {
+          setUserIdentity(selectedRole);
+          setCurrentStage(1);
+          return renderStage1();
+        }
+      }
+      // Only show identity gate if no role was selected
+      if (!userIdentity) {
+        return renderIdentityGate();
+      } else {
+        // If identity is set, skip to stage 1
+        setCurrentStage(1);
+        return renderStage1();
+      }
+    }
     
     switch (currentStage) {
       case 1: return renderStage1();
