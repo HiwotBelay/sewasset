@@ -54,7 +54,7 @@ export default function RouteSelectionPage() {
     if (selectedRoute === "training") {
       router.push("/training");
     } else if (selectedRoute === "consulting") {
-      alert("Consulting route coming soon!");
+      router.push("/consulting");
     } else if (selectedRoute === "not-sure") {
       alert("Decision helper coming soon!");
     }
@@ -157,18 +157,18 @@ export default function RouteSelectionPage() {
               onClick={() => handleRouteSelect("consulting")}
               className={`group relative p-6 rounded-xl border-2 transition-all duration-300 overflow-hidden bg-white ${
                 selectedRoute === "consulting"
-                  ? "border-[#3B5998] bg-[#3B5998]/5 shadow-lg"
-                  : "border-[#E5E7EB] hover:border-[#3B5998]/40 hover:bg-[#F8F9FA]"
+                  ? "border-[#FDC700] bg-[#FDC700]/5 shadow-lg"
+                  : "border-[#E5E7EB] hover:border-[#FDC700]/40 hover:bg-[#F8F9FA]"
               }`}
             >
               <div className="relative z-10">
                 <div className={`w-12 h-12 rounded-lg mb-4 flex items-center justify-center transition-all duration-300 ${
                   selectedRoute === "consulting"
-                    ? "bg-[#3B5998]"
-                    : "bg-[#3B5998]/10 group-hover:bg-[#3B5998]/20"
+                    ? "bg-[#FDC700]"
+                    : "bg-[#FDC700]/10 group-hover:bg-[#FDC700]/20"
                 }`}>
                   <Briefcase className={`w-6 h-6 transition-colors duration-300 ${
-                    selectedRoute === "consulting" ? "text-white" : "text-[#3B5998]"
+                    selectedRoute === "consulting" ? "text-white" : "text-[#FDC700]"
                   }`} />
                 </div>
                 
@@ -190,18 +190,18 @@ export default function RouteSelectionPage() {
               onClick={() => handleRouteSelect("not-sure")}
               className={`group relative p-6 rounded-xl border-2 transition-all duration-300 overflow-hidden bg-white ${
                 selectedRoute === "not-sure"
-                  ? "border-[#6B7280] bg-[#6B7280]/5 shadow-lg"
-                  : "border-[#E5E7EB] hover:border-[#6B7280]/40 hover:bg-[#F8F9FA]"
+                  ? "border-[#FDC700] bg-[#FDC700]/5 shadow-lg"
+                  : "border-[#E5E7EB] hover:border-[#FDC700]/40 hover:bg-[#F8F9FA]"
               }`}
             >
               <div className="relative z-10">
                 <div className={`w-12 h-12 rounded-lg mb-4 flex items-center justify-center transition-all duration-300 ${
                   selectedRoute === "not-sure"
-                    ? "bg-[#6B7280]"
-                    : "bg-[#F8F9FA] group-hover:bg-[#E5E7EB]"
+                    ? "bg-[#FDC700]"
+                    : "bg-[#FDC700]/10 group-hover:bg-[#FDC700]/20"
                 }`}>
                   <HelpCircle className={`w-6 h-6 transition-colors duration-300 ${
-                    selectedRoute === "not-sure" ? "text-white" : "text-[#6B7280]"
+                    selectedRoute === "not-sure" ? "text-white" : "text-[#FDC700]"
                   }`} />
                 </div>
                 

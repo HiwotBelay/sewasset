@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,19 +27,21 @@ import {
   Crown, 
   MessageSquare, 
   Code, 
-  Users, 
+  Users,
+  Search,
+  X,
+  Plus,
+  Clock,
+  Star,
+  CheckCircle2,
   TrendingUp, 
   Sparkles,
   Brain,
   Shield,
   Target,
-  Briefcase,
-  Search,
-  X,
-  Plus,
-  Clock,
-  Star
+  Briefcase
 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 interface TrainingData {
   // Step 1: Training Support
@@ -110,45 +112,50 @@ function OutcomeCategoryCard({
   category, 
   hasSelected,
   selectedOutcomes,
-  onToggleOutcome
+  onToggleOutcome,
+  isExpanded,
+  onToggleExpand
 }: {
   category: { name: string; outcomes: string[] };
   hasSelected: boolean;
   selectedOutcomes: string[];
   onToggleOutcome: (outcome: string) => void;
+  isExpanded: boolean;
+  onToggleExpand: () => void;
 }) {
-  // Each card has its OWN isolated state - completely independent
-  const [isExpanded, setIsExpanded] = useState(false);
-  const categoryName = category.name;
+  const cardRef = useRef<HTMLDivElement>(null);
+  
+  const handleToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Call parent's toggle function - each category toggles independently
+    onToggleExpand();
+  };
   
   return (
     <div 
+      ref={cardRef}
       className={`rounded-lg border-2 transition-all ${
         hasSelected
-          ? "border-blue-500 bg-blue-50"
+          ? "border-[#FFC72F] bg-[#FFC72F]/10"
           : "border-slate-200 bg-white"
       }`}
     >
       {/* Main Outcome Card Button */}
       <button
         type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          // Toggle only THIS component's state - completely isolated
-          setIsExpanded(prev => !prev);
-        }}
+        onClick={handleToggle}
         className={`w-full p-4 text-left transition-all flex items-center gap-3 ${
           hasSelected
-            ? "bg-blue-50"
+            ? "bg-[#FFC72F]/10"
             : "hover:bg-slate-50"
         }`}
       >
         {/* Checkmark Icon */}
         <div
-          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all ${
             hasSelected
-              ? "border-blue-500 bg-blue-500"
+              ? "border-[#FFC72F] bg-[#FFC72F]"
               : "border-slate-300 bg-white"
           }`}
         >
@@ -170,26 +177,41 @@ function OutcomeCategoryCard({
         {/* Category Name */}
         <span
           className={`font-medium flex-1 ${
-            hasSelected ? "text-blue-700" : "text-slate-700"
+            hasSelected ? "text-[#2E4059]" : "text-slate-700"
           }`}
         >
           {category.name}
         </span>
+        
+        {/* Expand/Collapse Icon */}
+        <div className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
+          <svg
+            className="w-4 h-4 text-slate-400"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
       </button>
 
       {/* Expanded Subcategories - Inside the same card with vertical line */}
       {isExpanded && (
-        <div className="relative pb-4">
+        <div className="relative pb-4 animate-fade-in-up">
           {/* Vertical line connecting subcategories */}
-          <div className="absolute left-[1.625rem] top-0 bottom-4 w-0.5 bg-blue-300"></div>
+          <div className="absolute left-[1.625rem] top-0 bottom-4 w-0.5 bg-[#FFC72F]/30"></div>
           
-          <div className="pl-12 pr-4 space-y-1.5">
+          <div className="pl-12 pr-4 space-y-1.5 pt-2">
             {category.outcomes.map((outcome) => {
               const isSelected = selectedOutcomes.includes(outcome);
               return (
                 <button
                   type="button"
-                  key={outcome}
+                  key={`${category.name}-${outcome}`}
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -197,14 +219,14 @@ function OutcomeCategoryCard({
                   }}
                   className={`w-full py-2 px-2 text-left transition-all flex items-center gap-2.5 group ${
                     isSelected
-                      ? "text-blue-700"
+                      ? "text-[#2E4059] font-medium"
                       : "text-slate-600 hover:text-slate-800"
                   }`}
                 >
                   {/* Bullet/Checkmark */}
                   <div className="flex-shrink-0 relative z-10">
                     {isSelected ? (
-                      <div className="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
+                      <div className="w-4 h-4 rounded-full bg-[#FFC72F] flex items-center justify-center">
                         <svg
                           className="w-2.5 h-2.5 text-white"
                           fill="none"
@@ -218,15 +240,11 @@ function OutcomeCategoryCard({
                         </svg>
                       </div>
                     ) : (
-                      <div className="w-1.5 h-1.5 rounded-full bg-slate-400 group-hover:bg-blue-400 transition-colors" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-slate-400 group-hover:bg-[#FFC72F] transition-colors" />
                     )}
                   </div>
                   {/* Subcategory Name */}
-                  <span
-                    className={`text-sm ${
-                      isSelected ? "font-medium" : ""
-                    }`}
-                  >
+                  <span className="text-sm">
                     {outcome}
                   </span>
                 </button>
@@ -361,20 +379,93 @@ function TrainingTopicsStep({
 }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [customTopicInput, setCustomTopicInput] = useState("");
+  const [aiRecommendedIds, setAiRecommendedIds] = useState<string[]>([]);
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
 
-  // Filter recommended topics based on selections
+  // Fetch AI recommendations when selections change
+  useEffect(() => {
+    const fetchAIRecommendations = async () => {
+      if (trainingSupport.length === 0 || outcomes.length === 0) {
+        setAiRecommendedIds([]);
+        return;
+      }
+
+      setIsLoadingAI(true);
+      setAiError(null);
+
+      try {
+        const response = await fetch("/api/recommendations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            trainingSupport,
+            outcomes,
+            trainingAudience: data.trainingAudience,
+            specificNotes: data.specificNotes,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success && result.recommendedIds) {
+          setAiRecommendedIds(result.recommendedIds);
+          
+          // Log the source
+          if (result.source === "ai") {
+            console.log("✅ AI Recommendations received:", result.recommendedIds);
+            setAiError(null); // Clear any previous errors
+          } else {
+            console.warn("⚠️ Using rule-based recommendations (AI not available)");
+            setAiError("AI unavailable - using rule-based recommendations");
+          }
+        } else {
+          // Fallback to rule-based if AI fails
+          const fallback = getRuleBasedRecommendations();
+          setAiRecommendedIds(fallback);
+          setAiError("Using fallback recommendations");
+        }
+      } catch (error) {
+        console.error("Error fetching AI recommendations:", error);
+        // Fallback to rule-based
+        const fallback = getRuleBasedRecommendations();
+        setAiRecommendedIds(fallback);
+        setAiError("AI service unavailable, using fallback");
+      } finally {
+        setIsLoadingAI(false);
+      }
+    };
+
+    fetchAIRecommendations();
+  }, [trainingSupport, outcomes, data.trainingAudience, data.specificNotes]);
+
+  // Fallback rule-based recommendations (if AI not available)
+  const getRuleBasedRecommendations = (): string[] => {
+    return allTrainingTopics
+      .filter(topic => {
+        const matchesSupport = topic.relatedSupport.some(support => 
+          trainingSupport.includes(support)
+        );
+        const matchesOutcomes = topic.relatedOutcomes.some(outcome => 
+          outcomes.includes(outcome)
+        );
+        return matchesSupport || matchesOutcomes;
+      })
+      .map(topic => topic.id);
+  };
+
+  // Get recommended topics (AI-powered or fallback)
   const getRecommendedTopics = () => {
-    return allTrainingTopics.filter(topic => {
-      // Check if topic matches selected training support
-      const matchesSupport = topic.relatedSupport.some(support => 
-        trainingSupport.includes(support)
-      );
-      // Check if topic matches selected outcomes
-      const matchesOutcomes = topic.relatedOutcomes.some(outcome => 
-        outcomes.includes(outcome)
-      );
-      return matchesSupport || matchesOutcomes;
-    });
+    if (aiRecommendedIds.length > 0) {
+      // Use AI recommendations
+      return allTrainingTopics.filter(topic => aiRecommendedIds.includes(topic.id));
+    } else {
+      // Fallback to rule-based
+      const fallbackIds = getRuleBasedRecommendations();
+      return allTrainingTopics.filter(topic => fallbackIds.includes(topic.id));
+    }
   };
 
   const recommendedTopics = getRecommendedTopics();
@@ -408,159 +499,279 @@ function TrainingTopicsStep({
     updateData("customTopics", current.filter(t => t !== topic));
   };
 
-  const selectedCount = (data.selectedTopics?.length || 0) + (data.customTopics?.length || 0);
-  const totalDuration = recommendedTopics
-    .filter(t => data.selectedTopics?.includes(t.id))
-    .reduce((sum, t) => {
-      const days = parseInt(t.duration.split(' ')[0]) || 0;
-      return sum + days;
-    }, 0);
+  // Calculate selected topics data
+  const selectedTopics = (data.selectedTopics || []).map(id => 
+    allTrainingTopics.find(t => t.id === id)
+  ).filter(Boolean) as TrainingTopic[];
+  
+  const selectedCount = selectedTopics.length + (data.customTopics?.length || 0);
+  
+  // Calculate total duration in hours
+  const totalDurationHours = selectedTopics.reduce((sum, t) => {
+    const hours = parseInt(t.duration.split(' ')[0]) || 0;
+    return sum + hours;
+  }, 0);
+  
+  const totalDurationDays = Math.ceil(totalDurationHours / 8); // Assuming 8 hours per day
+  
+  // Get recommended topics (limit to 12 max, NOT pre-checked)
+  const displayRecommendedTopics = recommendedTopics
+    .filter(t => !data.selectedTopics?.includes(t.id)) // Don't show already selected
+    .slice(0, 12);
+  
+  // Filter search results (exclude already selected and recommended)
+  const searchResults = searchQuery.trim() 
+    ? allTopics.filter(topic => {
+        const matchesSearch = topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.category.toLowerCase().includes(searchQuery.toLowerCase());
+        const notSelected = !data.selectedTopics?.includes(topic.id);
+        const notInRecommended = !displayRecommendedTopics.some(rt => rt.id === topic.id);
+        return matchesSearch && notSelected && notInRecommended;
+      })
+    : [];
 
   return (
-    <div>
-      <h2 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-2">
-        Select Your Training Topics
-      </h2>
-      <p className="text-lg text-[#6B7280] mb-6">
-        We've recommended topics based on your categories and goals. Search, browse, or add custom topics.
-      </p>
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-2">
+          What specific training topics do you need?
+        </h2>
+        <p className="text-lg text-[#6B7280]">
+          Choose the topics that match your needs.
+        </p>
+      </div>
 
-      {/* Selected Summary */}
-      {selectedCount > 0 && (
-        <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <div className="flex items-center justify-between mb-2">
-            <span className="font-semibold text-[#2E4059]">
-              Selected ({selectedCount}) • Total Duration: {totalDuration} day{totalDuration !== 1 ? 's' : ''}
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-2">
-            {data.selectedTopics?.map(topicId => {
-              const topic = allTrainingTopics.find(t => t.id === topicId);
-              return topic ? (
-                <div key={topicId} className="flex items-center gap-2 px-3 py-1 bg-blue-500 text-white rounded-full text-sm">
-                  <span>{topic.title}</span>
-                  <button
-                    onClick={() => toggleTopic(topicId)}
-                    className="hover:bg-blue-600 rounded-full p-0.5"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </div>
-              ) : null;
-            })}
-            {data.customTopics?.map((topic, idx) => (
-              <div key={`custom-${idx}`} className="flex items-center gap-2 px-3 py-1 bg-blue-500 text-white rounded-full text-sm">
-                <span>{topic}</span>
-                <button
-                  onClick={() => removeCustomTopic(topic)}
-                  className="hover:bg-blue-600 rounded-full p-0.5"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </div>
-            ))}
+      {/* Loading State */}
+      {isLoadingAI && (
+        <div className="flex items-center justify-center py-8">
+          <div className="flex items-center gap-3 text-[#6B7280]">
+            <span className="animate-spin rounded-full h-5 w-5 border-2 border-[#FDC700] border-t-transparent"></span>
+            <span className="font-medium">AI is analyzing your needs...</span>
           </div>
         </div>
       )}
 
-      {/* Search Bar */}
-      <div className="mb-4">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-          <Input
-            type="text"
-            placeholder="Search topics..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-      </div>
-
-      {/* Custom Topic Input */}
-      <div className="mb-6">
-        <div className="flex gap-2">
-          <Input
-            type="text"
-            placeholder="Don't see what you need? Add a custom topic..."
-            value={customTopicInput}
-            onChange={(e) => setCustomTopicInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && addCustomTopic()}
-            className="flex-1"
-          />
-          <Button
-            onClick={addCustomTopic}
-            className="bg-[#FFC72F] text-[#2E4059] hover:bg-[#FFC72F]/90"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add
-          </Button>
-        </div>
-      </div>
-
-      {/* Topics List */}
-      <div className="space-y-3 max-h-[500px] overflow-y-auto">
-        {filteredTopics.map((topic) => {
-          const isSelected = data.selectedTopics?.includes(topic.id);
-          const isRecommended = recommendedTopics.some(t => t.id === topic.id);
+      {/* ZONE 1: SMART RECOMMENDATIONS (TOP) */}
+      {!isLoadingAI && displayRecommendedTopics.length > 0 && (
+        <div className="space-y-4 animate-fade-in-up">
+          <div>
+            <h3 className="text-xl font-bold text-[#2E4059] mb-1 flex items-center gap-2">
+              <span className="text-2xl">🎯</span>
+              Recommended Topics for You
+            </h3>
+            <p className="text-sm text-[#6B7280]">
+              Based on your selections, these match your goals best.
+            </p>
+          </div>
           
-          return (
-            <div
-              key={topic.id}
-              className={`p-4 rounded-lg border-2 transition-all ${
-                isSelected
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-slate-200 hover:border-blue-300 bg-white"
-              }`}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-semibold text-[#2E4059]">{topic.title}</h3>
-                    {isRecommended && (
-                      <span className="flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-                        <Star className="w-3 h-3" />
-                        Recommended
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-slate-600 mb-3">{topic.description}</p>
-                  <div className="flex items-center gap-4 text-xs text-slate-500">
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {topic.duration}
-                    </span>
-                    <span>{topic.difficulty}</span>
-                    <span>{topic.category}</span>
-                  </div>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {displayRecommendedTopics.map((topic, idx) => {
+              const isSelected = data.selectedTopics?.includes(topic.id);
+              return (
                 <button
+                  key={topic.id}
+                  type="button"
                   onClick={() => toggleTopic(topic.id)}
-                  className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
+                  className={`group relative p-4 rounded-xl border-2 transition-all duration-300 text-left bg-white hover:shadow-lg ${
                     isSelected
-                      ? "border-blue-500 bg-blue-500"
-                      : "border-slate-300 bg-white"
+                      ? "border-[#FDC700] bg-[#FDC700]/5 shadow-md"
+                      : "border-slate-200 hover:border-[#FDC700]/50"
                   }`}
+                  style={{ animationDelay: `${idx * 50}ms` }}
                 >
-                  {isSelected && (
-                    <svg
-                      className="w-3 h-3 text-white"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path d="M5 13l4 4L19 7"></path>
-                    </svg>
-                  )}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <h4 className={`font-semibold text-sm ${isSelected ? "text-[#2E4059]" : "text-[#2E4059]"}`}>
+                          {topic.title}
+                        </h4>
+                        <span className="flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 rounded-full text-xs font-medium whitespace-nowrap">
+                          <Star className="w-3 h-3 fill-green-600" />
+                          Recommended
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#6B7280] mb-2 line-clamp-2">{topic.description}</p>
+                      <div className="flex items-center gap-3 text-xs text-[#6B7280]">
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {topic.duration}
+                        </span>
+                        <span>{topic.difficulty}</span>
+                      </div>
+                    </div>
+                    {/* Checkbox */}
+                    <div className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-200 ${
+                      isSelected
+                        ? "border-[#FDC700] bg-[#FDC700]"
+                        : "border-slate-300 group-hover:border-[#FDC700]/50"
+                    }`}>
+                      {isSelected && (
+                        <CheckCircle2 className="w-4 h-4 text-white" />
+                      )}
+                    </div>
+                  </div>
                 </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ZONE 2: FULL CATALOG SEARCH (MIDDLE) */}
+      <div className="space-y-4 animate-fade-in-up delay-200">
+        <div>
+          <h3 className="text-xl font-bold text-[#2E4059] mb-1">
+            Browse All Topics
+          </h3>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B7280]" />
+            <Input
+              type="text"
+              placeholder="Search topics (e.g., 'Excel', 'Customer Service', 'Safety'...)"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 h-12 border-2 border-slate-200 focus:border-[#FDC700] rounded-xl transition-all duration-300"
+            />
+          </div>
+        </div>
+
+        {/* Search Results */}
+        {searchQuery.trim() && (
+          <div className="space-y-2 max-h-[300px] overflow-y-auto">
+            {searchResults.length > 0 ? (
+              searchResults.map((topic) => (
+                <button
+                  key={topic.id}
+                  type="button"
+                  onClick={() => toggleTopic(topic.id)}
+                  className="w-full p-3 rounded-lg border border-slate-200 hover:border-[#FDC700] hover:bg-[#FDC700]/5 transition-all duration-200 text-left group"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium text-sm text-[#2E4059] mb-1">{topic.title}</h4>
+                      <div className="flex items-center gap-2 text-xs text-[#6B7280]">
+                        <span>{topic.category}</span>
+                        <span>•</span>
+                        <span>{topic.duration}</span>
+                      </div>
+                    </div>
+                    <Plus className="w-4 h-4 text-[#6B7280] group-hover:text-[#FDC700] transition-colors" />
+                  </div>
+                </button>
+              ))
+            ) : (
+              <div className="text-center py-6 text-[#6B7280]">
+                <p className="text-sm">No topics found matching "{searchQuery}"</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Custom Topic Field */}
+        <div className="pt-4 border-t border-slate-200">
+          <p className="text-sm text-[#6B7280] mb-2">Don't see what you need? Add a custom topic...</p>
+          <div className="flex gap-2">
+            <Input
+              type="text"
+              placeholder="Describe a custom topic (150 char max)"
+              value={customTopicInput}
+              onChange={(e) => {
+                if (e.target.value.length <= 150) {
+                  setCustomTopicInput(e.target.value);
+                }
+              }}
+              onKeyPress={(e) => e.key === 'Enter' && addCustomTopic()}
+              className="flex-1 border-2 border-slate-200 focus:border-[#FDC700] rounded-xl transition-all"
+              maxLength={150}
+            />
+            <Button
+              onClick={addCustomTopic}
+              disabled={!customTopicInput.trim()}
+              className="bg-[#FDC700] text-[#2E4059] hover:bg-[#F5AF19] font-semibold px-6 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add
+            </Button>
+          </div>
+          {customTopicInput.length > 0 && (
+            <p className="text-xs text-[#6B7280] mt-1 text-right">
+              {customTopicInput.length}/150
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* ZONE 3: SELECTED TOPICS SUMMARY (BOTTOM) */}
+      {selectedCount > 0 && (
+        <div className="space-y-4 animate-fade-in-up delay-300">
+          <div className="bg-gradient-to-r from-[#FDC700]/10 to-[#F5AF19]/10 rounded-xl border-2 border-[#FDC700]/20 p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-[#2E4059]">
+                Selected Topics
+              </h3>
+              <div className="flex items-center gap-4 text-sm font-semibold text-[#2E4059]">
+                <span>{selectedCount} {selectedCount === 1 ? 'Topic' : 'Topics'}</span>
+                <span className="text-[#6B7280]">•</span>
+                <span>{totalDurationDays} {totalDurationDays === 1 ? 'Day' : 'Days'}</span>
+                <span className="text-[#6B7280]">•</span>
+                <span>{totalDurationHours} Hours</span>
               </div>
             </div>
-          );
-        })}
-      </div>
+            
+            {/* Selected Chips */}
+            <div className="flex flex-wrap gap-2">
+              {selectedTopics.map((topic) => (
+                <div
+                  key={topic.id}
+                  className="group flex items-center gap-2 px-3 py-1.5 bg-[#FDC700] text-[#2E4059] rounded-full text-sm font-medium hover:bg-[#F5AF19] transition-all duration-200 animate-scale-in"
+                >
+                  <span>{topic.title}</span>
+                  <button
+                    onClick={() => toggleTopic(topic.id)}
+                    className="hover:bg-[#2E4059]/10 rounded-full p-0.5 transition-colors"
+                    type="button"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
+              {data.customTopics?.map((topic, idx) => (
+                <div
+                  key={`custom-${idx}`}
+                  className="group flex items-center gap-2 px-3 py-1.5 bg-[#FDC700] text-[#2E4059] rounded-full text-sm font-medium hover:bg-[#F5AF19] transition-all duration-200 animate-scale-in"
+                >
+                  <span>{topic}</span>
+                  <button
+                    onClick={() => removeCustomTopic(topic)}
+                    className="hover:bg-[#2E4059]/10 rounded-full p-0.5 transition-colors"
+                    type="button"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Validation Message */}
+      {selectedCount === 0 && !isLoadingAI && (
+        <div className="text-center py-8 text-[#6B7280]">
+          <p className="text-sm">Choose at least one topic or describe a custom request for a tailored plan.</p>
+        </div>
+      )}
+
+      {/* Warning for >12 topics */}
+      {selectedCount > 12 && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 animate-fade-in-up">
+          <p className="text-sm text-yellow-800">
+            <span className="font-semibold">Note:</span> Large training portfolios are delivered as phased programs. You can continue, but we will structure them into stages.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
@@ -657,8 +868,25 @@ export function TrainingFlow() {
   const [errors, setErrors] = useState<Record<number, string[]>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Track which outcome categories are expanded - each category is independent
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
+  // Check if user is a consultant or business
+  const [isConsultant, setIsConsultant] = useState(false);
+  const [isBusiness, setIsBusiness] = useState(false);
 
   const totalSteps = 6;
+
+  // Check sessionStorage for consultant or business role
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const selectedRole = sessionStorage.getItem("selectedRole");
+      if (selectedRole === "consultant") {
+        setIsConsultant(true);
+      } else if (selectedRole === "business") {
+        setIsBusiness(true);
+      }
+    }
+  }, []);
 
   const updateData = (field: keyof TrainingData, value: any) => {
     setData((prev) => ({ ...prev, [field]: value }));
@@ -858,6 +1086,203 @@ export function TrainingFlow() {
     return category.outcomes.some((outcome) => data.outcomes.includes(outcome));
   };
 
+  // Consultant form state
+  const [consultantData, setConsultantData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    country: "",
+    areaOfInterest: "",
+    consultancyCompany: "",
+    purpose: "",
+    nda: false,
+    clientInformation: "",
+  });
+  const [consultantErrors, setConsultantErrors] = useState<Record<string, string>>({});
+
+  // Business form state
+  const [businessData, setBusinessData] = useState({
+    name: "",
+    mobileNumber: "",
+    jobTitle: "",
+    companyName: "",
+    industry: "",
+    phoneToggle: false,
+    region: "",
+    specificLandmark: "",
+    officeNumber: "",
+    preferredMode: "",
+    companyEmail: "",
+    country: "",
+    department: "",
+    companyType: "",
+    companySize: "",
+    tinToggle: false,
+    citySubcity: "",
+    bldgName: "",
+    authorityLevel: "",
+  });
+  const [businessErrors, setBusinessErrors] = useState<Record<string, string>>({});
+
+  const updateConsultantData = (field: string, value: any) => {
+    setConsultantData((prev) => ({ ...prev, [field]: value }));
+    if (consultantErrors[field]) {
+      setConsultantErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+  };
+
+  const updateBusinessData = (field: string, value: any) => {
+    setBusinessData((prev) => ({ ...prev, [field]: value }));
+    if (businessErrors[field]) {
+      setBusinessErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+  };
+
+  const validateConsultantForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    if (!consultantData.name) newErrors.name = "Please enter your name";
+    if (!consultantData.email) newErrors.email = "Please enter your email";
+    if (!consultantData.phone) newErrors.phone = "Please enter your phone number";
+    if (!consultantData.country) newErrors.country = "Please enter your country";
+    if (!consultantData.consultancyCompany) newErrors.consultancyCompany = "Please enter your consultancy/company name";
+    if (!consultantData.purpose) newErrors.purpose = "Please enter the purpose";
+    setConsultantErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validateBusinessForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    if (!businessData.name) newErrors.name = "Please enter your name";
+    if (!businessData.mobileNumber) newErrors.mobileNumber = "Please enter your mobile number";
+    if (!businessData.companyEmail) newErrors.companyEmail = "Please enter company email";
+    if (!businessData.companyName) newErrors.companyName = "Please enter company name";
+    if (!businessData.country) newErrors.country = "Please enter country";
+    setBusinessErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleConsultantSubmit = async () => {
+    if (!validateConsultantForm()) {
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const submissionData = {
+        contactName: consultantData.name,
+        email: consultantData.email,
+        phone: consultantData.phone,
+        companyName: consultantData.consultancyCompany,
+        country: consultantData.country,
+        areaOfInterest: consultantData.areaOfInterest,
+        purpose: consultantData.purpose,
+        nda: consultantData.nda,
+        clientInformation: consultantData.clientInformation,
+        type: "consultant",
+      };
+      const response = await fetch("/api/submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(submissionData),
+      });
+      const result = await response.json();
+      if (response.ok && result.success) {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 3000);
+      } else if (result.error && result.error.includes("Cannot connect to database")) {
+        console.warn("Database not configured, but showing success for testing:", result.error);
+        setIsSubmitted(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 3000);
+      } else {
+        throw new Error(result.error || result.message || "Submission failed");
+      }
+    } catch (error: any) {
+      console.error("Error submitting consultant data:", error);
+      if (error.message?.includes("fetch") || error.message?.includes("network")) {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 3000);
+      } else {
+        alert(error.message || "There was an error submitting your request. Please try again.");
+        setIsSubmitting(false);
+      }
+    }
+  };
+
+  const handleBusinessSubmit = async () => {
+    if (!validateBusinessForm()) {
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const submissionData = {
+        contactName: businessData.name,
+        email: businessData.companyEmail,
+        phone: businessData.mobileNumber,
+        companyName: businessData.companyName,
+        country: businessData.country,
+        jobTitle: businessData.jobTitle,
+        industry: businessData.industry,
+        department: businessData.department,
+        companyType: businessData.companyType,
+        companySize: businessData.companySize,
+        region: businessData.region,
+        city: businessData.citySubcity,
+        buildingName: businessData.bldgName,
+        officeNumber: businessData.officeNumber,
+        specificLandmark: businessData.specificLandmark,
+        authorityLevel: businessData.authorityLevel,
+        preferredMode: businessData.preferredMode,
+        phoneToggle: businessData.phoneToggle,
+        tinToggle: businessData.tinToggle,
+        type: "business",
+      };
+      const response = await fetch("/api/submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(submissionData),
+      });
+      const result = await response.json();
+      if (response.ok && result.success) {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 3000);
+      } else if (result.error && result.error.includes("Cannot connect to database")) {
+        console.warn("Database not configured, but showing success for testing:", result.error);
+        setIsSubmitted(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 3000);
+      } else {
+        throw new Error(result.error || result.message || "Submission failed");
+      }
+    } catch (error: any) {
+      console.error("Error submitting business data:", error);
+      if (error.message?.includes("fetch") || error.message?.includes("network")) {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          router.push("/");
+        }, 3000);
+      } else {
+        alert(error.message || "There was an error submitting your request. Please try again.");
+        setIsSubmitting(false);
+      }
+    }
+  };
+
   // Show thank you card if submitted
   if (isSubmitted) {
   return (
@@ -885,8 +1310,483 @@ export function TrainingFlow() {
               Thank You!
             </h2>
             <p className="text-xl text-slate-600 leading-relaxed animate-fade-in-up delay-700">
-              We've received your training request. We'll contact you soon to discuss your training needs.
+              {isConsultant 
+                ? "We've received your consultant request. We'll contact you soon to discuss your needs."
+                : isBusiness
+                ? "We've received your business information. We'll contact you soon to discuss your training needs."
+                : "We've received your training request. We'll contact you soon to discuss your training needs."
+              }
             </p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // If business, show business form instead of training flow
+  if (isBusiness) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <Card className="p-6 sm:p-8 lg:p-10 bg-white shadow-2xl border-2 border-slate-100 rounded-2xl animate-fade-in-up delay-200">
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-2">
+              Business Information
+            </h2>
+            <p className="text-lg text-[#6B7280] mb-8">
+              Please provide your business details so we can assist you with training needs.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Left Column */}
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="business-name" className="text-[#2E4059] font-medium">
+                    Your Name <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="business-name"
+                    value={businessData.name}
+                    onChange={(e) => updateBusinessData("name", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                  {businessErrors.name && <p className="text-sm text-red-600">{businessErrors.name}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-mobile" className="text-[#2E4059] font-medium">
+                    Mobile Number <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="business-mobile"
+                    type="tel"
+                    value={businessData.mobileNumber}
+                    onChange={(e) => updateBusinessData("mobileNumber", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                  {businessErrors.mobileNumber && <p className="text-sm text-red-600">{businessErrors.mobileNumber}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-job-title" className="text-[#2E4059] font-medium">
+                    Job Title
+                  </Label>
+                  <Input
+                    id="business-job-title"
+                    value={businessData.jobTitle}
+                    onChange={(e) => updateBusinessData("jobTitle", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-company-name" className="text-[#2E4059] font-medium">
+                    Company Name <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="business-company-name"
+                    value={businessData.companyName}
+                    onChange={(e) => updateBusinessData("companyName", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                  {businessErrors.companyName && <p className="text-sm text-red-600">{businessErrors.companyName}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-industry" className="text-[#2E4059] font-medium">
+                    Industry
+                  </Label>
+                  <Input
+                    id="business-industry"
+                    value={businessData.industry}
+                    onChange={(e) => updateBusinessData("industry", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-phone-toggle" className="text-[#2E4059] font-medium">
+                    Phone number
+                  </Label>
+                  <div className="flex items-center gap-3">
+                    <Switch
+                      id="business-phone-toggle"
+                      checked={businessData.phoneToggle}
+                      onCheckedChange={(checked) => updateBusinessData("phoneToggle", checked)}
+                    />
+                    <span className="text-sm text-slate-600">Toggle switch</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-region" className="text-[#2E4059] font-medium">
+                    Region
+                  </Label>
+                  <Input
+                    id="business-region"
+                    value={businessData.region}
+                    onChange={(e) => updateBusinessData("region", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-landmark" className="text-[#2E4059] font-medium">
+                    Specific /Landmark Place/name
+                  </Label>
+                  <Input
+                    id="business-landmark"
+                    value={businessData.specificLandmark}
+                    onChange={(e) => updateBusinessData("specificLandmark", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-office" className="text-[#2E4059] font-medium">
+                    Office Number
+                  </Label>
+                  <Input
+                    id="business-office"
+                    value={businessData.officeNumber}
+                    onChange={(e) => updateBusinessData("officeNumber", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-mode" className="text-[#2E4059] font-medium">
+                    Preferred mode for follow-up call
+                  </Label>
+                  <Input
+                    id="business-mode"
+                    value={businessData.preferredMode}
+                    onChange={(e) => updateBusinessData("preferredMode", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Right Column */}
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="business-email" className="text-[#2E4059] font-medium">
+                    Company Email <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="business-email"
+                    type="email"
+                    value={businessData.companyEmail}
+                    onChange={(e) => updateBusinessData("companyEmail", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                  {businessErrors.companyEmail && <p className="text-sm text-red-600">{businessErrors.companyEmail}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-country" className="text-[#2E4059] font-medium">
+                    Country <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="business-country"
+                    value={businessData.country}
+                    onChange={(e) => updateBusinessData("country", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                  {businessErrors.country && <p className="text-sm text-red-600">{businessErrors.country}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-department" className="text-[#2E4059] font-medium">
+                    Department
+                  </Label>
+                  <Input
+                    id="business-department"
+                    value={businessData.department}
+                    onChange={(e) => updateBusinessData("department", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-type" className="text-[#2E4059] font-medium">
+                    Company Type
+                  </Label>
+                  <Input
+                    id="business-type"
+                    value={businessData.companyType}
+                    onChange={(e) => updateBusinessData("companyType", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-size" className="text-[#2E4059] font-medium">
+                    Company Size
+                  </Label>
+                  <Input
+                    id="business-size"
+                    value={businessData.companySize}
+                    onChange={(e) => updateBusinessData("companySize", e.target.value)}
+                    placeholder="(helping a client / benchmarking / research)"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-tin-toggle" className="text-[#2E4059] font-medium">
+                    Tin Number
+                  </Label>
+                  <div className="flex items-center gap-3">
+                    <Switch
+                      id="business-tin-toggle"
+                      checked={businessData.tinToggle}
+                      onCheckedChange={(checked) => updateBusinessData("tinToggle", checked)}
+                    />
+                    <span className="text-sm text-slate-600">Toggle switch</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-city" className="text-[#2E4059] font-medium">
+                    City/Subcity
+                  </Label>
+                  <Input
+                    id="business-city"
+                    value={businessData.citySubcity}
+                    onChange={(e) => updateBusinessData("citySubcity", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-building" className="text-[#2E4059] font-medium">
+                    Bldg Name
+                  </Label>
+                  <Input
+                    id="business-building"
+                    value={businessData.bldgName}
+                    onChange={(e) => updateBusinessData("bldgName", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="business-authority" className="text-[#2E4059] font-medium">
+                    Authority Level
+                  </Label>
+                  <Input
+                    id="business-authority"
+                    value={businessData.authorityLevel}
+                    onChange={(e) => updateBusinessData("authorityLevel", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex justify-end mt-8 pt-6 border-t">
+              <Button
+                onClick={handleBusinessSubmit}
+                disabled={isSubmitting}
+                className="bg-[#FFC72F] text-[#2E4059] font-bold hover:bg-[#FFC72F]/90 disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#2E4059] mr-2"></div>
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit"
+                )}
+              </Button>
+            </div>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // If consultant, show consultant form instead of training flow
+  if (isConsultant) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <Card className="p-6 sm:p-8 lg:p-10 bg-white shadow-2xl border-2 border-slate-100 rounded-2xl animate-fade-in-up delay-200">
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-2">
+              Your Information
+            </h2>
+            <p className="text-lg text-[#6B7280] mb-8">
+              Please provide your details so we can assist you with strategic consulting.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Left Column */}
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="consultant-name" className="text-[#2E4059] font-medium">
+                    Your Name <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="consultant-name"
+                    value={consultantData.name}
+                    onChange={(e) => updateConsultantData("name", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                  {consultantErrors.name && <p className="text-sm text-red-600">{consultantErrors.name}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="consultant-phone" className="text-[#2E4059] font-medium">
+                    Phone Number <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="consultant-phone"
+                    type="tel"
+                    value={consultantData.phone}
+                    onChange={(e) => updateConsultantData("phone", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                  {consultantErrors.phone && <p className="text-sm text-red-600">{consultantErrors.phone}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="consultant-area" className="text-[#2E4059] font-medium">
+                    Area of Interest
+                  </Label>
+                  <Input
+                    id="consultant-area"
+                    value={consultantData.areaOfInterest}
+                    onChange={(e) => updateConsultantData("areaOfInterest", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="consultant-nda" className="text-[#2E4059] font-medium">
+                    NDA
+                  </Label>
+                  <div className="flex items-center gap-3">
+                    <Switch
+                      id="consultant-nda"
+                      checked={consultantData.nda}
+                      onCheckedChange={(checked) => updateConsultantData("nda", checked)}
+                    />
+                    <span className="text-sm text-slate-600">Toggle switch</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-xs text-slate-500 italic">
+                    *Client information will be required to generate full ROI
+                  </p>
+                  <Input
+                    id="consultant-client"
+                    value={consultantData.clientInformation}
+                    onChange={(e) => updateConsultantData("clientInformation", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                </div>
+              </div>
+
+              {/* Right Column */}
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="consultant-email" className="text-[#2E4059] font-medium">
+                    Personal Email <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="consultant-email"
+                    type="email"
+                    value={consultantData.email}
+                    onChange={(e) => updateConsultantData("email", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                  {consultantErrors.email && <p className="text-sm text-red-600">{consultantErrors.email}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="consultant-country" className="text-[#2E4059] font-medium">
+                    Country <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="consultant-country"
+                    value={consultantData.country}
+                    onChange={(e) => updateConsultantData("country", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                  {consultantErrors.country && <p className="text-sm text-red-600">{consultantErrors.country}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="consultant-company" className="text-[#2E4059] font-medium">
+                    Consultancy/Company <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="consultant-company"
+                    value={consultantData.consultancyCompany}
+                    onChange={(e) => updateConsultantData("consultancyCompany", e.target.value)}
+                    placeholder="Personal"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                  {consultantErrors.consultancyCompany && <p className="text-sm text-red-600">{consultantErrors.consultancyCompany}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="consultant-purpose" className="text-[#2E4059] font-medium">
+                    Purpose (helping a client / benchmarking / research) <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="consultant-purpose"
+                    value={consultantData.purpose}
+                    onChange={(e) => updateConsultantData("purpose", e.target.value)}
+                    placeholder="(helping a client / benchmarking / research)"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
+                  />
+                  {consultantErrors.purpose && <p className="text-sm text-red-600">{consultantErrors.purpose}</p>}
+                </div>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex justify-end mt-8 pt-6 border-t">
+              <Button
+                onClick={handleConsultantSubmit}
+                disabled={isSubmitting}
+                className="bg-[#FFC72F] text-[#2E4059] font-bold hover:bg-[#FFC72F]/90 disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#2E4059] mr-2"></div>
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit"
+                )}
+              </Button>
+            </div>
           </div>
         </Card>
       </div>
@@ -1015,43 +1915,58 @@ export function TrainingFlow() {
             <h2 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-2">
               Who is this training for?
             </h2>
-            <p className="text-lg text-[#6B7280] mb-6">
+            <p className="text-lg text-[#6B7280] mb-8">
               We'll adjust the design based on your audience.
             </p>
 
-            <RadioGroup
-              value={data.trainingAudience}
-              onValueChange={(value) => updateData("trainingAudience", value)}
-              className="space-y-4"
-            >
-              {audienceOptions.map((option) => (
-                <div key={option.value} className="space-y-2">
-                  <div className="flex items-center space-x-3 p-4 rounded-lg border-2 border-slate-200 hover:border-[#FFC72F]/50">
-                    <RadioGroupItem value={option.value} id={option.value} />
-                    <Label
-                      htmlFor={option.value}
-                      className="flex-1 cursor-pointer"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {audienceOptions.map((option) => {
+                const isSelected = data.trainingAudience === option.value;
+                return (
+                  <div key={option.value} className="space-y-3">
+                    <button
+                      type="button"
+                      onClick={() => updateData("trainingAudience", option.value)}
+                      className={`w-full p-6 rounded-lg border-2 text-left transition-all relative group ${
+                        isSelected
+                          ? "border-[#FFC72F] bg-[#FFC72F]/10 shadow-md"
+                          : "border-slate-200 hover:border-[#FFC72F]/50 bg-white hover:shadow-sm"
+                      }`}
                     >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <span className="font-semibold text-[#2E4059]">
-                            {option.label}
-                          </span>
-                          <p className="text-sm text-slate-500 mt-1">
-                            {option.tooltip}
-                          </p>
+                      {/* Radio Button Indicator */}
+                      <div className="absolute top-4 right-4">
+                        <div
+                          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                            isSelected
+                              ? "border-[#FFC72F] bg-[#FFC72F]"
+                              : "border-slate-300 bg-white"
+                          }`}
+                        >
+                          {isSelected && (
+                            <div className="w-2.5 h-2.5 rounded-full bg-white" />
+                          )}
                         </div>
                       </div>
-                    </Label>
-                  </div>
 
-                  {/* Conditional Fields */}
-                  {data.trainingAudience === option.value &&
-                    option.conditionalField && (
-                      <div className="ml-8 mt-2">
+                      {/* Content */}
+                      <div className="pr-8">
+                        <h3 className="text-lg font-bold text-[#2E4059] mb-2">
+                          {option.label}
+                        </h3>
+                        <p className="text-sm text-slate-600">
+                          {option.tooltip}
+                        </p>
+                      </div>
+                    </button>
+
+                    {/* Conditional Fields */}
+                    {isSelected && option.conditionalField && (
+                      <div className="ml-2 space-y-3 animate-fade-in-up">
                         {option.conditionalField === "teamSize" && (
                           <div>
-                            <Label htmlFor="teamSize">Team size</Label>
+                            <Label htmlFor="teamSize" className="text-sm text-[#2E4059] font-medium">
+                              Team size
+                            </Label>
                             <Input
                               id="teamSize"
                               type="number"
@@ -1061,34 +1976,38 @@ export function TrainingFlow() {
                                 updateData("teamSize", parseInt(e.target.value))
                               }
                               placeholder="Enter number of people"
-                              className="mt-1"
+                              className="mt-1.5 border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20"
                             />
                           </div>
                         )}
                         {option.conditionalField === "department" && (
-                          <div className="space-y-2">
-                            <Label htmlFor="department">
-                              Select Department
-                            </Label>
-                            <Select
-                              value={data.department || ""}
-                              onValueChange={(value) =>
-                                updateData("department", value)
-                              }
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="Choose department" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {departments.map((dept) => (
-                                  <SelectItem key={dept} value={dept}>
-                                    {dept}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
+                          <div className="space-y-3">
                             <div>
-                              <Label htmlFor="deptTeamSize">Team size</Label>
+                              <Label htmlFor="department" className="text-sm text-[#2E4059] font-medium">
+                                Select Department
+                              </Label>
+                              <Select
+                                value={data.department || ""}
+                                onValueChange={(value) =>
+                                  updateData("department", value)
+                                }
+                              >
+                                <SelectTrigger className="mt-1.5 border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20">
+                                  <SelectValue placeholder="Choose department" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {departments.map((dept) => (
+                                    <SelectItem key={dept} value={dept}>
+                                      {dept}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label htmlFor="deptTeamSize" className="text-sm text-[#2E4059] font-medium">
+                                Team size
+                              </Label>
                               <Input
                                 id="deptTeamSize"
                                 type="number"
@@ -1101,21 +2020,23 @@ export function TrainingFlow() {
                                   )
                                 }
                                 placeholder="Enter number of people"
-                                className="mt-1"
+                                className="mt-1.5 border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20"
                               />
                             </div>
                           </div>
                         )}
                         {option.conditionalField === "companySize" && (
                           <div>
-                            <Label htmlFor="companySize">Company Size</Label>
+                            <Label htmlFor="companySize" className="text-sm text-[#2E4059] font-medium">
+                              Company Size
+                            </Label>
                             <Select
                               value={data.companySize || ""}
                               onValueChange={(value) =>
                                 updateData("companySize", value)
                               }
                             >
-                              <SelectTrigger>
+                              <SelectTrigger className="mt-1.5 border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20">
                                 <SelectValue placeholder="Select company size" />
                               </SelectTrigger>
                               <SelectContent>
@@ -1130,12 +2051,13 @@ export function TrainingFlow() {
                         )}
                       </div>
                     )}
-                </div>
-              ))}
-            </RadioGroup>
+                  </div>
+                );
+              })}
+            </div>
 
             {errors[2] && (
-              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg animate-fade-in-up">
                 <p className="text-sm text-red-600">{errors[2][0]}</p>
               </div>
             )}
@@ -1154,16 +2076,27 @@ export function TrainingFlow() {
 
             {/* Main Outcome Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-              {outcomeCategories.map((category) => {
+              {outcomeCategories.map((category, index) => {
                 const hasSelected = hasSelectedSubcategory(category);
+                const isExpanded = expandedCategories[category.name] || false;
+                
+                const handleToggleExpand = () => {
+                  // Toggle this specific category independently
+                  setExpandedCategories(prev => ({
+                    ...prev,
+                    [category.name]: !prev[category.name]
+                  }));
+                };
                 
                 return (
                   <OutcomeCategoryCard
-                    key={category.name}
+                    key={`outcome-category-${category.name}`}
                     category={category}
                     hasSelected={hasSelected}
                     selectedOutcomes={data.outcomes}
                     onToggleOutcome={toggleOutcome}
+                    isExpanded={isExpanded}
+                    onToggleExpand={handleToggleExpand}
                   />
                 );
               })}
@@ -1212,76 +2145,102 @@ export function TrainingFlow() {
             <h2 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-2">
               Your Information
             </h2>
-            <p className="text-lg text-[#6B7280] mb-6">
+            <p className="text-lg text-[#6B7280] mb-8">
               We'll use this to contact you and personalize your training
               recommendation.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-6">
+              {/* Required Fields Section */}
               <div>
-                <Label htmlFor="name">Your Name *</Label>
+                <h3 className="text-lg font-semibold text-[#2E4059] mb-4 pb-2 border-b border-slate-200">
+                  Contact Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="name" className="text-[#2E4059] font-medium">
+                      Your Name <span className="text-red-500">*</span>
+                    </Label>
                 <Input
                   id="name"
                   value={data.name || ""}
                   onChange={(e) => updateData("name", e.target.value)}
                   placeholder="Enter your full name"
-                  className="mt-1"
+                      className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="email">Personal Email *</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-[#2E4059] font-medium">
+                      Personal Email <span className="text-red-500">*</span>
+                    </Label>
                 <Input
                   id="email"
                   type="email"
                   value={data.email || ""}
                   onChange={(e) => updateData("email", e.target.value)}
                   placeholder="your.email@example.com"
-                  className="mt-1"
+                      className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="phone">Phone Number *</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-[#2E4059] font-medium">
+                      Phone Number <span className="text-red-500">*</span>
+                    </Label>
                 <Input
                   id="phone"
                   type="tel"
                   value={data.phone || ""}
                   onChange={(e) => updateData("phone", e.target.value)}
                   placeholder="Enter your phone number"
-                  className="mt-1"
+                      className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="country">Country *</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="country" className="text-[#2E4059] font-medium">
+                      Country <span className="text-red-500">*</span>
+                    </Label>
                 <Input
                   id="country"
                   value={data.country || ""}
                   onChange={(e) => updateData("country", e.target.value)}
                   placeholder="Enter your country"
-                  className="mt-1"
+                      className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
+                  </div>
+                </div>
               </div>
 
+              {/* Optional Fields Section */}
               <div>
-                <Label htmlFor="areaOfInterest">Area of Interest</Label>
+                <h3 className="text-lg font-semibold text-[#2E4059] mb-4 pb-2 border-b border-slate-200">
+                  Additional Information <span className="text-sm font-normal text-slate-500">(Optional)</span>
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="areaOfInterest" className="text-[#2E4059] font-medium">
+                      Area of Interest
+                    </Label>
                 <Input
                   id="areaOfInterest"
                   value={data.areaOfInterest || ""}
                   onChange={(e) => updateData("areaOfInterest", e.target.value)}
                   placeholder="Optional"
-                  className="mt-1"
+                      className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="learningGoal">Learning Goal</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="learningGoal" className="text-[#2E4059] font-medium">
+                      Learning Goal
+                    </Label>
                 <Select
                   value={data.learningGoal || ""}
                   onValueChange={(value) => updateData("learningGoal", value)}
                 >
-                  <SelectTrigger className="mt-1">
+                      <SelectTrigger className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20">
                     <SelectValue placeholder="Select learning goal" />
                   </SelectTrigger>
                   <SelectContent>
@@ -1298,13 +2257,15 @@ export function TrainingFlow() {
                 </Select>
               </div>
 
-              <div>
-                <Label htmlFor="educationLevel">Education Level</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="educationLevel" className="text-[#2E4059] font-medium">
+                      Education Level
+                    </Label>
                 <Select
                   value={data.educationLevel || ""}
                   onValueChange={(value) => updateData("educationLevel", value)}
                 >
-                  <SelectTrigger className="mt-1">
+                      <SelectTrigger className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20">
                     <SelectValue placeholder="Select education level" />
                   </SelectTrigger>
                   <SelectContent>
@@ -1317,8 +2278,8 @@ export function TrainingFlow() {
                 </Select>
               </div>
 
-              <div>
-                <Label htmlFor="preferredFormat">
+                  <div className="space-y-2">
+                    <Label htmlFor="preferredFormat" className="text-[#2E4059] font-medium">
                   Preferred Training Format
                 </Label>
                 <Select
@@ -1327,7 +2288,7 @@ export function TrainingFlow() {
                     updateData("preferredFormat", value)
                   }
                 >
-                  <SelectTrigger className="mt-1">
+                      <SelectTrigger className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20">
                     <SelectValue placeholder="Select format" />
                   </SelectTrigger>
                   <SelectContent>
@@ -1337,11 +2298,13 @@ export function TrainingFlow() {
                     <SelectItem value="self-paced">Self-Paced</SelectItem>
                   </SelectContent>
                 </Select>
+                  </div>
+                </div>
               </div>
             </div>
 
             {errors[6] && (
-              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg animate-fade-in-up">
                 <p className="text-sm text-red-600">{errors[6][0]}</p>
               </div>
             )}
