@@ -1,0 +1,290 @@
+id	category_id	subcategory	topic_name	description	duration_hours	difficulty_level	delivery_mode	department_relevance	goal_G1	goal_G2	goal_G3	goal_G4	goal_G5	goal_G6	goal_G7	goal_G8	goal_G9	goal_G10	goal_G11	goal_G12
+T039	C3	Accountability	Accountability & Ownership		6	Basic	LMS	All	4	3	3	2	2	0	1	2	4	0	0	1
+T269	C6	Culture Transformation	Accountability-Driven Culture	Embedding measurable accountability norms	8	Advanced	Workshop	Management	5	4	4	4	4	2	2	5	5	1	2	1
+T142	C1	Communication	Active Listening Mastery	Deep listening skills for clarity and trust	4	Basic	LMS	All	4	2	3	3	5	3	2	3	4	0	0	2
+T044	C3	Adaptability	Adaptability & Resilience		6	Basic	LMS	All	3	2	3	3	2	0	0	2	4	0	0	1
+T043	C3	Adaptability	Adaptability in Change Environments	Responding to change proactively	6	Basic	LMS	All	4	2	4	3	3	2	2	3	4	0	1	2
+T095	C1	Communication	Advanced Business Communication		8	Advanced	Workshop	All	4	3	3	4	5	2	2	3	3	0	0	1
+T003	C1	Communication	Advanced Business Writing	Professional email and report writing mastery	6	Intermediate	Workshop	All	3	3	2	3	4	2	1	2	2	0	0	2
+T152	C4	Coaching & Feedback	Advanced Coaching & Mentoring		8	Advanced	Workshop	Managers	4	2	2	3	3	1	1	5	4	0	0	1
+T082	C5	Cybersecurity	Advanced Cyber Risk Management	Managing cyber threats strategically	8	Advanced	Workshop	IT;Management	3	4	3	4	2	2	1	4	2	5	4	1
+T246	C2	Data & Analytics	Advanced Data Interpretation	Turning analytics into actionable insights	8	Advanced	Workshop	Management;Finance	4	4	3	5	2	1	2	3	2	0	5	1
+T114	C2	Data & Analytics	Advanced Data Visualization		8	Advanced	Workshop	All	3	4	3	4	0	0	0	1	0	0	5	1
+T195	C2	Software Tools	Advanced Excel Automation with VBA	Automating repetitive tasks using VBA macros	12	Advanced	Workshop	Finance;Operations	5	4	5	4	2	1	2	1	1	0	5	1
+T020	C2	Software Tools	Advanced Excel for Business	Data analysis and automation using Excel	12	Intermediate	Workshop	Finance;HR;Operations	4	4	4	4	2	1	2	1	1	0	5	2
+T123	C2	Software Tools	Advanced Excel for Financial Modeling		12	Advanced	Workshop	Finance	4	5	4	5	0	0	0	1	0	0	5	1
+T148	C4	People Leadership	Advanced Leadership Development		12	Advanced	Workshop	Leaders	4	2	2	4	3	1	1	5	3	0	0	1
+T097	C7	Sales	Advanced Negotiation Strategies	High-value deal negotiation mastery	8	Advanced	Workshop	Sales	4	2	3	4	4	4	5	3	2	0	3	1
+T229	C7	Operations	Advanced Operations Analytics	Using analytics to optimize operations	10	Advanced	Workshop	Operations	5	5	5	5	2	2	2	3	2	1	5	1
+T153	C2	Software Tools	Advanced PowerPoint for Business	Executive presentation design skills	6	Intermediate	Workshop	All	3	1	2	3	4	2	3	3	2	0	2	2
+T198	C2	Operational Tools	Advanced Process Optimization	Improving operational flow using analytical tools	10	Advanced	Workshop	Operations	5	5	5	4	2	1	1	3	2	1	5	1
+T177	C7	Sales	Advanced Sales Negotiation		8	Advanced	Workshop	Sales	3	1	2	3	3	3	5	2	2	0	0	1
+T103	C1	Personal Productivity	Advanced Time & Energy Management		6	Intermediate	Workshop	All	5	3	5	3	2	0	0	1	2	0	0	1
+T244	C1	Personal Productivity	Advanced Time Blocking Techniques	Maximizing focus and task completion	4	Intermediate	Workshop	All	5	2	5	3	2	1	1	1	2	0	1	2
+T180	C5	Safety	Advanced Workplace Safety Compliance	Deep safety governance systems	8	Advanced	Workshop	Operations	4	5	4	3	2	1	0	3	3	5	3	1
+T164	C5	Safety	Advanced Workplace Safety Practices		6	Intermediate	Workshop	Ops	2	4	2	2	0	0	0	1	1	5	0	1
+T166	C3	Adaptability	Agile Mindset for Employees	Quick adaptation to changing priorities	6	Intermediate	Workshop	All	4	2	4	4	3	1	2	3	3	0	1	2
+T159	C2	Technical Certifications	Agile Project Management Basics	Agile frameworks and sprint planning	8	Intermediate	Workshop	IT;Management	4	3	4	4	3	1	2	4	2	0	4	2
+T252	C3	Adaptability	Agility in Fast-Changing Markets	Responding to market shifts effectively	6	Advanced	Workshop	All	4	2	4	4	3	2	2	3	3	0	2	2
+T099	C1	Critical Thinking	Analytical Thinking & Structured Problem Solving		8	Advanced	Workshop	All	4	4	3	5	2	0	0	2	2	0	0	1
+T146	C1	Critical Thinking	Analytical Thinking Techniques	Data-backed reasoning frameworks	6	Intermediate	Workshop	All	4	3	3	5	3	1	1	2	2	0	3	2
+T162	C5	Regulatory Compliance	Anti-Corruption & Anti-Bribery		4	Basic	LMS	All	1	2	1	1	0	0	0	1	1	5	0	1
+T183	C5	Ethics & Governance	Anti-Corruption & Fraud Awareness	Preventing unethical business practices	6	Intermediate	Workshop	All	3	3	2	3	3	2	1	3	3	5	2	2
+T262	C5	Regulatory Compliance	Audit Preparation & Readiness	Preparing teams for compliance audits	6	Intermediate	Workshop	All	3	4	3	3	2	1	1	3	2	5	3	2
+T156	C2	IT & Systems	Automation with Low-Code Tools	Process automation without coding	8	Intermediate	Workshop	Operations;IT	5	4	5	4	2	1	2	2	2	1	5	2
+T116	C7	Finance	Budget Planning & Cost Control	Managing departmental budgets effectively	8	Intermediate	Workshop	Finance;Managers	5	4	4	4	2	1	2	4	2	2	4	2
+T181	C7	Finance	Budget Planning & Cost Optimization		8	Intermediate	Workshop	Finance	4	4	3	4	0	0	0	2	0	1	4	1
+T040	C3	Accountability	Building a Culture of Accountability	Ownership and performance responsibility	6	Intermediate	Workshop	All	5	4	4	3	3	2	1	4	4	1	1	2
+T172	C6	Engagement Programs	Building a Feedback Culture		6	Intermediate	Workshop	All	3	2	2	3	4	1	1	4	5	0	0	2
+T239	C8	Employee Motivation	Building a Winning Mindset	Performance-driven psychological conditioning	6	Intermediate	Workshop	All	4	2	3	4	3	1	2	3	5	0	1	2
+T186	C6	Collaboration Culture	Building Collaborative Culture Systems	Embedding collaboration in company DNA	8	Advanced	Workshop	Management	5	3	4	4	5	2	2	4	5	0	1	2
+T064	C4	People Leadership	Building High Performance Teams		8	Intermediate	Workshop	Managers	4	2	3	3	4	1	1	5	4	0	0	1
+T093	C6	Culture Transformation	Building High-Performance Culture	Shaping performance-oriented culture	8	Advanced	Workshop	Management	5	3	4	4	4	2	2	5	5	1	2	1
+T074	C4	Coaching & Feedback	Building High-Trust Teams	Trust-based leadership culture	6	Intermediate	Workshop	Managers	4	2	3	3	4	2	1	5	5	0	1	2
+T253	C3	Resilience	Building Psychological Endurance	Long-term resilience techniques for professionals	6	Advanced	Workshop	All	4	2	3	4	3	1	1	3	5	0	0	1
+T215	C6	Trust Building	Building Psychological Safety	Encouraging open communication culture	6	Intermediate	Workshop	All	4	2	3	3	5	2	1	3	5	0	0	2
+T075	C6	Trust Building	Building Trust in Teams		6	Intermediate	Workshop	All	4	2	2	3	4	1	1	3	5	0	0	1
+T167	C3	Resilience	Burnout Prevention & Energy Management	Sustaining long-term performance	6	Intermediate	Workshop	All	4	2	3	3	3	1	1	2	5	0	0	2
+T140	C3	Resilience	Burnout Prevention & Energy Renewal		4	Basic	LMS	All	3	1	2	1	2	0	0	1	5	0	0	1
+T073	C4	Strategic Thinking	Business Acumen for Leaders	Understanding financial and market drivers	8	Intermediate	Workshop	Managers	4	2	3	4	2	2	3	5	2	1	4	1
+T080	C5	Ethics & Governance	Business Ethics & Integrity	Corporate ethics and compliance culture	4	Basic	LMS	All	3	2	2	3	3	2	1	3	3	5	1	2
+T035	C2	Data & Analytics	Business KPI Development	Designing measurable performance metrics	6	Advanced	Workshop	Management	5	4	4	4	2	1	2	4	2	1	4	2
+T129	C2	Data & Analytics	Business Metrics & KPI Design		8	Intermediate	Workshop	Managers	4	4	3	4	1	0	1	3	0	0	4	1
+T002	C1	Communication	Business Writing & Professional Email		6	Basic	LMS	All	3	3	3	2	4	1	1	1	2	0	0	2
+T199	C2	Technical Certifications	Certified Business Analysis Essentials	Business analysis frameworks and requirement gathering	10	Intermediate	Workshop	IT;Management	4	3	3	5	3	2	2	3	2	0	5	2
+T178	C4	Change Management	Change Communication Strategy	Communicating change effectively	6	Intermediate	Workshop	Managers	4	2	3	4	5	2	2	4	3	1	2	2
+T062	C4	Change Management	Change Management Fundamentals		8	Intermediate	Workshop	Managers	4	2	2	3	2	0	0	5	3	0	0	1
+T126	C7	IT	Cloud Computing Fundamentals	Basic cloud systems and business impact	8	Basic	LMS	IT;Management	3	2	3	3	2	1	1	3	2	2	5	2
+T208	C4	Coaching & Feedback	Coaching Conversations Framework	Structured developmental coaching discussions	8	Intermediate	Workshop	Managers	4	3	3	4	4	2	2	5	4	0	2	2
+T065	C4	Coaching & Feedback	Coaching for Performance	Developing people through feedback	8	Advanced	Workshop	Managers	4	3	3	4	4	2	2	5	4	0	2	2
+T056	C4	Coaching & Feedback	Coaching Skills for Managers		8	Intermediate	Workshop	Managers	4	2	2	3	3	1	1	5	3	0	0	1
+T214	C5	Workplace Policies	Code of Conduct Implementation	Embedding organizational conduct standards	4	Basic	LMS	All	3	2	2	3	3	2	1	3	3	5	1	2
+T242	C1	Collaboration	Collaborative Decision-Making	Structured team-based decision frameworks	6	Intermediate	Workshop	All	5	3	4	5	4	2	2	3	3	0	1	2
+T206	C4	Strategic Thinking	Competitive Strategy Analysis	Analyzing competitors and market positioning	8	Advanced	Workshop	Senior Management	4	2	3	5	3	2	3	5	2	0	4	1
+T068	C5	Ethics & Governance	Compliance & Business Ethics		4	Basic	LMS	All	1	2	1	1	0	0	0	1	1	5	0	1
+T008	C1	Communication	Conflict Resolution & Difficult Conversations		8	Intermediate	Workshop	All	4	3	3	4	5	3	2	3	4	0	0	1
+T011	C1	Communication	Conflict Resolution Skills	Managing workplace conflict effectively	6	Intermediate	Workshop	All	4	3	3	4	5	3	1	3	3	0	0	2
+T102	C7	Sales	Consultative Selling	Problem-based customer selling approach	8	Intermediate	Workshop	Sales	4	2	3	5	5	4	5	2	2	0	3	2
+T083	C7	Sales	Consultative Selling Skills		10	Intermediate	Workshop	Sales	3	1	2	3	3	4	5	2	2	0	0	1
+T057	C3	Growth Mindset	Continuous Improvement Thinking	Kaizen mindset for professionals	6	Intermediate	Workshop	All	4	3	4	4	2	1	1	2	3	1	2	2
+T139	C3	Growth Mindset	Continuous Learning Mindset		4	Basic	LMS	All	3	2	2	3	2	0	0	2	3	0	1	4
+T248	C2	Operational Tools	Continuous Quality Improvement	Embedding quality cycles into operations	8	Advanced	Workshop	Operations	5	5	4	4	2	2	1	3	2	2	4	1
+T151	C1	Workplace Professionalism	Corporate Etiquette & Conduct	Professional behavior and image	4	Basic	LMS	All	3	2	2	2	3	2	1	2	3	1	0	2
+T141	C8	Corporate Events	Corporate Event Design & Impact	Designing meaningful company events	6	Intermediate	Workshop	HR;Management	3	1	2	2	4	2	1	3	5	0	1	2
+T211	C5	Ethics & Governance	Corporate Governance Essentials	Board-level governance fundamentals	8	Advanced	Workshop	Senior Management	3	3	2	4	3	1	2	5	3	5	3	1
+T168	C5	Ethics & Governance	Corporate Governance Fundamentals		6	Intermediate	Workshop	Managers	2	2	1	2	0	0	0	3	1	5	0	1
+T273	C7	Finance	Cost Reduction & Profit Optimization	Improving margins through financial control	8	Advanced	Workshop	Finance;Management	5	4	4	4	2	1	3	4	2	1	5	1
+T111	C1	Critical Thinking	Creative Problem Solving		6	Intermediate	Workshop	All	4	3	3	5	2	0	0	2	2	0	0	1
+T012	C1	Critical Thinking	Critical Thinking Fundamentals		8	Intermediate	Workshop	All	4	3	3	5	2	0	0	2	2	0	0	1
+T240	C1	Communication	Cross-Cultural Communication	Communicating effectively across diverse backgrounds	6	Intermediate	Workshop	All	4	2	3	3	5	3	2	3	4	0	0	2
+T087	C6	Collaboration Culture	Cross-Functional Collaboration	Breaking silos between departments	8	Intermediate	Workshop	All	5	3	4	4	5	2	2	3	4	0	1	2
+T268	C6	Diversity & Inclusion	Cultural Intelligence at Work	Working effectively in multicultural teams	6	Intermediate	Workshop	All	4	2	3	3	5	3	2	3	4	1	1	2
+T188	C6	Culture Transformation	Culture Audit & Transformation Roadmap	Assessing and redesigning organizational culture	10	Advanced	Workshop	Senior Management	5	3	4	5	4	2	2	5	5	1	2	1
+T077	C6	Collaboration Culture	Culture of Collaboration		6	Intermediate	Workshop	All	4	2	3	3	4	1	1	3	5	0	0	1
+T284	C8	Corporate Events	Culture-Building Corporate Retreats	Designing retreats that reinforce values	8	Advanced	Workshop	Management	4	2	3	4	4	1	2	5	5	0	2	1
+T108	C7	Customer Service	Customer Experience Design	Designing seamless service journeys	8	Advanced	Workshop	Customer Service;Management	4	3	4	4	4	5	3	3	3	0	3	1
+T222	C7	Customer Service	Customer Retention Strategies	Improving repeat business and loyalty	6	Advanced	Workshop	Customer Service	4	2	3	4	5	5	4	2	3	0	3	1
+T104	C7	Customer Service	Customer Service Excellence	Delivering exceptional service experiences	8	Basic	LMS	Customer Service	4	2	3	3	5	5	3	2	3	0	2	2
+T213	C5	Cybersecurity	Cyber Incident Response Planning	Preparing for cyber breach response	8	Advanced	Workshop	IT;Management	4	4	3	4	2	2	1	4	2	5	5	1
+T024	C2	IT & Systems	Cybersecurity Awareness	Basic cybersecurity risk prevention	4	Basic	LMS	All	2	3	2	2	2	2	1	1	2	5	2	3
+T072	C5	Cybersecurity	Cybersecurity Risk Awareness		4	Basic	LMS	All	1	3	1	1	0	0	0	0	0	5	3	1
+T026	C2	Data & Analytics	Data Analysis for Decision Making		10	Intermediate	Workshop	All	4	4	3	5	0	0	0	2	0	0	5	1
+T165	C5	Cybersecurity	Data Privacy & Protection Essentials		4	Basic	LMS	All	1	3	1	1	0	0	0	0	0	5	3	1
+T184	C5	Regulatory Compliance	Data Protection & Privacy Compliance	Ensuring GDPR-style compliance systems	6	Intermediate	Workshop	IT;HR	3	3	3	3	2	2	1	3	2	5	4	2
+T196	C2	Data & Analytics	Data Visualization & Dashboard Design	Designing impactful dashboards for business reporting	8	Intermediate	Workshop	Management;Finance	4	3	3	4	2	1	2	2	1	0	5	2
+T021	C2	Data & Analytics	Data-Driven Decision Making	Using data for operational insights	8	Intermediate	Workshop	Managers	4	4	3	5	2	1	2	3	2	0	5	2
+T125	C2	IT & Systems	Database Fundamentals (SQL Basics)		10	Intermediate	Workshop	IT/Data	3	4	3	4	0	0	0	1	0	0	5	1
+T013	C1	Critical Thinking	Decision-Making Under Pressure	Improve decision speed and quality	6	Advanced	Workshop	Managers	4	4	4	5	3	2	1	4	2	0	1	1
+T069	C4	People Leadership	Delegation & Empowerment	Improving team autonomy	6	Intermediate	Workshop	Managers	5	2	4	3	3	1	1	4	3	0	1	2
+T054	C4	Execution & Performance	Delegation Skills for Managers		6	Intermediate	Workshop	Managers	5	3	4	3	2	0	0	5	2	0	0	1
+T227	C7	Supply Chain	Demand Planning & Forecasting	Forecast-driven supply chain planning	8	Advanced	Workshop	Supply Chain	5	4	5	4	2	2	2	3	2	1	5	1
+T132	C8	Recognition Programs	Designing Recognition Programs	Building employee appreciation systems	6	Intermediate	Workshop	HR;Management	4	1	2	2	3	1	1	4	5	0	1	2
+T189	C8	Recognition	Designing Recognition Systems		6	Intermediate	Workshop	HR/Leaders	3	1	1	2	3	0	1	4	5	0	0	2
+T176	C4	Coaching & Feedback	Difficult Feedback Delivery	Delivering corrective feedback constructively	6	Advanced	Workshop	Managers	4	3	3	4	5	2	2	5	4	0	1	2
+T259	C4	Change Management	Digital Change Leadership	Leading digital adoption successfully	10	Advanced	Workshop	Senior Management	5	4	4	5	4	2	2	5	3	1	4	1
+T027	C2	IT & Systems	Digital Literacy Fundamentals		6	Basic	LMS	All	3	2	3	2	0	0	0	0	1	0	4	2
+T221	C7	Sales	Digital Sales & Social Selling	Leveraging digital platforms for selling	6	Intermediate	Workshop	Sales	4	2	3	3	4	4	5	2	3	0	4	2
+T031	C2	IT & Systems	Digital Transformation Basics	Understanding digital adoption in business	6	Basic	LMS	Management	3	2	3	3	2	1	1	3	2	0	4	2
+T092	C6	Diversity & Inclusion	Diversity & Inclusion at Work	Inclusive team environments	6	Intermediate	Workshop	All	3	2	2	3	4	3	1	3	5	1	1	2
+T155	C4	Execution & Performance	Driving Accountability in Teams		6	Intermediate	Workshop	Managers	5	3	4	3	2	0	1	5	3	0	0	1
+T017	C1	Collaboration	Effective Meeting Management		4	Basic	LMS	All	4	2	4	2	4	0	0	1	2	0	0	1
+T138	C8	Townhalls	Effective Townhall Facilitation	Engaging company-wide communication events	4	Basic	LMS	Management	3	1	2	2	4	2	1	4	4	0	1	2
+T001	C1	Communication	Effective Workplace Communication	Improve clarity and reduce miscommunication in daily work	8	Basic	LMS	All	4	2	3	3	5	2	1	2	3	0	0	2
+T042	C3	Emotional Intelligence	Emotional Intelligence at Work	Self-awareness and relationship control	8	Intermediate	Workshop	All	4	2	3	3	5	3	2	3	4	0	0	2
+T041	C3	Emotional Intelligence	Emotional Intelligence Fundamentals		8	Basic	LMS	All	3	2	2	3	4	2	1	3	4	0	0	1
+T201	C3	Emotional Intelligence	Empathy in Leadership	Building trust through emotional awareness	6	Intermediate	Workshop	Managers	4	2	3	3	5	3	2	4	4	0	0	2
+T144	C3	Emotional Intelligence	Empathy in the Workplace		4	Basic	LMS	All	2	1	1	2	4	2	1	2	4	0	0	1
+T285	C8	Employee Motivation	Employee Advocacy Programs	Turning employees into brand ambassadors	6	Advanced	Workshop	HR;Marketing	4	1	2	3	4	3	3	3	5	0	2	1
+T079	C6	Engagement Programs	Employee Engagement Strategies		6	Intermediate	Workshop	HR/Leaders	3	1	2	2	3	1	1	4	5	0	0	2
+T089	C6	Engagement Programs	Employee Engagement Strategy	Designing engagement systems	6	Advanced	Workshop	HR;Management	4	2	3	3	3	2	1	4	5	0	1	2
+T217	C6	Engagement Programs	Employee Experience Design	Improving employee journey touchpoints	8	Advanced	Workshop	HR;Management	4	2	3	3	4	2	1	4	5	0	2	2
+T091	C8	Motivation	Employee Motivation & Recognition		4	Basic	LMS	All	3	1	1	1	2	0	1	2	5	0	0	2
+T274	C7	HR	Employee Relations & Labor Law	Managing workforce relations professionally	8	Intermediate	Workshop	HR	4	3	3	3	4	2	1	3	4	5	3	2
+T267	C6	Engagement Programs	Engagement Pulse Survey Design	Designing effective engagement measurement tools	6	Advanced	Workshop	HR;Management	4	2	3	3	3	1	1	4	5	0	2	2
+T234	C8	Corporate Events	Engagement-Driven Corporate Events	Designing events that reinforce culture	6	Intermediate	Workshop	HR;Management	3	1	2	2	4	2	1	3	5	0	1	2
+T281	C8	Employee Motivation	Engaging Hybrid Workforce	Maintaining engagement in hybrid teams	6	Intermediate	Workshop	All	4	1	3	3	3	2	2	3	5	0	1	2
+T247	C2	IT & Systems	Enterprise Systems Architecture	Understanding enterprise IT structures	10	Advanced	Workshop	IT;Management	4	4	3	5	2	1	1	4	2	2	5	1
+T119	C2	Operational Tools	ERP Systems Overview		6	Intermediate	Workshop	Ops/Finance	4	4	3	3	0	0	0	1	0	1	5	1
+T261	C5	Ethics & Governance	Ethical Leadership in Practice	Applying ethical principles in leadership roles	6	Intermediate	Workshop	Managers	3	2	2	4	4	2	2	4	3	5	2	2
+T200	C3	Accountability	Execution Excellence Mindset	Driving consistent follow-through culture	6	Intermediate	Workshop	All	5	3	4	4	3	1	1	3	3	0	1	2
+T241	C1	Communication	Executive Communication Excellence	High-level communication for senior leaders	8	Advanced	Workshop	Senior Management	4	2	3	4	5	3	3	5	3	0	1	1
+T233	C8	Townhalls	Executive Townhall Strategy	Strategic communication during company updates	4	Intermediate	Workshop	Management	3	1	2	3	4	2	1	4	4	0	1	2
+T258	C4	Coaching & Feedback	Feedback Culture Transformation	Building a feedback-rich organization	8	Advanced	Workshop	Managers	4	3	3	4	5	2	2	5	4	0	2	2
+T085	C7	Finance	Financial Literacy for Non-Finance		8	Basic	LMS	All	3	3	2	3	0	0	0	1	0	1	3	1
+T115	C7	Finance	Financial Literacy for Non-Finance Managers	Understanding financial statements and KPIs	8	Basic	LMS	All	4	3	3	4	2	1	2	3	2	1	4	2
+T224	C7	Finance	Financial Modeling & Forecasting	Advanced financial planning tools	10	Advanced	Workshop	Finance	4	3	3	5	2	1	3	4	2	1	5	1
+T117	C7	Finance	Financial Risk Management	Identifying and mitigating financial risk	8	Advanced	Workshop	Finance;Management	4	4	3	5	2	1	2	4	2	3	4	1
+T060	C4	People Leadership	First-Time Manager Essentials	Core supervisory skills and team control	12	Basic	LMS	Managers	5	3	4	4	4	2	2	5	3	1	2	2
+T149	C1	Personal Productivity	Focus & Deep Work Strategies	Reducing distractions and improving output	4	Basic	LMS	All	5	2	5	3	2	1	1	1	2	0	1	2
+T236	C8	Performance Inspiration	Goal Setting & Achievement Mastery	Personal goal execution frameworks	6	Intermediate	Workshop	All	5	2	4	4	3	1	2	3	4	0	1	2
+T046	C3	Growth Mindset	Growth Mindset & Learning Agility		6	Basic	LMS	All	3	2	2	3	2	0	0	2	4	0	1	3
+T047	C3	Growth Mindset	Growth Mindset for Professionals	Learning orientation and self-development	4	Basic	LMS	All	3	1	2	3	3	1	1	2	4	0	1	3
+T106	C7	Customer Service	Handling Customer Complaints	Service recovery and de-escalation skills	6	Intermediate	Workshop	Customer Service	4	3	3	4	5	5	2	2	3	0	2	2
+T055	C3	Resilience	Handling Workplace Uncertainty	Navigating ambiguity confidently	4	Basic	LMS	All	3	1	3	3	3	1	1	2	4	0	0	2
+T133	C3	Accountability	High Ownership Culture		6	Intermediate	Workshop	All	4	3	3	2	2	0	1	3	4	0	0	1
+T282	C8	Performance Inspiration	High-Energy Work Habits	Daily habits for sustained performance energy	4	Basic	LMS	All	4	1	3	3	3	1	1	2	5	0	0	2
+T160	C4	Execution & Performance	High-Impact Performance Reviews		6	Intermediate	Workshop	Managers	4	3	3	3	2	0	1	5	3	1	0	1
+T230	C8	Recognition Programs	High-Impact Recognition Systems	Designing performance-linked recognition	6	Advanced	Workshop	HR;Management	4	1	2	3	3	1	1	4	5	0	1	2
+T094	C8	Townhalls	High-Impact Townhall Facilitation		4	Intermediate	Workshop	Leaders	2	0	1	1	4	0	1	4	5	0	0	2
+T174	C6	Collaboration Culture	High-Performance Culture Design		8	Advanced	Workshop	Leaders	4	2	2	4	3	1	1	5	5	0	0	1
+T004	C1	Collaboration	High-Performance Team Collaboration	Improve coordination and accountability in teams	8	Intermediate	Workshop	All	5	3	4	3	4	2	1	3	4	0	0	2
+T207	C4	Execution & Performance	High-Performance Team Systems	Building measurable team execution frameworks	10	Advanced	Workshop	Managers	5	4	5	4	4	1	2	5	4	1	3	1
+T265	C6	Trust Building	High-Trust Leadership Habits	Building credibility and reliability as a leader	6	Intermediate	Workshop	Managers	4	2	3	3	5	2	2	5	4	0	1	2
+T118	C7	HR	HR Fundamentals	Core HR systems and employee lifecycle	8	Basic	LMS	HR	4	2	3	3	4	2	1	3	3	2	4	2
+T090	C7	HR	HR Fundamentals for Supervisors		6	Basic	LMS	HR	3	2	2	2	2	0	0	3	3	2	0	1
+T218	C6	Diversity & Inclusion	Inclusive Leadership Practices	Leading diverse teams effectively	6	Intermediate	Workshop	Managers	4	2	3	3	5	3	2	4	5	1	1	2
+T212	C5	Regulatory Compliance	Industry-Specific Regulatory Updates	Latest regulatory requirements overview	6	Intermediate	Seminar	Industry-Specific	3	4	3	3	2	2	1	3	2	5	3	2
+T107	C1	Communication	Influencing Without Authority		6	Intermediate	Workshop	All	4	1	2	3	4	1	2	3	3	0	0	1
+T204	C3	Growth Mindset	Innovation & Creative Thinking Lab	Practical creativity and ideation workshop	8	Advanced	Workshop	All	4	2	3	5	3	2	3	3	3	0	2	2
+T288	C8	Corporate Events	Innovation Hackathon Design	Designing innovation-focused corporate events	8	Advanced	Workshop	All	5	2	4	5	4	2	3	4	4	0	3	1
+T053	C3	Adaptability	Innovation Mindset Development	Creative problem-solving orientation	8	Advanced	Workshop	All	4	2	3	5	3	1	3	3	3	0	1	2
+T187	C8	Motivation	Inspiring High-Performance Teams		6	Intermediate	Workshop	Managers	3	1	1	2	3	1	2	4	5	0	0	2
+T237	C8	Townhalls	Interactive Engagement Sessions	Driving employee participation in forums	4	Basic	LMS	All	3	1	2	2	4	2	1	2	4	0	0	3
+T216	C6	Collaboration Culture	Interdepartmental Alignment Workshop	Aligning cross-functional objectives	8	Intermediate	Workshop	All	5	3	4	4	5	2	2	4	4	0	1	2
+T231	C8	Employee Motivation	Intrinsic Motivation Drivers	Understanding purpose-driven work models	6	Intermediate	Workshop	All	4	1	3	3	3	2	2	3	5	0	1	2
+T131	C2	IT & Systems	Introduction to AI in Business		6	Basic	LMS	All	3	2	2	4	0	0	0	1	1	0	4	2
+T033	C2	IT & Systems	Introduction to Cybersecurity Awareness		4	Basic	LMS	All	1	3	1	1	0	0	0	0	0	5	3	1
+T112	C7	Operations	Inventory Control & Optimization	Managing stock efficiency and accuracy	8	Intermediate	Workshop	Operations;Supply Chain	5	5	4	3	2	2	1	2	2	2	5	2
+T226	C7	IT	IT Governance & Risk Control	Managing IT systems governance	8	Advanced	Workshop	IT;Management	4	4	3	4	2	1	1	4	2	3	5	1
+T275	C7	IT	IT Project Governance	Managing IT initiatives effectively	8	Advanced	Workshop	IT;Management	4	3	4	4	2	1	1	4	2	2	5	1
+T124	C7	IT	IT Service Management (ITIL Basics)	Structured IT support systems	10	Intermediate	Workshop	IT	4	4	4	4	3	2	1	3	2	2	5	2
+T036	C2	Technical Certifications	IT Service Management Basics		8	Intermediate	Workshop	IT	3	3	3	3	0	1	0	1	0	2	4	1
+T101	C7	Sales	Key Account Management	Managing strategic customer relationships	8	Advanced	Workshop	Sales	4	2	3	4	5	5	5	3	3	0	3	1
+T205	C4	People Leadership	Leadership Communication Mastery	Communicating vision and direction effectively	8	Advanced	Workshop	Managers	4	2	3	4	5	2	2	5	3	0	2	1
+T052	C4	People Leadership	Leadership Fundamentals		10	Basic	LMS	Managers	4	2	2	3	3	1	1	5	3	0	0	1
+T238	C8	Corporate Events	Leadership Retreat Design	Designing offsite leadership development events	8	Advanced	Workshop	Senior Management	4	2	3	4	4	1	2	5	4	0	2	1
+T067	C4	Change Management	Leading Organizational Change	Driving change adoption effectively	10	Advanced	Workshop	Senior Management	4	3	4	4	3	2	2	5	3	1	3	1
+T076	C4	Change Management	Leading Through Crisis	Crisis decision-making leadership	8	Advanced	Workshop	Senior Management	4	3	4	5	3	2	2	5	3	1	2	1
+T025	C2	Operational Tools	Lean Process Improvement	Eliminate waste and improve flow	12	Advanced	Workshop	Operations	5	5	5	4	2	1	1	3	2	1	4	1
+T121	C2	Technical Certifications	Lean Six Sigma Yellow Belt		12	Intermediate	Workshop	Ops	5	5	4	5	0	0	0	2	1	0	4	1
+T169	C3	Growth Mindset	Learning Agility Development	Accelerating personal learning speed	6	Advanced	Workshop	All	4	1	3	4	3	1	1	3	4	0	2	3
+T243	C1	Critical Thinking	Logical Reasoning & Bias Reduction	Improving judgment accuracy and clarity	6	Intermediate	Workshop	All	4	3	3	5	3	1	1	2	2	0	2	2
+T130	C7	Supply Chain	Logistics & Distribution Optimization	Improving transport and delivery systems	8	Advanced	Workshop	Supply Chain;Operations	5	5	5	4	3	3	2	3	2	2	5	1
+T278	C7	Operations	Maintenance Planning & Control	Structured preventive maintenance systems	8	Intermediate	Workshop	Operations	5	5	4	4	2	1	1	3	2	3	5	2
+T051	C3	Emotional Intelligence	Managing Difficult Conversations	Emotion control in high-stakes talks	6	Advanced	Workshop	Managers	4	3	3	4	5	3	2	4	3	0	0	1
+T135	C3	Emotional Intelligence	Managing Emotions Under Pressure		6	Intermediate	Workshop	All	3	2	2	3	3	1	1	2	4	0	0	1
+T251	C3	Emotional Intelligence	Managing Workplace Emotions	Regulating emotions in high-pressure settings	6	Intermediate	Workshop	All	4	2	3	3	4	2	1	3	4	0	0	2
+T256	C4	Strategic Thinking	Market Trend Analysis	Analyzing external business environment forces	8	Advanced	Workshop	Senior Management	4	2	3	5	3	2	3	5	2	0	4	1
+T015	C1	Personal Productivity	Meeting Effectiveness Mastery	Running productive meetings	4	Basic	LMS	All	4	2	4	3	4	1	1	2	2	0	0	2
+T203	C3	Resilience	Mental Toughness at Work	Sustaining performance under stress	6	Advanced	Workshop	All	4	2	3	4	3	1	1	3	5	0	0	1
+T245	C2	Software Tools	Microsoft 365 Productivity Suite	Optimizing collaboration with M365 tools	8	Basic	LMS	All	4	3	4	3	4	2	2	2	2	1	4	2
+T023	C2	Software Tools	Microsoft Excel Advanced		12	Advanced	Workshop	All	4	5	4	5	0	0	0	0	0	0	5	1
+T019	C2	Software Tools	Microsoft Excel Basic		8	Basic	LMS	All	3	3	3	3	0	0	0	0	0	0	4	2
+T022	C2	Software Tools	Microsoft Excel Intermediate		8	Intermediate	Workshop	All	4	4	4	4	0	0	0	0	0	0	5	2
+T137	C3	Adaptability	Navigating Change with Confidence		6	Intermediate	Workshop	All	3	2	3	3	2	0	0	3	4	0	0	1
+T202	C3	Adaptability	Navigating Organizational Change	Maintaining agility during restructuring	6	Intermediate	Workshop	All	4	2	4	3	3	2	2	3	4	0	1	2
+T210	C5	Safety	Occupational Health & Safety Compliance	Ensuring safe workplace standards	6	Intermediate	Workshop	All	3	5	3	2	2	1	0	2	3	5	2	2
+T175	C4	Execution & Performance	OKR Implementation & Tracking	Implementing objectives and key results systems	8	Intermediate	Workshop	Management	5	4	5	4	3	1	2	5	3	1	3	2
+T066	C4	Execution & Performance	OKRs & Strategic Execution		8	Advanced	Workshop	Leaders	5	3	4	4	1	0	1	5	2	0	0	1
+T277	C7	Customer Service	Omnichannel Customer Support	Delivering consistent service across channels	6	Intermediate	Workshop	Customer Service	4	3	3	4	5	5	4	2	3	0	4	2
+T182	C7	Operations	Operational Excellence Frameworks		10	Advanced	Workshop	Ops	5	5	4	5	0	0	0	2	1	0	4	1
+T257	C4	Execution & Performance	Operational Excellence Systems	Structured frameworks for operational mastery	10	Advanced	Workshop	Management;Operations	5	5	5	4	3	2	2	5	3	1	4	1
+T070	C4	Execution & Performance	Operational Execution Excellence	Driving performance consistency	8	Advanced	Workshop	Managers	5	5	5	4	2	1	1	4	2	1	3	1
+T223	C7	Operations	Operational Risk Management	Identifying and mitigating operational risks	8	Advanced	Workshop	Operations	5	5	4	4	2	2	1	3	2	3	4	1
+T110	C7	Operations	Operations Management Fundamentals	Core operational control systems	10	Intermediate	Workshop	Operations	5	4	5	4	3	2	2	3	2	1	4	2
+T250	C3	Accountability	Ownership Culture Workshop	Embedding proactive ownership behaviors	6	Intermediate	Workshop	All	5	3	4	3	3	1	1	3	4	0	1	2
+T136	C8	Performance Inspiration	Peak Performance Psychology	Unlocking high personal performance	6	Intermediate	Workshop	All	5	2	4	4	3	1	2	3	4	0	1	2
+T122	C7	HR	Performance Appraisal Systems	Designing fair performance review processes	8	Advanced	Workshop	HR;Managers	5	3	4	4	3	1	2	4	3	2	4	2
+T050	C3	Accountability	Performance Discipline Habits	Daily habits for execution excellence	4	Intermediate	Workshop	All	5	3	4	3	2	1	1	2	3	0	1	2
+T058	C4	Execution & Performance	Performance Management & Appraisals		8	Intermediate	Workshop	Managers	4	3	3	3	2	0	1	5	3	1	0	1
+T063	C4	Execution & Performance	Performance Management Systems	Setting KPIs and review structures	8	Intermediate	Workshop	Managers	5	4	4	4	3	1	2	5	3	1	3	2
+T289	C8	Employee Motivation	Performance Recognition & Awards	Designing structured award systems	6	Intermediate	Workshop	HR;Management	4	1	2	3	3	1	1	4	5	0	2	2
+T235	C8	Employee Motivation	Performance Recognition Psychology	Behavioral science behind reward systems	6	Advanced	Workshop	HR;Management	4	1	2	3	3	1	1	4	5	0	2	1
+T219	C6	Culture Transformation	Performance-Driven Culture Systems	Embedding accountability into culture	8	Advanced	Workshop	Management	5	4	4	4	4	2	2	5	5	1	2	1
+T143	C3	Accountability	Personal Effectiveness & Self-Leadership		6	Intermediate	Workshop	All	4	2	3	3	2	0	0	3	3	0	0	1
+T161	C3	Accountability	Personal Ownership & Initiative	Taking proactive responsibility at work	4	Basic	LMS	All	4	2	3	3	3	1	1	2	4	0	0	2
+T007	C1	Personal Productivity	Personal Productivity Systems	Time management and workflow systems	6	Basic	LMS	All	5	2	5	3	2	1	1	1	2	0	1	2
+T190	C1	Communication	Persuasive Communication Skills	Influencing stakeholders through structured messaging	6	Intermediate	Workshop	All	4	2	3	4	5	3	3	3	3	0	1	2
+T029	C2	Software Tools	Power BI Essentials	Business dashboards and reporting	10	Intermediate	Workshop	Finance;Management	4	3	3	4	1	1	2	2	1	0	5	2
+T030	C2	Data & Analytics	Power BI Fundamentals		10	Intermediate	Workshop	All	3	4	3	4	0	0	0	1	0	0	5	1
+T005	C1	Communication	Presentation Skills for Professionals		8	Intermediate	Workshop	All	3	1	2	2	5	2	2	3	3	0	0	2
+T018	C1	Communication	Presentation Skills Mastery	Confident and structured business presentations	8	Intermediate	Workshop	All	3	1	2	3	4	3	3	3	3	0	0	2
+T194	C1	Personal Productivity	Priority Management & Execution	Aligning daily work with strategic priorities	6	Intermediate	Workshop	All	5	3	5	4	3	1	2	2	3	0	2	2
+T037	C2	Operational Tools	Process Automation Fundamentals		8	Advanced	Workshop	Ops/IT	4	4	4	4	0	0	0	1	0	0	5	1
+T088	C7	Operations	Process Improvement Fundamentals		8	Intermediate	Workshop	Ops	5	4	4	4	1	0	0	2	1	0	3	1
+T034	C2	Operational Tools	Process Mapping & SOP Design	Standardizing operations through documentation	8	Intermediate	Workshop	Operations	4	5	4	3	2	1	1	2	2	2	4	2
+T272	C7	Operations	Production Planning & Scheduling	Optimizing production flow timing	8	Advanced	Workshop	Operations	5	5	5	4	2	1	1	3	2	2	5	1
+T113	C1	Communication	Professional Report Writing		6	Intermediate	Workshop	All	3	4	3	3	4	1	1	1	2	0	0	1
+T028	C2	Technical Certifications	Project Management Fundamentals	Core PM tools and execution control	12	Intermediate	Workshop	Managers	4	3	4	4	3	1	2	4	2	0	4	2
+T032	C2	Operational Tools	Project Management Software Tools		6	Intermediate	Workshop	Ops/PM	4	3	4	3	0	0	0	2	0	0	4	1
+T170	C6	Trust Building	Psychological Safety in Teams		6	Intermediate	Workshop	All	4	2	2	3	4	1	1	3	5	0	0	1
+T157	C2	Operational Tools	Quality Management Systems (QMS)	Quality standards and improvement cycles	8	Advanced	Workshop	Operations	5	5	4	4	2	2	1	3	2	3	4	2
+T287	C8	Townhalls	Quarterly Performance Townhalls	Communicating results and goals transparently	4	Basic	LMS	All	4	1	3	3	4	2	2	3	4	0	1	2
+T280	C8	Recognition Programs	Recognition Strategy Alignment	Aligning rewards with company goals	6	Advanced	Workshop	HR;Management	4	1	2	3	3	1	1	4	5	0	2	1
+T120	C7	HR	Recruitment & Talent Acquisition	Modern hiring and selection systems	8	Intermediate	Workshop	HR	4	2	3	4	4	2	2	3	4	2	4	2
+T081	C5	Regulatory Compliance	Regulatory Compliance Essentials	Understanding legal obligations	6	Intermediate	Workshop	All	3	4	3	3	2	1	1	3	2	5	2	2
+T071	C5	Regulatory Compliance	Regulatory Compliance for Managers		6	Intermediate	Workshop	Managers	2	3	2	2	0	0	0	2	1	5	0	1
+T145	C1	Collaboration	Remote Team Collaboration	Virtual teamwork tools and norms	6	Intermediate	Workshop	All	4	3	4	3	4	2	2	3	3	0	2	2
+T232	C8	Performance Inspiration	Resilience & Peak Energy Workshop	Boosting morale and performance energy	4	Basic	LMS	All	3	1	2	2	3	1	1	2	5	0	0	2
+T045	C3	Resilience	Resilience & Stress Management	Managing pressure and burnout	6	Basic	LMS	All	3	2	3	2	3	2	1	2	5	0	0	2
+T286	C8	Performance Inspiration	Resilience Boost Sessions	Short workshops to boost morale	4	Basic	LMS	All	3	1	2	2	3	1	1	2	5	0	0	2
+T260	C5	Safety	Risk Assessment & Hazard Control	Identifying and mitigating workplace risks	8	Intermediate	Workshop	Operations	4	5	4	3	2	1	0	3	3	5	3	2
+T193	C1	Critical Thinking	Root Cause Analysis Mastery	Advanced structured root cause frameworks	8	Advanced	Workshop	All	5	5	4	5	3	2	2	3	2	1	3	1
+T220	C7	Sales	Sales Forecasting & Analytics	Using data to predict sales performance	8	Advanced	Workshop	Sales;Management	4	3	4	4	3	2	5	3	2	0	5	1
+T096	C7	Sales	Sales Fundamentals	Core selling principles and customer engagement	8	Basic	LMS	Sales	4	2	3	3	4	3	5	2	2	0	2	2
+T279	C7	Sales	Sales Performance Coaching	Coaching sales teams for improved results	8	Advanced	Workshop	Sales;Managers	4	2	3	4	4	3	5	5	3	0	3	1
+T100	C7	Sales	Sales Pipeline Management	Managing leads and conversion flow	6	Intermediate	Workshop	Sales	5	3	4	3	3	3	5	2	2	0	3	2
+T173	C4	Strategic Thinking	Scenario Planning & Risk Forecasting	Anticipating future business disruptions	8	Advanced	Workshop	Senior Management	4	4	3	5	3	1	2	5	2	2	4	1
+T150	C4	Strategic Thinking	Scenario Planning & Strategic Foresight		10	Advanced	Workshop	Leaders	4	2	2	5	1	0	1	5	1	0	0	1
+T263	C5	Cybersecurity	Secure Remote Work Practices	Ensuring security in remote environments	4	Basic	LMS	All	3	3	3	2	2	2	1	2	2	5	3	3
+T163	C3	Emotional Intelligence	Self-Regulation Techniques	Managing emotional reactions professionally	4	Intermediate	Workshop	All	3	2	3	3	4	2	1	3	4	0	0	2
+T228	C7	Customer Service	Service Quality Measurement	Measuring service KPIs and performance	6	Intermediate	Workshop	Customer Service	4	4	3	4	4	5	3	2	3	0	4	2
+T179	C7	Customer Service	Service Recovery & Complaint Handling		6	Intermediate	Workshop	CS	3	3	2	2	4	5	2	1	3	0	0	1
+T271	C7	Customer Service	Service Recovery Systems	Structured recovery models for dissatisfied clients	6	Advanced	Workshop	Customer Service	4	3	3	4	5	5	3	2	3	0	3	1
+T266	C6	Collaboration Culture	Shared Vision Alignment	Aligning teams around common goals	6	Intermediate	Workshop	All	5	2	4	4	4	2	2	4	4	0	1	2
+T249	C2	Technical Certifications	Six Sigma Yellow Belt	Foundational Six Sigma methodology	10	Intermediate	Workshop	Operations;Quality	5	5	4	4	2	1	1	3	2	2	5	2
+T154	C2	Data & Analytics	SQL for Business Analysts	Querying and extracting insights from data	12	Advanced	Workshop	IT;Finance	4	4	4	5	2	1	2	2	1	0	5	1
+T192	C1	Collaboration	Stakeholder Collaboration Management	Managing internal and external stakeholders effectively	8	Advanced	Workshop	Managers	4	3	3	4	5	3	2	4	3	0	2	1
+T191	C1	Communication	Storytelling for Business Impact	Using narrative techniques in business communication	6	Intermediate	Workshop	All	3	1	2	3	4	3	3	2	3	0	1	2
+T098	C1	Communication	Storytelling for Influence		6	Intermediate	Workshop	All	3	1	2	3	5	2	3	3	3	0	0	1
+T270	C7	Sales	Strategic Account Expansion	Growing revenue within existing accounts	8	Advanced	Workshop	Sales	4	2	3	4	5	4	5	3	2	0	4	1
+T283	C8	Townhalls	Strategic Internal Communication Events	Designing impactful company communication sessions	4	Intermediate	Workshop	Management	3	1	2	3	4	2	1	4	4	0	1	2
+T254	C3	Growth Mindset	Strategic Learning & Upskilling	Designing continuous learning plans	6	Intermediate	Workshop	All	4	1	3	4	3	1	1	3	4	0	2	3
+T061	C4	Strategic Thinking	Strategic Planning Fundamentals	Setting direction and long-term goals	10	Intermediate	Workshop	Senior Management	4	2	3	5	3	1	2	5	2	0	3	1
+T059	C4	Strategic Thinking	Strategic Thinking Fundamentals		10	Advanced	Workshop	Leaders	4	2	2	5	1	0	1	5	1	0	0	1
+T048	C3	Resilience	Stress Management & Wellbeing		4	Basic	LMS	All	3	1	2	1	2	0	0	1	4	0	0	1
+T006	C1	Critical Thinking	Structured Problem Solving	Root cause analysis and logical thinking tools	8	Intermediate	Workshop	All	4	4	3	5	3	1	1	2	2	0	1	2
+T158	C4	People Leadership	Succession Planning & Talent Development		8	Advanced	Workshop	HR/Leaders	3	1	2	3	2	0	0	5	4	0	0	2
+T255	C4	People Leadership	Succession Planning Essentials	Preparing future leaders internally	8	Advanced	Workshop	HR;Management	4	2	3	4	3	1	2	5	4	1	3	1
+T128	C7	Supply Chain	Supplier Relationship Management	Managing vendor performance and partnerships	8	Intermediate	Workshop	Supply Chain	4	3	4	4	4	2	2	3	2	1	5	2
+T038	C2	Technical Certifications	Supply Chain Fundamentals	Core supply chain systems and controls	8	Intermediate	Workshop	Supply Chain	4	4	4	3	2	2	1	2	2	1	5	2
+T197	C2	IT & Systems	Systems Integration Fundamentals	Connecting business systems efficiently	10	Advanced	Workshop	IT	4	4	4	4	2	1	1	3	2	2	5	1
+T185	C7	HR	Talent Acquisition & Interviewing Skills		6	Intermediate	Workshop	HR	3	2	2	2	3	0	1	3	3	1	0	2
+T171	C4	People Leadership	Team Performance Diagnostics	Identifying performance gaps systematically	8	Advanced	Workshop	Managers	5	4	4	5	3	1	2	5	3	1	3	1
+T086	C6	Trust Building	Team Trust Acceleration	Building psychological safety	6	Intermediate	Workshop	All	4	2	3	3	5	2	1	3	5	0	0	2
+T014	C1	Collaboration	Teamwork & Collaboration		6	Basic	LMS	All	4	2	3	3	5	2	1	2	4	0	0	2
+T147	C3	Adaptability	Thriving in Uncertainty		6	Intermediate	Workshop	All	3	2	3	3	2	0	0	2	4	0	0	1
+T010	C1	Personal Productivity	Time Management & Personal Productivity		6	Basic	LMS	All	5	3	5	3	2	0	0	1	2	0	0	1
+T209	C4	Change Management	Transformation Leadership Strategy	Leading large-scale organizational change	12	Advanced	Workshop	Senior Management	5	4	4	5	4	2	2	5	3	1	3	1
+T109	C1	Collaboration	Virtual Collaboration Skills		4	Basic	LMS	All	3	2	3	2	4	1	1	1	3	0	1	2
+T276	C7	Supply Chain	Warehouse Efficiency Optimization	Improving warehouse productivity systems	8	Advanced	Workshop	Supply Chain	5	5	5	4	2	2	1	3	2	2	5	1
+T049	C3	Accountability	Work Discipline & Reliability		4	Basic	LMS	All	4	3	4	1	1	0	0	1	2	1	0	1
+T127	C2	Operational Tools	Workflow Optimization with Digital Tools		6	Intermediate	Workshop	Ops	4	4	4	3	0	0	0	1	0	0	4	1
+T225	C7	HR	Workforce Planning & Analytics	Strategic HR planning systems	8	Advanced	Workshop	HR;Management	4	2	3	4	3	1	2	4	4	1	5	2
+T264	C5	Workplace Policies	Workplace Discipline Procedures	Managing policy violations appropriately	4	Basic	LMS	Managers;HR	3	3	2	3	3	2	1	3	3	5	1	2
+T105	C1	Professionalism	Workplace Etiquette & Corporate Image		4	Basic	LMS	All	2	2	2	1	3	1	0	1	3	1	0	1
+T084	C5	Workplace Policies	Workplace Harassment Prevention	Safe and respectful workplace practices	4	Basic	LMS	All	3	2	2	3	4	2	1	3	4	5	1	2
+T134	C8	Employee Motivation	Workplace Motivation Strategies	Understanding motivational drivers	6	Basic	LMS	All	4	1	3	3	3	2	2	3	5	0	1	2
+T016	C1	Professionalism	Workplace Professionalism & Ethics		4	Basic	LMS	All	3	3	2	2	3	1	0	1	3	3	0	1
+T009	C1	Workplace Professionalism	Workplace Professionalism Standards	Professional behavior and accountability culture	4	Basic	LMS	All	3	2	2	2	3	2	1	2	4	1	0	2
+T078	C5	Safety	Workplace Safety Fundamentals	Preventing accidents and hazards	6	Basic	LMS	All	3	5	3	2	2	1	0	2	3	5	2	2
