@@ -173,3 +173,141 @@ export const benchmarkGains = {
 // Default replacement cost as a multiple of annual salary
 export const replacementCostFactor = 0.5;
 
+// Competency Mapping: Training Goal → Core Competency → 7 Pillar
+export interface CompetencyMapping {
+  trainingGoal: string;
+  coreCompetency: string;
+  pillarId: string;
+  pillarName: string;
+}
+
+export const competencyMapping: CompetencyMapping[] = [
+  // Sales
+  { trainingGoal: "Increase conversion rate from leads to closed deals", coreCompetency: "Advanced Negotiation & Closing", pillarId: "Pillar 2", pillarName: "Pillar 2: Sales & Business Development" },
+  { trainingGoal: "Reduce sales cycle time through advanced negotiation skills", coreCompetency: "Advanced Negotiation & Closing", pillarId: "Pillar 2", pillarName: "Pillar 2: Sales & Business Development" },
+  { trainingGoal: "Boost cross-selling/upselling with product knowledge training", coreCompetency: "Product Knowledge & Sales Strategy", pillarId: "Pillar 2", pillarName: "Pillar 2: Sales & Business Development" },
+  { trainingGoal: "Improve active listening skills", coreCompetency: "Communication & Interpersonal Skills", pillarId: "Pillar 4", pillarName: "Pillar 4: Communication & Interpersonal Excellence" },
+  { trainingGoal: "Enhance resilience and stress management", coreCompetency: "Resilience & Emotional Intelligence", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  
+  // Customer Support/Service
+  { trainingGoal: "Improve first-call resolution (FCR) rate", coreCompetency: "Customer Service Quality & Empathy", pillarId: "Pillar 3", pillarName: "Pillar 3: Customer Service Quality & Experience" },
+  { trainingGoal: "Reduce average handle time (AHT) without sacrificing quality", coreCompetency: "Operational Efficiency & Process Adherence", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Increase CSAT scores through empathy training", coreCompetency: "Customer Service Quality & Empathy", pillarId: "Pillar 3", pillarName: "Pillar 3: Customer Service Quality & Experience" },
+  { trainingGoal: "Strengthen conflict resolution skills", coreCompetency: "Conflict Management & Resolution", pillarId: "Pillar 4", pillarName: "Pillar 4: Communication & Interpersonal Excellence" },
+  { trainingGoal: "Foster team collaboration", coreCompetency: "Teamwork & Collaboration", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  
+  // Operations & Supply Chain
+  { trainingGoal: "Reduce inventory waste via Lean methodologies", coreCompetency: "Operational Excellence & Lean Management", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Improve on-time delivery rates", coreCompetency: "Operational Efficiency & Process Adherence", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Cut supply chain costs through vendor negotiation training", coreCompetency: "Advanced Negotiation & Closing", pillarId: "Pillar 2", pillarName: "Pillar 2: Sales & Business Development" },
+  { trainingGoal: "Enhance problem-solving agility", coreCompetency: "Critical Thinking & Problem Solving", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Build cross-functional communication", coreCompetency: "Communication & Interpersonal Skills", pillarId: "Pillar 4", pillarName: "Pillar 4: Communication & Interpersonal Excellence" },
+  
+  // Finance & Accounting
+  { trainingGoal: "Speed up monthly close process", coreCompetency: "Operational Efficiency & Process Adherence", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Reduce errors in financial reports", coreCompetency: "Quality Assurance & Process Adherence", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Ensure 100% compliance with new tax laws", coreCompetency: "Compliance & Regulatory Knowledge", pillarId: "Pillar 6", pillarName: "Pillar 6: Compliance & Risk Management" },
+  { trainingGoal: "Improve data storytelling for executive reports", coreCompetency: "Data Literacy & Business Communication", pillarId: "Pillar 1", pillarName: "Pillar 1: Strategic Leadership & Decision Making" },
+  { trainingGoal: "Strengthen ethical decision-making", coreCompetency: "Ethical Leadership & Decision Making", pillarId: "Pillar 1", pillarName: "Pillar 1: Strategic Leadership & Decision Making" },
+  
+  // Human Resources (HR)
+  { trainingGoal: "Increase employee retention through engagement strategies", coreCompetency: "Talent Management & Employee Engagement", pillarId: "Pillar 7", pillarName: "Pillar 7: Talent & Culture Transformation" },
+  { trainingGoal: "Reduce time-to-hire with recruiter training", coreCompetency: "Talent Acquisition & Recruitment", pillarId: "Pillar 7", pillarName: "Pillar 7: Talent & Culture Transformation" },
+  { trainingGoal: "Achieve 90%+ completion rate for mandatory DEI training", coreCompetency: "Diversity, Equity & Inclusion", pillarId: "Pillar 7", pillarName: "Pillar 7: Talent & Culture Transformation" },
+  { trainingGoal: "Improve conflict mediation skills", coreCompetency: "Conflict Management & Resolution", pillarId: "Pillar 4", pillarName: "Pillar 4: Communication & Interpersonal Excellence" },
+  { trainingGoal: "Boost employer branding", coreCompetency: "Talent Management & Employee Engagement", pillarId: "Pillar 7", pillarName: "Pillar 7: Talent & Culture Transformation" },
+  
+  // Information Technology (IT)
+  { trainingGoal: "Reduce system downtime through proactive maintenance training", coreCompetency: "Technical Operations & System Management", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Increase cybersecurity compliance certifications", coreCompetency: "Compliance & Regulatory Knowledge", pillarId: "Pillar 6", pillarName: "Pillar 6: Compliance & Risk Management" },
+  { trainingGoal: "Speed up ticket resolution time", coreCompetency: "Operational Efficiency & Process Adherence", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Improve user-centric communication", coreCompetency: "Communication & Interpersonal Skills", pillarId: "Pillar 4", pillarName: "Pillar 4: Communication & Interpersonal Excellence" },
+  { trainingGoal: "Foster an innovation mindset", coreCompetency: "Innovation & Creative Problem Solving", pillarId: "Pillar 1", pillarName: "Pillar 1: Strategic Leadership & Decision Making" },
+  
+  // Leadership & Management
+  { trainingGoal: "Increase employee engagement scores for their teams", coreCompetency: "Leadership & Team Management", pillarId: "Pillar 1", pillarName: "Pillar 1: Strategic Leadership & Decision Making" },
+  { trainingGoal: "Improve decision-making speed with data literacy", coreCompetency: "Data Literacy & Business Communication", pillarId: "Pillar 1", pillarName: "Pillar 1: Strategic Leadership & Decision Making" },
+  { trainingGoal: "Reduce turnover in their departments", coreCompetency: "Leadership & Team Management", pillarId: "Pillar 1", pillarName: "Pillar 1: Strategic Leadership & Decision Making" },
+  { trainingGoal: "Strengthen coaching skills", coreCompetency: "Coaching & Mentoring", pillarId: "Pillar 1", pillarName: "Pillar 1: Strategic Leadership & Decision Making" },
+  { trainingGoal: "Enhance change management capabilities", coreCompetency: "Change Management & Transformation", pillarId: "Pillar 7", pillarName: "Pillar 7: Talent & Culture Transformation" },
+  
+  // Compliance & Legal
+  { trainingGoal: "Achieve 100% completion of mandatory compliance training", coreCompetency: "Compliance & Regulatory Knowledge", pillarId: "Pillar 6", pillarName: "Pillar 6: Compliance & Risk Management" },
+  { trainingGoal: "Reduce regulatory fines", coreCompetency: "Compliance & Regulatory Knowledge", pillarId: "Pillar 6", pillarName: "Pillar 6: Compliance & Risk Management" },
+  { trainingGoal: "Speed up contract review times", coreCompetency: "Operational Efficiency & Process Adherence", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Improve risk communication to non-legal teams", coreCompetency: "Communication & Interpersonal Skills", pillarId: "Pillar 4", pillarName: "Pillar 4: Communication & Interpersonal Excellence" },
+  { trainingGoal: "Build an ethical culture", coreCompetency: "Ethical Leadership & Decision Making", pillarId: "Pillar 1", pillarName: "Pillar 1: Strategic Leadership & Decision Making" },
+  
+  // Marketing & Digital
+  { trainingGoal: "Increase lead conversion rate", coreCompetency: "Digital Marketing & Lead Generation", pillarId: "Pillar 2", pillarName: "Pillar 2: Sales & Business Development" },
+  { trainingGoal: "Improve ROI on ad spend", coreCompetency: "Data Literacy & Business Communication", pillarId: "Pillar 1", pillarName: "Pillar 1: Strategic Leadership & Decision Making" },
+  { trainingGoal: "Boost organic traffic via SEO training", coreCompetency: "Digital Marketing & Lead Generation", pillarId: "Pillar 2", pillarName: "Pillar 2: Sales & Business Development" },
+  { trainingGoal: "Enhance data-driven storytelling", coreCompetency: "Data Literacy & Business Communication", pillarId: "Pillar 1", pillarName: "Pillar 1: Strategic Leadership & Decision Making" },
+  { trainingGoal: "Strengthen cross-team collaboration", coreCompetency: "Teamwork & Collaboration", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  
+  // Generic Employee Development
+  { trainingGoal: "Increase participation in L&D programs", coreCompetency: "Learning Agility & Development Mindset", pillarId: "Pillar 7", pillarName: "Pillar 7: Talent & Culture Transformation" },
+  { trainingGoal: "Improve time management skills", coreCompetency: "Personal Productivity & Time Management", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Boost DEI awareness", coreCompetency: "Diversity, Equity & Inclusion", pillarId: "Pillar 7", pillarName: "Pillar 7: Talent & Culture Transformation" },
+  { trainingGoal: "Enhance communication skills", coreCompetency: "Communication & Interpersonal Skills", pillarId: "Pillar 4", pillarName: "Pillar 4: Communication & Interpersonal Excellence" },
+  { trainingGoal: "Foster a growth mindset", coreCompetency: "Learning Agility & Development Mindset", pillarId: "Pillar 7", pillarName: "Pillar 7: Talent & Culture Transformation" },
+  
+  // Engineering
+  { trainingGoal: "Reduce code rework", coreCompetency: "Quality Assurance & Process Adherence", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Improve sprint completion rates", coreCompetency: "Operational Efficiency & Process Adherence", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Upskill in DevOps tools", coreCompetency: "Technical Operations & System Management", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Strengthen documentation practices", coreCompetency: "Quality Assurance & Process Adherence", pillarId: "Pillar 5", pillarName: "Pillar 5: Workplace Performance Suites" },
+  { trainingGoal: "Boost collaboration with non-tech teams", coreCompetency: "Communication & Interpersonal Skills", pillarId: "Pillar 4", pillarName: "Pillar 4: Communication & Interpersonal Excellence" }
+];
+
+// Helper function to get competencies and pillars from selected training goals
+export function getCompetenciesFromGoals(selectedGoals: string[]): { competencies: string[], pillars: string[] } {
+  const competencySet = new Set<string>();
+  const pillarSet = new Set<string>();
+  
+  selectedGoals.forEach(goal => {
+    const mapping = competencyMapping.find(m => m.trainingGoal === goal);
+    if (mapping) {
+      competencySet.add(mapping.coreCompetency);
+      pillarSet.add(mapping.pillarName);
+    }
+  });
+  
+  return {
+    competencies: Array.from(competencySet),
+    pillars: Array.from(pillarSet)
+  };
+}
+
+// Soft Skills to Pillar mapping (for filtering)
+export const softSkillsToPillar: Record<string, string[]> = {
+  "Professionalism": ["Pillar 4", "Pillar 5"],
+  "Personal Branding": ["Pillar 4", "Pillar 5"],
+  "Personal Development": ["Pillar 5", "Pillar 7"],
+  "Growth Mindset": ["Pillar 7"],
+  "Emotional Intelligence": ["Pillar 4", "Pillar 5"],
+  "Resilience at Work": ["Pillar 5"],
+  "Teamwork & Collaboration": ["Pillar 4", "Pillar 5"],
+  "Building High Performing Teams": ["Pillar 1", "Pillar 5"],
+  "Conflict Management": ["Pillar 4"],
+  "Leadership Fundamentals": ["Pillar 1"],
+  "Strategic Thinking": ["Pillar 1"],
+  "Project Management Skills": ["Pillar 5"]
+};
+
+// Helper function to filter soft skills by pillar
+export function getSoftSkillsByPillar(pillarNames: string[]): string[] {
+  const pillarIds = pillarNames.map(p => {
+    // Extract pillar number from pillar name (e.g., "Pillar 3: Customer Service..." -> "Pillar 3")
+    const match = p.match(/Pillar (\d+)/);
+    return match ? `Pillar ${match[1]}` : "";
+  }).filter(Boolean);
+  
+  return softSkills
+    .filter(skill => {
+      const skillPillars = softSkillsToPillar[skill.title] || [];
+      return pillarIds.some(pillarId => skillPillars.includes(pillarId));
+    })
+    .map(skill => skill.title);
+}
+

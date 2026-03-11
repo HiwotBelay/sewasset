@@ -8,7 +8,7 @@ import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen page-transition">
       <Navbar />
       <HeroSection />
       <WhySection />
