@@ -57,41 +57,6 @@ export async function initDatabase() {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
 
-    // Create training_topics table if it doesn't exist
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS training_topics (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        topic_id VARCHAR(50) UNIQUE NOT NULL,
-        category_id VARCHAR(10) NOT NULL,
-        subcategory VARCHAR(255),
-        topic_name VARCHAR(500) NOT NULL,
-        description TEXT,
-        duration_hours INT,
-        difficulty_level ENUM('Basic', 'Intermediate', 'Advanced') NOT NULL,
-        delivery_mode VARCHAR(50),
-        department_relevance TEXT,
-        goal_G1 TINYINT DEFAULT 0,
-        goal_G2 TINYINT DEFAULT 0,
-        goal_G3 TINYINT DEFAULT 0,
-        goal_G4 TINYINT DEFAULT 0,
-        goal_G5 TINYINT DEFAULT 0,
-        goal_G6 TINYINT DEFAULT 0,
-        goal_G7 TINYINT DEFAULT 0,
-        goal_G8 TINYINT DEFAULT 0,
-        goal_G9 TINYINT DEFAULT 0,
-        goal_G10 TINYINT DEFAULT 0,
-        goal_G11 TINYINT DEFAULT 0,
-        goal_G12 TINYINT DEFAULT 0,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        INDEX idx_category (category_id),
-        INDEX idx_subcategory (subcategory),
-        INDEX idx_difficulty (difficulty_level),
-        INDEX idx_delivery_mode (delivery_mode),
-        FULLTEXT idx_search (topic_name, description, subcategory)
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-    `);
-
     console.log('Database initialized successfully');
   } catch (error: any) {
     console.error('Database initialization error:', error);
@@ -106,48 +71,3 @@ export async function initDatabase() {
   }
 }
 
-// Initialize training topics table
-export async function initTrainingTopicsTable() {
-  try {
-    const pool = getPool();
-    
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS training_topics (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        topic_id VARCHAR(50) UNIQUE NOT NULL,
-        category_id VARCHAR(10) NOT NULL,
-        subcategory VARCHAR(255),
-        topic_name VARCHAR(500) NOT NULL,
-        description TEXT,
-        duration_hours INT,
-        difficulty_level ENUM('Basic', 'Intermediate', 'Advanced') NOT NULL,
-        delivery_mode VARCHAR(50),
-        department_relevance TEXT,
-        goal_G1 TINYINT DEFAULT 0,
-        goal_G2 TINYINT DEFAULT 0,
-        goal_G3 TINYINT DEFAULT 0,
-        goal_G4 TINYINT DEFAULT 0,
-        goal_G5 TINYINT DEFAULT 0,
-        goal_G6 TINYINT DEFAULT 0,
-        goal_G7 TINYINT DEFAULT 0,
-        goal_G8 TINYINT DEFAULT 0,
-        goal_G9 TINYINT DEFAULT 0,
-        goal_G10 TINYINT DEFAULT 0,
-        goal_G11 TINYINT DEFAULT 0,
-        goal_G12 TINYINT DEFAULT 0,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        INDEX idx_category (category_id),
-        INDEX idx_subcategory (subcategory),
-        INDEX idx_difficulty (difficulty_level),
-        INDEX idx_delivery_mode (delivery_mode),
-        FULLTEXT idx_search (topic_name, description, subcategory)
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-    `);
-
-    console.log('Training topics table initialized successfully');
-  } catch (error: any) {
-    console.error('Training topics table initialization error:', error);
-    throw error;
-  }
-}
