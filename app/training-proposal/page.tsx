@@ -41,26 +41,22 @@ export default function TrainingProposalPage() {
 
   // Calculate total duration
   const getTotalDuration = () => {
-    // This would come from the actual topic data
-    return "2-3 Days"; // Placeholder
+    if (trainingData.totalDuration) {
+      const hours = trainingData.totalDuration;
+      if (hours < 8) return `${hours} hours`;
+      const days = Math.ceil(hours / 8);
+      return `${days} Day${days > 1 ? 's' : ''} / ${hours} Hours`;
+    }
+    return "TBD";
   };
 
   const getSelectedTopics = () => {
-    // Import topics data (simplified - in real app this would come from API/DB)
-    const topicMap: Record<string, string> = {
-      "effective-communication": "Effective Communication",
-      "team-collaboration": "Team Collaboration",
-      "managing-teams-effectively": "Managing Teams Effectively",
-      "decision-making-uncertainty": "Decision Making Under Uncertainty",
-      "delegation-empowerment": "Delegation & Empowerment",
-      "visionary-leadership": "Visionary Leadership & Change",
-      "ethical-leadership": "Ethical Leadership & Governance",
-      "management-identity": "Building Your Management Identity",
-      "digital-literacy": "Digital Literacy & Tools",
-    };
-    
-    const topicIds = trainingData.selectedTopics || [];
-    return topicIds.map((id: string) => topicMap[id] || id);
+    // Use the actual selectedTopicsData if available
+    if (trainingData.selectedTopicsData && trainingData.selectedTopicsData.length > 0) {
+      return trainingData.selectedTopicsData.map((topic: any) => topic.topic_name);
+    }
+    // Fallback to topic IDs
+    return trainingData.selectedTopics || [];
   };
 
   return (
@@ -143,19 +139,23 @@ export default function TrainingProposalPage() {
               </div>
             )}
 
-            {/* Custom Topics */}
-            {trainingData.customTopics && trainingData.customTopics.length > 0 && (
+            {/* Custom Topic Request */}
+            {trainingData.customTopicRequest && trainingData.customTopicRequest.trim() && (
               <div>
-                <h3 className="text-lg font-semibold text-[#2E4059] mb-3">Custom Training Requests</h3>
-                <div className="flex flex-wrap gap-2">
-                  {trainingData.customTopics.map((topic: string, idx: number) => (
-                    <span
-                      key={idx}
-                      className="px-3 py-1.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-sm"
-                    >
-                      {topic}
-                    </span>
-                  ))}
+                <h3 className="text-lg font-semibold text-[#2E4059] mb-3">Custom Training Request</h3>
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-[#2E4059]">{trainingData.customTopicRequest}</p>
+                </div>
+              </div>
+            )}
+            
+            {/* Module Count */}
+            {trainingData.moduleCount && (
+              <div className="p-4 bg-slate-50 rounded-xl">
+                <div className="flex items-center gap-2">
+                  <Target className="w-5 h-5 text-[#FDC700]" />
+                  <span className="text-sm font-semibold text-[#6B7280]">Total Modules:</span>
+                  <span className="text-xl font-bold text-[#2E4059]">{trainingData.moduleCount}</span>
                 </div>
               </div>
             )}
