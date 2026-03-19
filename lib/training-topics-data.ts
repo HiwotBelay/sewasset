@@ -50,7 +50,7 @@ export const allTrainingTopics: TrainingTopic[] = rawTopics.map((topic: any) => 
   goal_G12: topic.goal_G12 || 0,
 }));
 
-// Category mapping
+// Category mapping (C1-C8 to category names)
 export const categoryMap: Record<string, string> = {
   'C1': 'Soft Skills',
   'C2': 'Technical / Hard Skills',
@@ -62,7 +62,7 @@ export const categoryMap: Record<string, string> = {
   'C8': 'Motivation & Engagement',
 };
 
-// Goal mapping
+// Goal mapping (G1-G12 to goal names for frontend)
 export const goalMap: Record<string, string> = {
   'G1': 'Improve team productivity',
   'G2': 'Reduce errors / rework',
@@ -77,3 +77,55 @@ export const goalMap: Record<string, string> = {
   'G11': 'Improve technical skill proficiency',
   'G12': 'Increase participation & completion of L&D programs',
 };
+
+// Frontend goal labels (for display)
+export const frontendGoalLabels: Record<string, string> = {
+  'Improve team productivity': 'G1',
+  'Reduce errors': 'G2',
+  'Increase speed': 'G3',
+  'Improve problem-solving': 'G4',
+  'Improve communication': 'G5',
+  'Improve teamwork': 'G5',
+  'Improve customer service': 'G6',
+  'Strengthen emotional intelligence': 'G5',
+  'Improve leadership capability': 'G8',
+  'Strengthen coaching skills': 'G8',
+  'Conflict resolution': 'G8',
+  'Decision-making': 'G8',
+  'Improve sales performance': 'G7',
+  'Increase CSAT': 'G6',
+  'Reduce complaints': 'G6',
+  'Improve engagement': 'G9',
+  'Reduce turnover': 'G9',
+  'Strengthen culture': 'G9',
+  'Improve technical proficiency': 'G11',
+  'Digital skills': 'G11',
+  '100% compliance': 'G10',
+  'Reduce regulatory errors': 'G10',
+};
+
+// Helper function to map frontend goal labels to goal IDs
+export function mapFrontendGoalToGoalId(frontendGoal: string): string {
+  // Direct mapping
+  if (frontendGoalLabels[frontendGoal]) {
+    return frontendGoalLabels[frontendGoal];
+  }
+  
+  // Fuzzy matching
+  const lowerGoal = frontendGoal.toLowerCase();
+  if (lowerGoal.includes('productivity')) return 'G1';
+  if (lowerGoal.includes('error')) return 'G2';
+  if (lowerGoal.includes('speed') || lowerGoal.includes('throughput')) return 'G3';
+  if (lowerGoal.includes('problem') || lowerGoal.includes('decision')) return 'G4';
+  if (lowerGoal.includes('communication') || lowerGoal.includes('teamwork') || lowerGoal.includes('emotional')) return 'G5';
+  if (lowerGoal.includes('customer') || lowerGoal.includes('csat') || lowerGoal.includes('complaint')) return 'G6';
+  if (lowerGoal.includes('sales') || lowerGoal.includes('conversion')) return 'G7';
+  if (lowerGoal.includes('leadership') || lowerGoal.includes('coaching') || lowerGoal.includes('conflict')) return 'G8';
+  if (lowerGoal.includes('engagement') || lowerGoal.includes('turnover') || lowerGoal.includes('culture')) return 'G9';
+  if (lowerGoal.includes('compliance') || lowerGoal.includes('regulatory')) return 'G10';
+  if (lowerGoal.includes('technical') || lowerGoal.includes('digital') || lowerGoal.includes('software')) return 'G11';
+  if (lowerGoal.includes('participation') || lowerGoal.includes('completion') || lowerGoal.includes('l&d')) return 'G12';
+  
+  return '';
+}
+

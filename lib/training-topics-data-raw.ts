@@ -1,3 +1,6 @@
+// Auto-generated from training-topics.tsv
+// Total topics: 289
+
 export const allTrainingTopics = [
   {
     "id": "T039",
@@ -20,7 +23,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T269",
@@ -43,7 +46,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 1,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T142",
@@ -66,7 +69,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T044",
@@ -89,7 +92,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T043",
@@ -112,7 +115,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T095",
@@ -135,7 +138,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T003",
@@ -158,7 +161,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T152",
@@ -181,7 +184,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T082",
@@ -204,7 +207,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 5,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T246",
@@ -227,7 +230,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T114",
@@ -250,7 +253,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T195",
@@ -273,7 +276,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T020",
@@ -296,7 +299,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T123",
@@ -319,7 +322,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T148",
@@ -342,7 +345,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T097",
@@ -365,7 +368,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T229",
@@ -388,7 +391,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T153",
@@ -411,7 +414,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T198",
@@ -434,7 +437,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T177",
@@ -457,7 +460,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T103",
@@ -480,7 +483,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T244",
@@ -503,7 +506,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T180",
@@ -526,7 +529,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 5,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T164",
@@ -549,7 +552,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 5,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T166",
@@ -572,7 +575,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T159",
@@ -595,7 +598,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T252",
@@ -618,7 +621,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T099",
@@ -641,7 +644,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T146",
@@ -664,7 +667,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T162",
@@ -687,7 +690,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 5,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T183",
@@ -710,7 +713,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 5,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T262",
@@ -733,7 +736,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 5,
     "goal_G11": 3,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T156",
@@ -756,7 +759,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T116",
@@ -779,7 +782,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T181",
@@ -802,7 +805,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 1,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T040",
@@ -825,7 +828,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 1,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T172",
@@ -848,7 +851,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T239",
@@ -871,7 +874,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T186",
@@ -894,7 +897,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T064",
@@ -917,7 +920,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T093",
@@ -940,7 +943,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 1,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T074",
@@ -963,7 +966,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T253",
@@ -986,7 +989,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T215",
@@ -1009,7 +1012,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T075",
@@ -1032,7 +1035,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T167",
@@ -1055,7 +1058,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T140",
@@ -1078,7 +1081,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T073",
@@ -1101,7 +1104,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T080",
@@ -1124,7 +1127,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 5,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T035",
@@ -1147,7 +1150,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T129",
@@ -1170,7 +1173,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T002",
@@ -1193,7 +1196,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T199",
@@ -1216,7 +1219,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T178",
@@ -1239,7 +1242,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T062",
@@ -1262,7 +1265,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T126",
@@ -1285,7 +1288,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T208",
@@ -1308,7 +1311,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T065",
@@ -1331,7 +1334,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T056",
@@ -1354,7 +1357,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T214",
@@ -1377,7 +1380,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 5,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T242",
@@ -1400,7 +1403,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T206",
@@ -1423,7 +1426,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T068",
@@ -1446,7 +1449,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 5,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T008",
@@ -1469,7 +1472,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T011",
@@ -1492,7 +1495,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T102",
@@ -1515,7 +1518,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T083",
@@ -1538,7 +1541,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T057",
@@ -1561,7 +1564,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T139",
@@ -1584,7 +1587,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 4
+    "goal_G12\r": 4
   },
   {
     "id": "T248",
@@ -1607,7 +1610,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T151",
@@ -1630,7 +1633,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T141",
@@ -1653,7 +1656,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T211",
@@ -1676,7 +1679,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 5,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T168",
@@ -1699,7 +1702,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 5,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T273",
@@ -1722,7 +1725,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T111",
@@ -1745,7 +1748,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T012",
@@ -1768,7 +1771,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T240",
@@ -1791,7 +1794,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T087",
@@ -1814,7 +1817,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T268",
@@ -1837,7 +1840,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 1,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T188",
@@ -1860,7 +1863,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 1,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T077",
@@ -1883,7 +1886,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T284",
@@ -1906,7 +1909,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T108",
@@ -1929,7 +1932,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T222",
@@ -1952,7 +1955,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T104",
@@ -1975,7 +1978,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T213",
@@ -1998,7 +2001,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 5,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T024",
@@ -2021,7 +2024,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 5,
     "goal_G11": 2,
-    "goal_G12": 3
+    "goal_G12\r": 3
   },
   {
     "id": "T072",
@@ -2044,7 +2047,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 5,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T026",
@@ -2067,7 +2070,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T165",
@@ -2090,7 +2093,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 5,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T184",
@@ -2113,7 +2116,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 5,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T196",
@@ -2136,7 +2139,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T021",
@@ -2159,7 +2162,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T125",
@@ -2182,7 +2185,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T013",
@@ -2205,7 +2208,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T069",
@@ -2228,7 +2231,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T054",
@@ -2251,7 +2254,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T227",
@@ -2274,7 +2277,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T132",
@@ -2297,7 +2300,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T189",
@@ -2320,7 +2323,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T176",
@@ -2343,7 +2346,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T259",
@@ -2366,7 +2369,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T027",
@@ -2389,7 +2392,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T221",
@@ -2412,7 +2415,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T031",
@@ -2435,7 +2438,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T092",
@@ -2458,7 +2461,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 1,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T155",
@@ -2481,7 +2484,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T017",
@@ -2504,7 +2507,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T138",
@@ -2527,7 +2530,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T001",
@@ -2550,7 +2553,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T042",
@@ -2573,7 +2576,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T041",
@@ -2596,7 +2599,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T201",
@@ -2619,7 +2622,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T144",
@@ -2642,7 +2645,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T285",
@@ -2665,7 +2668,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T079",
@@ -2688,7 +2691,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T089",
@@ -2711,7 +2714,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T217",
@@ -2734,7 +2737,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T091",
@@ -2757,7 +2760,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T274",
@@ -2780,7 +2783,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 5,
     "goal_G11": 3,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T267",
@@ -2803,7 +2806,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T234",
@@ -2826,7 +2829,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T281",
@@ -2849,7 +2852,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T247",
@@ -2872,7 +2875,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T119",
@@ -2895,7 +2898,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 1,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T261",
@@ -2918,7 +2921,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 5,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T200",
@@ -2941,7 +2944,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T241",
@@ -2964,7 +2967,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T233",
@@ -2987,7 +2990,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T258",
@@ -3010,7 +3013,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T085",
@@ -3033,7 +3036,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 1,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T115",
@@ -3056,7 +3059,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T224",
@@ -3079,7 +3082,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T117",
@@ -3102,7 +3105,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 3,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T060",
@@ -3125,7 +3128,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T149",
@@ -3148,7 +3151,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T236",
@@ -3171,7 +3174,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T046",
@@ -3194,7 +3197,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 3
+    "goal_G12\r": 3
   },
   {
     "id": "T047",
@@ -3217,7 +3220,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 3
+    "goal_G12\r": 3
   },
   {
     "id": "T106",
@@ -3240,7 +3243,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T055",
@@ -3263,7 +3266,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T133",
@@ -3286,7 +3289,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T282",
@@ -3309,7 +3312,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T160",
@@ -3332,7 +3335,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T230",
@@ -3355,7 +3358,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T094",
@@ -3378,7 +3381,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T174",
@@ -3401,7 +3404,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T004",
@@ -3424,7 +3427,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T207",
@@ -3447,7 +3450,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 1,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T265",
@@ -3470,7 +3473,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T118",
@@ -3493,7 +3496,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 2,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T090",
@@ -3516,7 +3519,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 2,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T218",
@@ -3539,7 +3542,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 1,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T212",
@@ -3562,7 +3565,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 5,
     "goal_G11": 3,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T107",
@@ -3585,7 +3588,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T204",
@@ -3608,7 +3611,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T288",
@@ -3631,7 +3634,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T053",
@@ -3654,7 +3657,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T187",
@@ -3677,7 +3680,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T237",
@@ -3700,7 +3703,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 3
+    "goal_G12\r": 3
   },
   {
     "id": "T216",
@@ -3723,7 +3726,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T231",
@@ -3746,7 +3749,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T131",
@@ -3769,7 +3772,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T033",
@@ -3792,7 +3795,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 5,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T112",
@@ -3815,7 +3818,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T226",
@@ -3838,7 +3841,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 3,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T275",
@@ -3861,7 +3864,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T124",
@@ -3884,7 +3887,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T036",
@@ -3907,7 +3910,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 2,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T101",
@@ -3930,7 +3933,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T205",
@@ -3953,7 +3956,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T052",
@@ -3976,7 +3979,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T238",
@@ -3999,7 +4002,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T067",
@@ -4022,7 +4025,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T076",
@@ -4045,7 +4048,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T025",
@@ -4068,7 +4071,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T121",
@@ -4091,7 +4094,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T169",
@@ -4114,7 +4117,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 3
+    "goal_G12\r": 3
   },
   {
     "id": "T243",
@@ -4137,7 +4140,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T130",
@@ -4160,7 +4163,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T278",
@@ -4183,7 +4186,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 3,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T051",
@@ -4206,7 +4209,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T135",
@@ -4229,7 +4232,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T251",
@@ -4252,7 +4255,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T256",
@@ -4275,7 +4278,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T015",
@@ -4298,7 +4301,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T203",
@@ -4321,7 +4324,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T245",
@@ -4344,7 +4347,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T023",
@@ -4367,7 +4370,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T019",
@@ -4390,7 +4393,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T022",
@@ -4413,7 +4416,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T137",
@@ -4436,7 +4439,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T202",
@@ -4459,7 +4462,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T210",
@@ -4482,7 +4485,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 5,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T175",
@@ -4505,7 +4508,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 3,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T066",
@@ -4528,7 +4531,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T277",
@@ -4551,7 +4554,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T182",
@@ -4574,7 +4577,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T257",
@@ -4597,7 +4600,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T070",
@@ -4620,7 +4623,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T223",
@@ -4643,7 +4646,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 3,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T110",
@@ -4666,7 +4669,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T250",
@@ -4689,7 +4692,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T136",
@@ -4712,7 +4715,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T122",
@@ -4735,7 +4738,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 2,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T050",
@@ -4758,7 +4761,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T058",
@@ -4781,7 +4784,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T063",
@@ -4804,7 +4807,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 3,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T289",
@@ -4827,7 +4830,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T235",
@@ -4850,7 +4853,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T219",
@@ -4873,7 +4876,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 1,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T143",
@@ -4896,7 +4899,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T161",
@@ -4919,7 +4922,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T007",
@@ -4942,7 +4945,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T190",
@@ -4965,7 +4968,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T029",
@@ -4988,7 +4991,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T030",
@@ -5011,7 +5014,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T005",
@@ -5034,7 +5037,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T018",
@@ -5057,7 +5060,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T194",
@@ -5080,7 +5083,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T037",
@@ -5103,7 +5106,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T088",
@@ -5126,7 +5129,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T034",
@@ -5149,7 +5152,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T272",
@@ -5172,7 +5175,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T113",
@@ -5195,7 +5198,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T028",
@@ -5218,7 +5221,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T032",
@@ -5241,7 +5244,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T170",
@@ -5264,7 +5267,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T157",
@@ -5287,7 +5290,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 3,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T287",
@@ -5310,7 +5313,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T280",
@@ -5333,7 +5336,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T120",
@@ -5356,7 +5359,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 2,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T081",
@@ -5379,7 +5382,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 5,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T071",
@@ -5402,7 +5405,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 5,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T145",
@@ -5425,7 +5428,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T232",
@@ -5448,7 +5451,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T045",
@@ -5471,7 +5474,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T286",
@@ -5494,7 +5497,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T260",
@@ -5517,7 +5520,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 5,
     "goal_G11": 3,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T193",
@@ -5540,7 +5543,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T220",
@@ -5563,7 +5566,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T096",
@@ -5586,7 +5589,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T279",
@@ -5609,7 +5612,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T100",
@@ -5632,7 +5635,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T173",
@@ -5655,7 +5658,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T150",
@@ -5678,7 +5681,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T263",
@@ -5701,7 +5704,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 5,
     "goal_G11": 3,
-    "goal_G12": 3
+    "goal_G12\r": 3
   },
   {
     "id": "T163",
@@ -5724,7 +5727,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T228",
@@ -5747,7 +5750,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T179",
@@ -5770,7 +5773,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T271",
@@ -5793,7 +5796,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T266",
@@ -5816,7 +5819,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T249",
@@ -5839,7 +5842,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T154",
@@ -5862,7 +5865,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T192",
@@ -5885,7 +5888,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T191",
@@ -5908,7 +5911,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T098",
@@ -5931,7 +5934,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T270",
@@ -5954,7 +5957,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T283",
@@ -5977,7 +5980,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T254",
@@ -6000,7 +6003,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 2,
-    "goal_G12": 3
+    "goal_G12\r": 3
   },
   {
     "id": "T061",
@@ -6023,7 +6026,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T059",
@@ -6046,7 +6049,7 @@ export const allTrainingTopics = [
     "goal_G9": 1,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T048",
@@ -6069,7 +6072,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T006",
@@ -6092,7 +6095,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T158",
@@ -6115,7 +6118,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T255",
@@ -6138,7 +6141,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 1,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T128",
@@ -6161,7 +6164,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T038",
@@ -6184,7 +6187,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T197",
@@ -6207,7 +6210,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T185",
@@ -6230,7 +6233,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T171",
@@ -6253,7 +6256,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T086",
@@ -6276,7 +6279,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T014",
@@ -6299,7 +6302,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T147",
@@ -6322,7 +6325,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T010",
@@ -6345,7 +6348,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 0,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T209",
@@ -6368,7 +6371,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 3,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T109",
@@ -6391,7 +6394,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T276",
@@ -6414,7 +6417,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 2,
     "goal_G11": 5,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T049",
@@ -6437,7 +6440,7 @@ export const allTrainingTopics = [
     "goal_G9": 2,
     "goal_G10": 1,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T127",
@@ -6460,7 +6463,7 @@ export const allTrainingTopics = [
     "goal_G9": 0,
     "goal_G10": 0,
     "goal_G11": 4,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T225",
@@ -6483,7 +6486,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 1,
     "goal_G11": 5,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T264",
@@ -6506,7 +6509,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 5,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T105",
@@ -6529,7 +6532,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 1,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T084",
@@ -6552,7 +6555,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 5,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T134",
@@ -6575,7 +6578,7 @@ export const allTrainingTopics = [
     "goal_G9": 5,
     "goal_G10": 0,
     "goal_G11": 1,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T016",
@@ -6598,7 +6601,7 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 3,
     "goal_G11": 0,
-    "goal_G12": 1
+    "goal_G12\r": 1
   },
   {
     "id": "T009",
@@ -6621,7 +6624,7 @@ export const allTrainingTopics = [
     "goal_G9": 4,
     "goal_G10": 1,
     "goal_G11": 0,
-    "goal_G12": 2
+    "goal_G12\r": 2
   },
   {
     "id": "T078",
@@ -6644,6 +6647,9 @@ export const allTrainingTopics = [
     "goal_G9": 3,
     "goal_G10": 5,
     "goal_G11": 2,
-    "goal_G12": 2
+    "goal_G12\r": 2
   }
 ];
+
+// Note: categoryMap and goalMap are exported from training-topics-data.ts, not here
+// This file only exports the raw topic data

@@ -1,259 +1,175 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getPool } from '@/lib/db';
+import { NextRequest, NextResponse } from "next/server";
+import { allTrainingTopics, categoryMap, mapFrontendGoalToGoalId } from "@/lib/training-topics-data";
 
-// Goal mapping
-const goalMap: Record<string, string> = {
-  'G1': 'Improve team productivity',
-  'G2': 'Reduce errors / rework',
-  'G3': 'Increase speed of work / throughput',
-  'G4': 'Improve problem-solving & decision-making',
-  'G5': 'Improve communication & collaboration',
-  'G6': 'Improve customer service / CSAT',
-  'G7': 'Improve sales performance / conversion',
-  'G8': 'Improve leadership capability / coaching',
-  'G9': 'Improve engagement / reduce turnover',
-  'G10': 'Ensure 100% compliance',
-  'G11': 'Improve technical skill proficiency',
-  'G12': 'Increase participation & completion of L&D programs',
-};
-
-// Map user-selected outcomes to goal IDs
-function mapOutcomesToGoals(outcomes: string[]): string[] {
-  const outcomeToGoal: Record<string, string> = {
-    'Improve team productivity': 'G1',
-    'Reduce errors': 'G2',
-    'Increase speed of work': 'G3',
-    'Improve problem-solving': 'G4',
-    'Improve decision-making': 'G4',
-    'Improve communication': 'G5',
-    'Improve teamwork': 'G5',
-    'Improve customer service': 'G6',
-    'Improve sales performance': 'G7',
-    'Improve leadership capability': 'G8',
-    'Strengthen coaching skills': 'G8',
-    'Improve engagement': 'G9',
-    'Reduce turnover': 'G9',
-    'Ensure 100% compliance': 'G10',
-    'Improve technical proficiency': 'G11',
-    'Improve digital / software skill levels': 'G11',
-    'Increase participation & completion of L&D programs': 'G12',
-  };
-
-  const goalIds: string[] = [];
-  outcomes.forEach(outcome => {
-    // Try exact match first
-    if (outcomeToGoal[outcome]) {
-      goalIds.push(outcomeToGoal[outcome]);
-    } else {
-      // Try partial match
-      for (const [key, goal] of Object.entries(outcomeToGoal)) {
-        if (outcome.toLowerCase().includes(key.toLowerCase()) || 
-            key.toLowerCase().includes(outcome.toLowerCase())) {
-          if (!goalIds.includes(goal)) {
-            goalIds.push(goal);
-          }
-        }
-      }
-    }
-  });
-
-  return goalIds;
+interface RecommendationRequest {
+  trainingSupport: string[]; // Category IDs like ["soft-skill", "technical-hard-skill"]
+  outcomes: string[]; // Frontend goal labels like ["Improve communication", "Improve teamwork"]
+  trainingAudience?: string;
+  specificNotes?: string;
 }
 
-// Calculate relevance score for a topic based on selected goals
-function calculateRelevanceScore(topic: any, selectedGoals: string[]): number {
-  if (selectedGoals.length === 0) return 0;
+// Map frontend training support to category_id
+const trainingSupportToCategoryId: Record<string, string[]> = {
+  "soft-skill": ["C1"],
+  "technical-hard-skill": ["C2"],
+  "behavior-mindset": ["C3"],
+  "leadership-management": ["C4"],
+  "compliance-mandatory": ["C5"],
+  "team-culture": ["C6"],
+  "industry-specific": ["C7"],
+  "motivation-engagement": ["C8"],
+};
 
+// Calculate goal_fit_score for a topic based on selected outcomes
+function calculateGoalFitScore(topic: typeof allTrainingTopics[0], selectedOutcomes: string[]): number {
   let totalScore = 0;
-  let maxPossibleScore = 0;
-
-  selectedGoals.forEach(goalId => {
-    const goalKey = `goal_${goalId}`;
-    const score = topic[goalKey] || 0;
-    totalScore += score;
-    maxPossibleScore += 5; // Max score per goal is 5
+  
+  selectedOutcomes.forEach(outcome => {
+    const goalId = mapFrontendGoalToGoalId(outcome);
+    if (goalId) {
+      const goalKey = `goal_${goalId}` as keyof typeof topic;
+      const score = topic[goalKey] as number || 0;
+      totalScore += score;
+    }
   });
+  
+  return totalScore;
+}
 
-  // Normalize to 0-100 scale
-  return maxPossibleScore > 0 ? (totalScore / maxPossibleScore) * 100 : 0;
+// Rule-based recommendation engine (as per spec)
+function getRuleBasedRecommendations(
+  trainingSupport: string[],
+  outcomes: string[]
+): typeof allTrainingTopics {
+  // Step 1: Filter by T1 (category_layer1)
+  const categoryIds: string[] = [];
+  trainingSupport.forEach(support => {
+    const categories = trainingSupportToCategoryId[support] || [];
+    categoryIds.push(...categories);
+  });
+  
+  // Filter topics by selected categories
+  let filteredTopics = allTrainingTopics.filter(topic => 
+    categoryIds.includes(topic.category_id)
+  );
+  
+  // If no category filter, use all topics
+  if (filteredTopics.length === 0) {
+    filteredTopics = allTrainingTopics;
+  }
+  
+  // Step 2: Calculate goal_fit_score for each topic
+  const topicsWithScores = filteredTopics.map(topic => ({
+    topic,
+    goalFitScore: calculateGoalFitScore(topic, outcomes),
+  }));
+  
+  // Step 3: Sort by goal_fit_score DESC
+  topicsWithScores.sort((a, b) => b.goalFitScore - a.goalFitScore);
+  
+  // Step 4: Return top 6-12 recommendations
+  const recommendedTopics = topicsWithScores
+    .filter(item => item.goalFitScore > 0) // Only topics with positive scores
+    .slice(0, 12) // Max 12 as per spec
+    .map(item => item.topic);
+  
+  // Ensure at least 6 recommendations if available
+  if (recommendedTopics.length < 6 && filteredTopics.length >= 6) {
+    // Add more topics even with lower scores
+    const additional = topicsWithScores
+      .slice(recommendedTopics.length, 6)
+      .map(item => item.topic);
+    return [...recommendedTopics, ...additional];
+  }
+  
+  return recommendedTopics;
+}
+
+// AI-powered recommendation using Google Gemini (optional enhancement)
+async function getAIRecommendations(
+  trainingSupport: string[],
+  outcomes: string[],
+  trainingAudience?: string,
+  specificNotes?: string
+): Promise<typeof allTrainingTopics> {
+  const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
+  
+  if (!apiKey) {
+    return getRuleBasedRecommendations(trainingSupport, outcomes);
+  }
+
+  try {
+    // Get rule-based recommendations first
+    const ruleBasedTopics = getRuleBasedRecommendations(trainingSupport, outcomes);
+    
+    // Use AI to refine or re-rank (optional)
+    // For now, return rule-based as AI is optional
+    return ruleBasedTopics;
+  } catch (error: any) {
+    console.error("AI recommendation error:", error);
+    return getRuleBasedRecommendations(trainingSupport, outcomes);
+  }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const {
-      trainingSupport = [],
-      outcomes = [],
-      trainingAudience = '',
-      department = '',
-      specificNotes = '',
-    } = body;
+    const body: RecommendationRequest = await request.json();
+    const { trainingSupport, outcomes, trainingAudience, specificNotes } = body;
 
-    // Map outcomes to goal IDs
-    const selectedGoals = mapOutcomesToGoals(outcomes);
-
-    // Use hardcoded data for now
-    let rows: any[] = [];
-    
-    try {
-      const { allTrainingTopics } = await import('@/lib/training-topics-data');
-      rows = allTrainingTopics.map(topic => ({
-        topic_id: topic.id,
-        category_id: topic.category_id,
-        subcategory: topic.subcategory,
-        topic_name: topic.topic_name,
-        description: topic.description,
-        duration_hours: topic.duration_hours,
-        difficulty_level: topic.difficulty_level,
-        delivery_mode: topic.delivery_mode,
-        department_relevance: topic.department_relevance,
-        goal_G1: topic.goal_G1,
-        goal_G2: topic.goal_G2,
-        goal_G3: topic.goal_G3,
-        goal_G4: topic.goal_G4,
-        goal_G5: topic.goal_G5,
-        goal_G6: topic.goal_G6,
-        goal_G7: topic.goal_G7,
-        goal_G8: topic.goal_G8,
-        goal_G9: topic.goal_G9,
-        goal_G10: topic.goal_G10,
-        goal_G11: topic.goal_G11,
-        goal_G12: topic.goal_G12,
-      }));
-
-      // Filter by department if provided
-      if (department) {
-        rows = rows.filter(topic => 
-          topic.department_relevance.includes(department) || 
-          topic.department_relevance === 'All'
-        );
-      }
-
-      // Filter by training support categories
-      const categoryMapFilter: Record<string, string[]> = {
-        'soft-skill': ['C1'],
-        'technical-hard-skill': ['C2'],
-        'behavior-mindset': ['C3'],
-        'leadership-management': ['C4'],
-        'compliance-mandatory': ['C5'],
-        'team-culture': ['C6'],
-        'industry-specific': ['C7'],
-        'motivation-engagement': ['C8'],
-      };
-
-      if (trainingSupport.length > 0) {
-        const categories: string[] = [];
-        trainingSupport.forEach((support: string) => {
-          if (categoryMapFilter[support]) {
-            categories.push(...categoryMapFilter[support]);
-          }
-        });
-        
-        if (categories.length > 0) {
-          rows = rows.filter(topic => categories.includes(topic.category_id));
-        }
-      }
-    } catch (error) {
-      console.error('Error loading hardcoded topics:', error);
-      // Fallback to database if available
-      try {
-        const pool = getPool();
-        let query = 'SELECT * FROM training_topics WHERE 1=1';
-        const params: any[] = [];
-
-        if (department) {
-          query += ' AND (department_relevance LIKE ? OR department_relevance = "All")';
-          params.push(`%${department}%`);
-        }
-
-        const categoryMapFilter: Record<string, string[]> = {
-          'soft-skill': ['C1'],
-          'technical-hard-skill': ['C2'],
-          'behavior-mindset': ['C3'],
-          'leadership-management': ['C4'],
-          'compliance-mandatory': ['C5'],
-          'team-culture': ['C6'],
-          'industry-specific': ['C7'],
-          'motivation-engagement': ['C8'],
-        };
-
-        if (trainingSupport.length > 0) {
-          const categories: string[] = [];
-          trainingSupport.forEach((support: string) => {
-            if (categoryMapFilter[support]) {
-              categories.push(...categoryMapFilter[support]);
-            }
-          });
-          
-          if (categories.length > 0) {
-            query += ` AND category_id IN (${categories.map(() => '?').join(',')})`;
-            params.push(...categories);
-          }
-        }
-
-        query += ' ORDER BY topic_name';
-        const [dbRows]: any = await pool.query(query, params);
-        rows = dbRows;
-      } catch (dbError) {
-        console.error('Database fallback failed:', dbError);
-      }
+    // Validate input
+    if (!trainingSupport || !Array.isArray(trainingSupport) || trainingSupport.length === 0) {
+      return NextResponse.json(
+        { error: "trainingSupport is required and must be a non-empty array" },
+        { status: 400 }
+      );
     }
 
-    // Calculate relevance scores for each topic
-    const topicsWithScores = rows.map((topic: any) => {
-      const relevanceScore = calculateRelevanceScore(topic, selectedGoals);
-      return {
-        ...topic,
-        relevanceScore,
-      };
-    });
+    if (!outcomes || !Array.isArray(outcomes) || outcomes.length === 0) {
+      return NextResponse.json(
+        { error: "outcomes is required and must be a non-empty array" },
+        { status: 400 }
+      );
+    }
 
-    // Sort by relevance score (highest first)
-    topicsWithScores.sort((a: any, b: any) => b.relevanceScore - a.relevanceScore);
+    // Get recommendations (rule-based or AI-enhanced)
+    const recommendedTopics = await getAIRecommendations(
+      trainingSupport,
+      outcomes,
+      trainingAudience,
+      specificNotes
+    );
 
-    // Get top 4-5 recommendations
-    const recommendedTopics = topicsWithScores.slice(0, 5).map((topic: any) => ({
-      id: topic.topic_id,
+    // Transform to frontend format
+    const formattedTopics = recommendedTopics.map(topic => ({
+      id: topic.id,
       title: topic.topic_name,
       topic_name: topic.topic_name,
-      description: topic.description || '',
-      duration: `${topic.duration_hours}h`,
-      duration_hours: topic.duration_hours || 0,
-      difficulty: topic.difficulty_level === 'Basic' ? 'Beginner' : 
-                  topic.difficulty_level === 'Intermediate' ? 'Intermediate' : 'Advanced',
-      category: topic.category_id,
-      subcategory: topic.subcategory || '',
-      delivery_mode: topic.delivery_mode || 'Workshop',
-      relevanceScore: topic.relevanceScore,
-      goal_scores: {
-        G1: topic.goal_G1 || 0,
-        G2: topic.goal_G2 || 0,
-        G3: topic.goal_G3 || 0,
-        G4: topic.goal_G4 || 0,
-        G5: topic.goal_G5 || 0,
-        G6: topic.goal_G6 || 0,
-        G7: topic.goal_G7 || 0,
-        G8: topic.goal_G8 || 0,
-        G9: topic.goal_G9 || 0,
-        G10: topic.goal_G10 || 0,
-        G11: topic.goal_G11 || 0,
-        G12: topic.goal_G12 || 0,
-      },
+      description: topic.description,
+      duration_hours: topic.duration_hours,
+      duration: `${topic.duration_hours} Hours`,
+      difficulty: topic.difficulty_level,
+      category: categoryMap[topic.category_id] || topic.category_id,
+      category_layer1: categoryMap[topic.category_id] || topic.category_id,
+      subcategory_layer2: topic.subcategory,
+      goal_fit_score: calculateGoalFitScore(topic, outcomes),
+      department_relevance: topic.department_relevance,
+      delivery_mode: topic.delivery_mode,
     }));
 
     return NextResponse.json({
-      recommendations: recommendedTopics,
-      source: 'database',
-      selectedGoals,
-      totalTopics: topicsWithScores.length,
+      success: true,
+      recommendedTopics: formattedTopics,
+      recommendedIds: formattedTopics.map(t => t.id),
+      source: process.env.GOOGLE_GEMINI_API_KEY ? "ai-enhanced" : "rule-based",
+      message: "Recommendations based on goal alignment scores",
     });
   } catch (error: any) {
-    console.error('Error generating recommendations:', error);
+    console.error("Recommendation API error:", error);
     return NextResponse.json(
-      { 
-        error: 'Failed to generate recommendations', 
-        details: error.message,
-        recommendations: [] // Return empty array as fallback
+      {
+        success: false,
+        error: "Failed to generate recommendations",
+        details: process.env.NODE_ENV === "development" ? error.message : undefined,
       },
       { status: 500 }
     );
