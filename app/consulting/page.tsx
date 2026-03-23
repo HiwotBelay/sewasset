@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { ConsultingFlow } from "@/components/calculator/consulting-flow";
+import "../catalyst-tool.css";
 
 export const dynamic = "force-dynamic";
 
@@ -41,18 +42,21 @@ export default function ConsultingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-[#2E4059] to-[#3E587C] text-white py-4 sm:py-6 sticky top-0 z-50 shadow-lg">
-        <div className="max-w-6xl mx-auto px-3 sm:px-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-white/80 hover:text-white mb-2 sm:mb-3 transition-smooth text-sm sm:text-base"
-          >
-            <ArrowLeft size={18} className="sm:w-5 sm:h-5" />
-            <span>Back To Home</span>
+    <div className="tool-overlay">
+      <div className="tool-nav">
+        <div className="tool-logo">
+          Sew<span>Asset</span>™ Catalyst
+        </div>
+        <div className="tool-nav-right">
+          <span className="tool-path-badge show-consulting">Capability Transformation</span>
+          <Link href="/" className="close-tool">
+            <ArrowLeft size={14} />
+            <span>Close</span>
           </Link>
         </div>
+      </div>
+      <div className="tool-progress">
+        <div className="tool-progress-fill" style={{ width: "10%" }} />
       </div>
 
       <ConsultingFlow />

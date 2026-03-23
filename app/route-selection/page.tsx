@@ -1,291 +1,524 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, GraduationCap, Briefcase, HelpCircle, Sparkles, ArrowRight } from "lucide-react";
+import "../catalyst-tool.css";
+import { Playfair_Display, Syne } from "next/font/google";
+
+const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "700", "900"] });
+const syne = Syne({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 
 export default function RouteSelectionPage() {
   const router = useRouter();
-  const [selectedRoute, setSelectedRoute] = useState<string>("");
-  const [selectedRole, setSelectedRole] = useState<string>("");
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const [isClient, setIsClient] = useState(false);
+  const [disclaimerAccepted, setDisclaimerAccepted] = useState(false);
+
+  // s0 = path gate, id = identity gate
+  const [stage, setStage] = useState<0 | 1>(0);
+  const [selectedRoute, setSelectedRoute] = useState<"training" | "consulting" | "not-sure" | "">("");
+  const [selectedRole, setSelectedRole] = useState<"individual" | "business" | "consultant" | "">("");
+  const [profile, setProfile] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    preferredFormat: "",
+    jobTitle: "",
+    company: "",
+    workEmail: "",
+    industry: "",
+    companySize: "",
+    budgetBand: "",
+    firm: "",
+    purpose: "",
+  });
+  const [agreeNda, setAgreeNda] = useState(false);
+  const [identityError, setIdentityError] = useState("");
+
+  // Triage modal state (prototype triage)
+  const [triOpen, setTriOpen] = useState(false);
+  const [triSld, setTriSld] = useState(0);
+  const [triCause, setTriCause] = useState<"people" | "process" | "strategy" | "culture" | "unsure" | null>(null);
+  const [triRec, setTriRec] = useState<"training" | "consulting" | null>(null);
 
   useEffect(() => {
-    setIsVisible(true);
+    setIsClient(true);
+    const accepted = sessionStorage.getItem("disclaimerAccepted");
+    if (!accepted) {
+      router.push("/disclaimer");
+    } else {
+      setDisclaimerAccepted(true);
+      const route = sessionStorage.getItem("selectedRoute");
+      const savedProfile = sessionStorage.getItem("routeSelectionProfile");
+      if (savedProfile) {
+        try {
+          const parsed = JSON.parse(savedProfile) as typeof profile;
+          setProfile((prev) => ({ ...prev, ...parsed }));
+        } catch {
+          // Ignore malformed session data
+        }
+      }
+      const savedNda = sessionStorage.getItem("routeSelectionNda");
+      if (savedNda === "true") setAgreeNda(true);
+      if (route === "training" || route === "consulting") {
+        setSelectedRoute(route);
+      } else {
+        setSelectedRoute("training");
+      }
+      setStage(1);
+    }
   }, []);
 
-  const handleRouteSelect = (route: string) => {
-    // Toggle selection - if already selected, unselect it
-    if (selectedRoute === route) {
-      setSelectedRoute("");
-    } else {
-      setSelectedRoute(route);
-    }
+  useEffect(() => {
+    if (!triOpen) return;
+    const v = triSld;
+    const useC =
+      v >= 3 || (triCause && ["process", "strategy", "culture"].includes(triCause));
+    setTriRec(useC ? "consulting" : "training");
+  }, [triOpen, triSld, triCause]);
+
+  useEffect(() => {
+    sessionStorage.setItem("routeSelectionProfile", JSON.stringify(profile));
+    sessionStorage.setItem("routeSelectionNda", String(agreeNda));
+  }, [profile, agreeNda]);
+
+  const handleRoleSelect = (role: "individual" | "business" | "consultant") => {
+    setSelectedRole(role);
+    setIdentityError("");
+    sessionStorage.setItem("selectedRole", role);
   };
 
-  const handleRoleSelect = (role: string) => {
-    // Toggle selection - if already selected, unselect it
-    if (selectedRole === role) {
-      setSelectedRole("");
-    } else {
-      setSelectedRole(role);
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("selectedRole", role);
-      }
+  const updateProfile =
+    (key: keyof typeof profile) =>
+    (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      setIdentityError("");
+      setProfile((prev) => ({ ...prev, [key]: e.target.value }));
+    };
+
+  const getIdentityValidationError = () => {
+    if (!selectedRole) return "Please select your role.";
+    if (selectedRole === "individual") {
+      if (!profile.fullName.trim()) return "Full name is required.";
+      if (!profile.email.trim()) return "Email is required.";
+      if (!profile.phone.trim()) return "Phone is required.";
+      if (!profile.preferredFormat) return "Preferred format is required.";
+      return "";
     }
+    if (selectedRole === "business") {
+      if (!profile.fullName.trim()) return "Full name is required.";
+      if (!profile.jobTitle.trim()) return "Job title is required.";
+      if (!profile.company.trim()) return "Company is required.";
+      if (!profile.workEmail.trim()) return "Work email is required.";
+      if (!profile.industry) return "Industry is required.";
+      if (!profile.companySize) return "Company size is required.";
+      if (!profile.budgetBand) return "Budget band is required.";
+      return "";
+    }
+    if (!profile.fullName.trim()) return "Full name is required.";
+    if (!profile.firm.trim()) return "Firm is required.";
+    if (!profile.email.trim()) return "Email is required.";
+    if (!profile.purpose) return "Purpose is required.";
+    if (!agreeNda) return "You must agree to the terms.";
+    return "";
   };
 
-  const handleContinue = () => {
-    if (!selectedRoute) {
-      alert("Please select what you need");
+  const renderRoleForm = () => {
+    if (!selectedRole) return null;
+
+    if (selectedRole === "individual") {
+      return (
+        <div className="role-form">
+          <div className="rf-grid two">
+            <label className="rf-field">
+              <span>FULL NAME *</span>
+              <input placeholder="Your name" value={profile.fullName} onChange={updateProfile("fullName")} />
+            </label>
+            <label className="rf-field">
+              <span>EMAIL *</span>
+              <input placeholder="you@email.com" value={profile.email} onChange={updateProfile("email")} />
+            </label>
+            <label className="rf-field">
+              <span>PHONE *</span>
+              <input placeholder="+251..." value={profile.phone} onChange={updateProfile("phone")} />
+            </label>
+            <label className="rf-field">
+              <span>PREFERRED FORMAT *</span>
+              <select value={profile.preferredFormat} onChange={updateProfile("preferredFormat")}>
+                <option value="">Select...</option>
+                <option value="virtual-live">Virtual / Live</option>
+                <option value="in-person">In-Person</option>
+                <option value="self-paced">Self-paced (LMS)</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedRole === "business") {
+      return (
+        <div className="role-form">
+          <div className="rf-grid two">
+            <label className="rf-field">
+              <span>FULL NAME *</span>
+              <input placeholder="Your full name" value={profile.fullName} onChange={updateProfile("fullName")} />
+            </label>
+            <label className="rf-field">
+              <span>JOB TITLE *</span>
+              <input placeholder="e.g HR Director" value={profile.jobTitle} onChange={updateProfile("jobTitle")} />
+            </label>
+            <label className="rf-field">
+              <span>COMPANY *</span>
+              <input placeholder="Company name" value={profile.company} onChange={updateProfile("company")} />
+            </label>
+            <label className="rf-field">
+              <span>WORK EMAIL *</span>
+              <input placeholder="you@company.com" value={profile.workEmail} onChange={updateProfile("workEmail")} />
+            </label>
+          </div>
+          <div className="rf-grid three">
+            <label className="rf-field">
+              <span>INDUSTRY *</span>
+              <select value={profile.industry} onChange={updateProfile("industry")}>
+                <option value="">Select...</option>
+                <option value="manufacturing">Manufacturing</option>
+                <option value="financial-services">Financial Services</option>
+                <option value="telecom-tech">Telecom & Tech</option>
+                <option value="retail">Retail</option>
+                <option value="healthcare">Healthcare</option>
+                <option value="government">Government</option>
+                <option value="logistics">Logistics</option>
+                <option value="ngo">NGO</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+            <label className="rf-field">
+              <span>COMPANY SIZE *</span>
+              <select value={profile.companySize} onChange={updateProfile("companySize")}>
+                <option value="">Select...</option>
+                <option value="1-50">1-50</option>
+                <option value="51-200">51-200</option>
+                <option value="201-500">201-500</option>
+                <option value="501-1000">501-1000</option>
+                <option value="1000+">1000+</option>
+              </select>
+            </label>
+            <label className="rf-field">
+              <span>BUDGET BAND *</span>
+              <select value={profile.budgetBand} onChange={updateProfile("budgetBand")}>
+                <option value="">Select...</option>
+                <option value="under-50k">Under 50k ETB</option>
+                <option value="50k-150k">50k - 150k ETB</option>
+                <option value="150k-500k">150k - 500k ETB</option>
+                <option value="500k+">500k+ ETB</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="role-form">
+        <div className="rf-grid two">
+          <label className="rf-field">
+            <span>FULL NAME *</span>
+            <input placeholder="Your name" value={profile.fullName} onChange={updateProfile("fullName")} />
+          </label>
+          <label className="rf-field">
+            <span>FIRM *</span>
+            <input placeholder="Firm name" value={profile.firm} onChange={updateProfile("firm")} />
+          </label>
+          <label className="rf-field">
+            <span>EMAIL *</span>
+            <input placeholder="you@firm.com" value={profile.email} onChange={updateProfile("email")} />
+          </label>
+          <label className="rf-field">
+            <span>PURPOSE *</span>
+            <select value={profile.purpose} onChange={updateProfile("purpose")}>
+              <option value="">Select...</option>
+              <option value="support-client">Supporting a client</option>
+              <option value="research-benchmarking">Research & benchmarking</option>
+              <option value="partnership-inquiry">Partnership inquiry</option>
+            </select>
+          </label>
+        </div>
+        <label className="rf-check">
+          <input type="checkbox" checked={agreeNda} onChange={(e) => setAgreeNda(e.target.checked)} />
+          <span>
+            I agree not to replicate SewAsset&apos;s proprietary frameworks, catalog structures, or SPSC™ methodology. *
+          </span>
+        </label>
+      </div>
+    );
+  };
+
+  const handleContinueGate = () => {
+    if (!selectedRoute) return;
+    if (selectedRoute === "not-sure") return;
+    setStage(1);
+  };
+
+  const handleConfirmTriage = () => {
+    if (!triRec) return;
+    setSelectedRoute(triRec);
+    sessionStorage.setItem("selectedRoute", triRec);
+    setTriOpen(false);
+    // After triage, go to identity gate (matches the "Use Recommendation" intent)
+    setStage(1);
+  };
+
+  const handleContinueIdentity = () => {
+    if (!selectedRoute || !selectedRole) return;
+    const validationError = getIdentityValidationError();
+    if (validationError) {
+      setIdentityError(validationError);
       return;
     }
-    // Store selections and navigate
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("selectedRoute", selectedRoute);
-      if (selectedRole) {
-        sessionStorage.setItem("selectedRole", selectedRole);
-      }
-    }
-    if (selectedRoute === "training") {
-      router.push("/training");
-    } else if (selectedRoute === "consulting") {
-      router.push("/consulting");
-    } else if (selectedRoute === "not-sure") {
-      alert("Decision helper coming soon!");
-    }
+    sessionStorage.setItem("selectedRoute", selectedRoute);
+    sessionStorage.setItem("selectedRole", selectedRole);
+    router.push(selectedRoute === "training" ? "/training" : "/consulting");
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-slate-50 to-white relative overflow-hidden">
-      {/* Creative animated background */}
-      <div className="absolute inset-0">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#FDC700]/10 rounded-full blur-[120px] animate-float"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#3B5998]/10 rounded-full blur-[120px] animate-float" style={{ animationDelay: '1.5s' }}></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-[#FDC700]/5 via-[#3B5998]/5 to-[#FDC700]/5 rounded-full blur-[150px]"></div>
-      </div>
-
-      {/* Modern header */}
-      <div className="relative z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200/50 sticky top-0 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-[#6B7280] hover:text-[#2E4059] transition-all duration-300 group"
-          >
-            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-slate-200 transition-all duration-300">
-              <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform duration-300" />
-            </div>
-            <span className="font-medium">Back To Home</span>
-          </Link>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 relative z-10">
-        {/* Creative hero section */}
-        <div className={`text-center mb-12 transition-all duration-1000 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#FDC700]/10 backdrop-blur-md rounded-full border border-[#FDC700]/30 mb-6">
-            <Sparkles className="w-4 h-4 text-[#FDC700]" />
-            <span className="text-[#2E4059] text-sm font-semibold">Business Case Builder</span>
-          </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#2E4059] mb-4">
-            SewAsset Catalyst™
-          </h1>
-          <p className="text-lg text-[#6B7280] max-w-2xl mx-auto">
-            Choose your path to strategic success
-          </p>
-        </div>
-
-        {/* Creative Step 1: What do you need */}
-        <div 
-          ref={sectionRef}
-          className={`mb-8 transition-all duration-1000 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FDC700] to-[#F5AF19] flex items-center justify-center text-[#2E4059] font-bold shadow-lg">
-              1
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-semibold text-[#2E4059]">
-              What do you need right now?
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Training Route - Creative Card Design */}
-            <button
-              onClick={() => handleRouteSelect("training")}
-              className={`group relative p-6 rounded-xl border-2 transition-all duration-300 overflow-hidden bg-white ${
-                selectedRoute === "training"
-                  ? "border-[#FDC700] bg-[#FDC700]/5 shadow-lg"
-                  : "border-[#E5E7EB] hover:border-[#FDC700]/40 hover:bg-[#F8F9FA]"
-              }`}
-            >
-              <div className="relative z-10">
-                {/* Icon */}
-                <div className={`w-12 h-12 rounded-lg mb-4 flex items-center justify-center transition-all duration-300 ${
-                  selectedRoute === "training"
-                    ? "bg-[#FDC700]"
-                    : "bg-[#FDC700]/10 group-hover:bg-[#FDC700]/20"
-                }`}>
-                  <GraduationCap className={`w-6 h-6 transition-colors duration-300 ${
-                    selectedRoute === "training" ? "text-white" : "text-[#FDC700]"
-                  }`} />
-                </div>
-                
-                <h3 className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
-                  selectedRoute === "training" ? "text-[#2E4059]" : "text-[#2E4059]"
-                }`}>
-                  Training & Development
-                </h3>
-                <p className={`text-sm leading-relaxed transition-colors duration-300 ${
-                  selectedRoute === "training" ? "text-[#2E4059]" : "text-[#6B7280]"
-                }`}>
-                  Training programs, courses, and ROI estimates
-                </p>
-              </div>
-            </button>
-
-            {/* Consulting Route */}
-            <button
-              onClick={() => handleRouteSelect("consulting")}
-              className={`group relative p-6 rounded-xl border-2 transition-all duration-300 overflow-hidden bg-white ${
-                selectedRoute === "consulting"
-                  ? "border-[#FDC700] bg-[#FDC700]/5 shadow-lg"
-                  : "border-[#E5E7EB] hover:border-[#FDC700]/40 hover:bg-[#F8F9FA]"
-              }`}
-            >
-              <div className="relative z-10">
-                <div className={`w-12 h-12 rounded-lg mb-4 flex items-center justify-center transition-all duration-300 ${
-                  selectedRoute === "consulting"
-                    ? "bg-[#FDC700]"
-                    : "bg-[#FDC700]/10 group-hover:bg-[#FDC700]/20"
-                }`}>
-                  <Briefcase className={`w-6 h-6 transition-colors duration-300 ${
-                    selectedRoute === "consulting" ? "text-white" : "text-[#FDC700]"
-                  }`} />
-                </div>
-                
-                <h3 className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
-                  selectedRoute === "consulting" ? "text-[#2E4059]" : "text-[#2E4059]"
-                }`}>
-                  Strategic Consulting
-                </h3>
-                <p className={`text-sm leading-relaxed transition-colors duration-300 ${
-                  selectedRoute === "consulting" ? "text-[#2E4059]" : "text-[#6B7280]"
-                }`}>
-                  Deep diagnostics and strategic business cases
-                </p>
-              </div>
-            </button>
-
-            {/* Not Sure Route */}
-            <button
-              onClick={() => handleRouteSelect("not-sure")}
-              className={`group relative p-6 rounded-xl border-2 transition-all duration-300 overflow-hidden bg-white ${
-                selectedRoute === "not-sure"
-                  ? "border-[#FDC700] bg-[#FDC700]/5 shadow-lg"
-                  : "border-[#E5E7EB] hover:border-[#FDC700]/40 hover:bg-[#F8F9FA]"
-              }`}
-            >
-              <div className="relative z-10">
-                <div className={`w-12 h-12 rounded-lg mb-4 flex items-center justify-center transition-all duration-300 ${
-                  selectedRoute === "not-sure"
-                    ? "bg-[#FDC700]"
-                    : "bg-[#FDC700]/10 group-hover:bg-[#FDC700]/20"
-                }`}>
-                  <HelpCircle className={`w-6 h-6 transition-colors duration-300 ${
-                    selectedRoute === "not-sure" ? "text-white" : "text-[#FDC700]"
-                  }`} />
-                </div>
-                
-                <h3 className={`text-lg font-semibold mb-2 transition-colors duration-300 ${
-                  selectedRoute === "not-sure" ? "text-[#2E4059]" : "text-[#2E4059]"
-                }`}>
-                  Need Help Deciding?
-                </h3>
-                <p className={`text-sm leading-relaxed transition-colors duration-300 ${
-                  selectedRoute === "not-sure" ? "text-[#2E4059]" : "text-[#6B7280]"
-                }`}>
-                  Quick assessment to find your best path
-                </p>
-              </div>
-            </button>
+    <div className={`tool-overlay ${syne.className}`}>
+      {!isClient || !disclaimerAccepted ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2E4059] mx-auto mb-4" />
+            <p className="text-slate-600">Loading...</p>
           </div>
         </div>
-
-        {/* Creative Step 2: Who are you */}
-        <div className={`mb-8 transition-all duration-1000 delay-300 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#3B5998] to-[#2E4059] flex items-center justify-center text-white font-bold shadow-lg">
-              2
+      ) : (
+        <>
+          <div className="tool-nav">
+            <div className="tool-logo">
+              Sew<span>Asset</span>™ Catalyst
             </div>
-            <h2 className="text-3xl sm:text-4xl font-semibold text-[#2E4059]">
-              Who are you?
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { value: "individual", label: "Individual", icon: "👤" },
-              { value: "consultant", label: "Consultant", icon: "💼" },
-              { value: "business", label: "Business", icon: "🏢" }
-            ].map((role, idx) => (
+            <div className="tool-nav-right">
               <button
-                key={role.value}
-                onClick={() => handleRoleSelect(role.value)}
-                className={`group relative p-5 rounded-xl border-2 transition-all duration-300 overflow-hidden bg-white ${
-                  selectedRole === role.value
-                    ? "border-[#FDC700] bg-[#FDC700]/5 shadow-lg"
-                    : "border-[#E5E7EB] hover:border-[#FDC700]/40 hover:bg-[#F8F9FA]"
-                }`}
-                style={{ transitionDelay: `${idx * 100}ms` }}
+                className="close-tool"
+                onClick={() => router.push("/")}
+                type="button"
               >
-                <div className="text-center relative z-10">
-                  <div className={`text-3xl mb-3 transition-transform duration-300 ${
-                    selectedRole === role.value ? "scale-110" : "group-hover:scale-105"
-                  }`}>
-                    {role.icon}
-                  </div>
-                  <p className={`font-semibold text-sm transition-colors duration-300 ${
-                    selectedRole === role.value ? "text-[#2E4059]" : "text-[#2E4059]"
-                  }`}>
-                    {role.label}
-                  </p>
-                </div>
+                ✕ Close
               </button>
-            ))}
+            </div>
           </div>
-        </div>
 
-        {/* Creative Continue Button */}
-        <div className="flex justify-end mt-10">
-          <Button
-            onClick={handleContinue}
-            disabled={!selectedRoute}
-            className="px-10 py-4 bg-gradient-to-r from-[#FDC700] via-[#F5AF19] to-[#FDC700] text-[#2E4059] font-bold rounded-xl hover:shadow-2xl hover:shadow-[#FDC700]/50 hover:scale-110 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-300 relative overflow-hidden group backdrop-blur-sm"
-          >
-            <span className="relative z-10 flex items-center gap-3">
-              Continue
-              <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-all duration-300">
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+          <div className="tool-progress">
+            <div
+              className="tool-progress-fill"
+              style={{ width: stage === 0 ? "0%" : "55%" }}
+            />
+          </div>
+
+          <div className="tool-main">
+            {/* s0 Gate */}
+            <div className={`tscreen ${stage === 0 ? "active" : ""}`}>
+              <div className="t-eyebrow">SewAsset Catalyst™ 2.0</div>
+              <div className={`t-title`}>
+                What do you need<br />
+                <em>right now?</em>
               </div>
+              <div className="t-sub">Choose your path. You can switch at any time.</div>
+
+              <div className="gate-grid">
+                <div
+                  className={`gate-card g-train ${selectedRoute === "training" ? "sel" : ""}`}
+                  onClick={() => setSelectedRoute("training")}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <div className="gc-tag">Capability Development</div>
+                  <div className="gc-title">Training & Development</div>
+                  <div className="gc-desc">
+                    Design a targeted training program. Smart module recommendations based on your capability goals. Proposal in 10 minutes.
+                  </div>
+                </div>
+
+                <div
+                  className={`gate-card g-consult ${selectedRoute === "consulting" ? "sel" : ""}`}
+                  onClick={() => setSelectedRoute("consulting")}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <div className="gc-tag">Capability Transformation</div>
+                  <div className="gc-title">Strategic Consulting & Diagnostic</div>
+                  <div className="gc-desc">
+                    Full SPSC organizational diagnostic. Capability gap mapping. Business case with ROI and cost-of-inaction analysis.
+                  </div>
+                </div>
+
+                <div
+                  className="gate-ns"
+                  onClick={() => {
+                    setSelectedRoute("not-sure");
+                    setTriOpen(true);
+                  }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <span className="gate-ns-text">
+                    Not sure which path fits? → Run a 60-second triage assessment
+                  </span>
+                  <span className="gate-ns-arrow">→</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Identity gate */}
+            <div className={`tscreen ${stage === 1 ? "active" : ""}`}>
+              <div className="t-eyebrow">
+                Capability {selectedRoute === "consulting" ? "Transformation" : "Development"} · Step 1 of 6
+              </div>
+              <div className="t-title">
+                Who are <em>you?</em>
+              </div>
+              <div className="t-sub">
+                This personalizes your entire experience - the questions, the recommendations, and the final output.
+              </div>
+
+              <div className="id-grid">
+                <div
+                  className={`id-card ${selectedRole === "individual" ? "sel" : ""}`}
+                  onClick={() => handleRoleSelect("individual")}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <span className="id-icon">👤</span>
+                  <div className="id-name">Individual</div>
+                  <div className="id-desc">Personal learning and professional development.</div>
+                </div>
+
+                <div
+                  className={`id-card ${selectedRole === "business" ? "sel" : ""}`}
+                  onClick={() => handleRoleSelect("business")}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <span className="id-icon">🏢</span>
+                  <div className="id-name">Business / Organization</div>
+                  <div className="id-desc">HR manager, department head, or executive requesting capability development for a team.</div>
+                </div>
+
+                <div
+                  className={`id-card ${selectedRole === "consultant" ? "sel" : ""}`}
+                  onClick={() => handleRoleSelect("consultant")}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <span className="id-icon">🤝</span>
+                  <div className="id-name">Consultant / Partner</div>
+                  <div className="id-desc">Building a capability proposal for a client or benchmarking on their behalf.</div>
+                </div>
+              </div>
+              {renderRoleForm()}
+              {identityError && <div style={{ marginTop: 10, color: "#b84c2b", fontSize: "0.8rem" }}>{identityError}</div>}
+            </div>
+          </div>
+
+          <div className="bottom-nav">
+            <button
+              className="btn-back"
+              style={{ visibility: stage === 0 ? "hidden" : "visible" }}
+              onClick={() => setStage(0)}
+              type="button"
+            >
+              ← Back
+            </button>
+
+            <span className="nav-hint-txt">
+              {stage === 0 ? "Choose your path to continue" : "Select your role to continue"}
             </span>
-            {/* Shimmer effect */}
-            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#F5AF19] via-[#FDC700] to-[#F5AF19] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </Button>
-        </div>
-      </div>
+
+            <button
+              className="btn-next"
+              onClick={() => {
+                if (stage === 0) {
+                  if (!selectedRoute || selectedRoute === "not-sure") return;
+                  if (selectedRoute) {
+                    sessionStorage.setItem("selectedRoute", selectedRoute);
+                    handleContinueGate();
+                  }
+                } else {
+                  handleContinueIdentity();
+                }
+              }}
+              disabled={stage === 0 ? !selectedRoute || selectedRoute === "not-sure" : !selectedRole}
+              type="button"
+            >
+              Continue →
+            </button>
+          </div>
+
+          {/* TRIAGE MODAL */}
+          <div className={`modal-ov ${triOpen ? "open" : ""}`} role="dialog" aria-modal="true">
+            <div className="modal">
+              <div className="modal-title">60-Second Triage</div>
+              <div className="modal-sub">Two quick questions to recommend the right path for your situation.</div>
+
+              <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--tool-ink)" }}>
+                How seriously is this affecting business results?
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                value={triSld}
+                onChange={(e) => setTriSld(parseInt(e.target.value, 10))}
+              />
+
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.7rem", color: "var(--tool-mid)" }}>
+                <span>Not serious</span>
+                <span style={{ color: "var(--tool-gold)", fontWeight: 700 }}>{triSld}</span>
+                <span>Critical</span>
+              </div>
+
+              <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--tool-ink)", marginBottom: 8 }}>
+                Primary cause of the issue?
+              </div>
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginBottom: 4 }}>
+                {[
+                  { key: "people", label: "People" },
+                  { key: "process", label: "Process / Systems" },
+                  { key: "strategy", label: "Strategy" },
+                  { key: "culture", label: "Culture" },
+                  { key: "unsure", label: "Unsure" },
+                ].map((c) => (
+                  <span
+                    key={c.key}
+                    className={`ttag ${triCause === c.key ? "sel" : ""}`}
+                    onClick={() => setTriCause(c.key as any)}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    {c.label}
+                  </span>
+                ))}
+              </div>
+
+              {triRec && (
+                <div className={`modal-res ${triRec === "consulting" ? "cr" : "tr"}`}>
+                  Recommendation:{" "}
+                  {triRec === "consulting"
+                    ? "Capability Transformation (Consulting Diagnostic)"
+                    : "Capability Development (Training Path)"}
+                </div>
+              )}
+
+              <div className="modal-btns">
+                <button className="mbtn-p" onClick={handleConfirmTriage} type="button">
+                  Use Recommendation
+                </button>
+                <button className="mbtn-s" onClick={() => setTriOpen(false)} type="button">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

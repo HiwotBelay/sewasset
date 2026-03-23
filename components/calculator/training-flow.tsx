@@ -16,12 +16,6 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { 
   Info, 
   Crown, 
@@ -105,6 +99,20 @@ function getCategoryDescription(value: string) {
     "motivation-engagement": "Inspire and energize your workforce",
   };
   return descriptionMap[value] || "Enhance skills and capabilities";
+}
+
+function getCategoryEmoji(value: string) {
+  const emojiMap: Record<string, string> = {
+    "soft-skill": "💬",
+    "technical-hard-skill": "⚙️",
+    "behavior-mindset": "🧠",
+    "leadership-management": "🎯",
+    "compliance-mandatory": "📋",
+    "team-culture": "🌱",
+    "industry-specific": "🏭",
+    "motivation-engagement": "🔥",
+  };
+  return emojiMap[value] || "•";
 }
 
 // Separate component for each outcome category card - ensures complete isolation
@@ -658,257 +666,315 @@ function TrainingTopicsStep({
       })
     : [];
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-2">
-          What specific training topics do you need?
-        </h2>
-        <p className="text-lg text-[#6B7280]">
-          Choose the topics that match your needs.
-        </p>
-      </div>
+  const audienceIcon: Record<string, string> = {
+    myself: "👤",
+    team: "👥",
+    department: "🏬",
+    organization: "🏢",
+  };
 
-      {/* Loading State */}
+  const selectAudience = (value: string) => {
+    updateData("trainingAudience", value);
+    if (value !== "team" && value !== "department") {
+      updateData("teamSize", undefined);
+    }
+    if (value !== "department") {
+      updateData("department", undefined);
+    }
+    if (value !== "organization") {
+      updateData("companySize", undefined);
+    }
+  };
+
+  return (
+    <div>
+      <div className="text-[11px] font-semibold tracking-[0.16em] uppercase text-[#B8862F] mb-3">
+        Capability Development - Step 4 of 5
+      </div>
+      <h2
+        className="text-[44px] sm:text-[52px] leading-[1.06] font-bold text-[#171717] mb-2"
+        style={{ fontFamily: "'Playfair Display', serif" }}
+      >
+        Select modules &<br />
+        <em className="text-[#C8973A] italic font-bold">who this is for</em>
+      </h2>
+      <p className="text-[14px] text-[#5F5A55] mb-6 max-w-2xl">
+        Smart recommendations based on your capability areas and goals. Search or add custom topics.
+      </p>
+
       {isLoadingAI && (
-        <div className="flex items-center justify-center py-8">
-          <div className="flex items-center gap-3 text-[#6B7280]">
-            <span className="animate-spin rounded-full h-5 w-5 border-2 border-[#FDC700] border-t-transparent"></span>
-            <span className="font-medium">AI is analyzing your needs...</span>
-          </div>
+        <div className="flex items-center gap-2 text-[#6B7280] text-sm mb-4">
+          <span className="animate-spin rounded-full h-4 w-4 border-2 border-[#C8973A] border-t-transparent"></span>
+          <span>AI is analyzing your needs...</span>
         </div>
       )}
 
-      {/* ZONE 1: SMART RECOMMENDATIONS (TOP) */}
-      {!isLoadingAI && displayRecommendedTopics.length > 0 && (
-        <div className="space-y-4 animate-fade-in-up">
-          <div>
-            <h3 className="text-xl font-bold text-[#2E4059] mb-1 flex items-center gap-2">
-              <span className="text-2xl">🎯</span>
-              Recommended Topics for You
-            </h3>
-            <p className="text-sm text-[#6B7280]">
-              Based on your selections, these match your goals best.
-            </p>
+      <div className="space-y-4">
+        <div>
+          <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#B8862F] mb-2 flex items-center gap-2">
+            <span>🎯</span>
+            <span>Recommended Modules</span>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {displayRecommendedTopics.map((topic, idx) => {
-              const isSelected = data.selectedTopics?.includes(topic.id);
-              return (
-                <button
-                  key={topic.id}
-                  type="button"
-                  onClick={() => toggleTopic(topic.id)}
-                  className={`group relative p-4 rounded-xl border-2 transition-all duration-300 text-left bg-white hover:shadow-lg ${
-                    isSelected
-                      ? "border-[#FDC700] bg-[#FDC700]/5 shadow-md"
-                      : "border-slate-200 hover:border-[#FDC700]/50"
-                  }`}
-                  style={{ animationDelay: `${idx * 50}ms` }}
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <h4 className={`font-semibold text-sm ${isSelected ? "text-[#2E4059]" : "text-[#2E4059]"}`}>
-                          {topic.title}
-                        </h4>
-                        <span className="flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-700 rounded-full text-xs font-medium whitespace-nowrap">
-                          <Star className="w-3 h-3 fill-green-600" />
-                          Recommended
-                        </span>
-                      </div>
-                      <p className="text-xs text-[#6B7280] mb-2 line-clamp-2">{topic.description}</p>
-                      <div className="flex items-center gap-3 text-xs text-[#6B7280]">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {topic.duration_hours} Hours
-                        </span>
-                        <span>{topic.difficulty}</span>
+          {!isLoadingAI && displayRecommendedTopics.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+              {displayRecommendedTopics.map((topic) => {
+                const isSelected = data.selectedTopics?.includes(topic.id);
+                return (
+                  <button
+                    key={topic.id}
+                    type="button"
+                    onClick={() => toggleTopic(topic.id)}
+                    className={`w-full p-3 rounded-[4px] border text-left transition-colors duration-150 ${
+                      isSelected
+                        ? "border-[#C8973A] bg-[#FAF4E8]"
+                        : "border-[#E8E2D8] bg-[#FDFCF9] hover:border-[#C8973A] hover:bg-[#FAF4E8]"
+                    }`}
+                  >
+                    <div className="flex items-start gap-2">
+                      <div className={`w-[14px] h-[14px] mt-0.5 border rounded-[2px] ${isSelected ? "bg-[#C8973A] border-[#C8973A]" : "border-[#CFC7BC]"}`} />
+                      <div className="min-w-0">
+                        <div className="text-[14px] font-semibold text-[#0A0A0A]">{topic.title}</div>
+                        <div className="text-[11px] text-[#7A7570]">{topic.category} · {topic.duration_hours} hrs</div>
                         {topic.goal_fit_score && (
-                          <span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full text-xs">
-                            Score: {topic.goal_fit_score}
-                          </span>
+                          <div className="text-[11px] text-[#B8862F] font-medium">✦ Matches 1 goal</div>
                         )}
                       </div>
                     </div>
-                    {/* Checkbox */}
-                    <div className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-all duration-200 ${
-                      isSelected
-                        ? "border-[#FDC700] bg-[#FDC700]"
-                        : "border-slate-300 group-hover:border-[#FDC700]/50"
-                    }`}>
-                      {isSelected && (
-                        <CheckCircle2 className="w-4 h-4 text-white" />
-                      )}
-                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            !isLoadingAI && <div className="text-[12px] text-[#7A7570]">No recommendations available yet.</div>
+          )}
+        </div>
+
+        <div>
+          <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#B8862F] mb-2 flex items-center gap-2">
+            <span>🔍</span>
+            <span>Search Full Catalog (400+ Modules)</span>
+          </div>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8B857D]" />
+            <Input
+              type="text"
+              placeholder="Search by topic, skill, or department..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 h-10 border border-[#E8E2D8] bg-[#FDFCF9] rounded-[3px] focus:border-[#C8973A]"
+            />
+          </div>
+          {searchQuery.trim() && (
+            <div className="mt-2 max-h-[190px] overflow-y-auto border border-[#E8E2D8] rounded-[3px] bg-[#FDFCF9]">
+              {filteredSearchResults.length > 0 ? (
+                filteredSearchResults.map((topic) => (
+                  <button
+                    key={topic.id}
+                    type="button"
+                    onClick={() => toggleTopic(topic.id)}
+                    className="w-full px-3 py-2 text-left border-b last:border-b-0 border-[#E8E2D8] hover:bg-[#FAF4E8]"
+                  >
+                    <div className="text-[13px] text-[#0A0A0A] font-medium">{topic.title}</div>
+                    <div className="text-[11px] text-[#7A7570]">{topic.category} · {topic.duration}</div>
+                  </button>
+                ))
+              ) : (
+                <div className="p-3 text-[12px] text-[#7A7570]">No topics found.</div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#B8862F] mb-2 flex items-center gap-2">
+            <span>✅</span>
+            <span>Your Development Plan</span>
+          </div>
+          <div className="border border-[#E8E2D8] rounded-[3px] bg-[#FDFCF9] p-3">
+            <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#7A7570] mb-1">Selected Modules</div>
+            {selectedCount > 0 ? (
+              <div className="flex flex-wrap gap-1.5">
+                {selectedTopics.map((topic) => (
+                  <span key={topic.id} className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-[#E8E2D8] bg-white text-[11px]">
+                    {topic.title}
+                    <button type="button" onClick={() => toggleTopic(topic.id)} className="text-[#7A7570] hover:text-[#B84C2B]">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+                {hasCustomTopic && data.customTopics?.[0]?.trim() && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-[#E8E2D8] bg-white text-[11px]">
+                    {data.customTopics[0]}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCustomTopicInput("");
+                        updateData("customTopics", []);
+                      }}
+                      className="text-[#7A7570] hover:text-[#B84C2B]"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                )}
+              </div>
+            ) : (
+              <div className="text-[12px] text-[#7A7570] italic">No modules selected yet.</div>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <Label className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#3C3A36] mb-2 block">
+            Can&apos;t find it? Describe a custom module
+          </Label>
+          <Textarea
+            placeholder="e.g. Advanced B2B negotiation for the Ethiopian manufacturing sector..."
+            value={customTopicInput}
+            onChange={(e) => {
+              if (e.target.value.length <= 150) {
+                setCustomTopicInput(e.target.value);
+                if (e.target.value.trim()) updateData("customTopics", [e.target.value.trim()]);
+                else updateData("customTopics", []);
+              }
+            }}
+            className="min-h-[84px] border border-[#E8E2D8] bg-[#FDFCF9] rounded-[3px] resize-none"
+            maxLength={150}
+          />
+        </div>
+
+        <div>
+          <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#B8862F] mb-2 flex items-center gap-2">
+            <span>👥</span>
+            <span>Who Is This For?</span>
+            <span className="flex-1 h-px bg-[#E8E2D8]" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+            {audienceOptions.map((option) => {
+              const isSelected = data.trainingAudience === option.value;
+              return (
+                <button
+                  key={`aud-${option.value}`}
+                  type="button"
+                  onClick={() => selectAudience(option.value)}
+                  className={`p-3 rounded-[3px] min-h-[78px] border text-left transition-colors duration-150 ${
+                    isSelected
+                      ? "border-[#C8973A] bg-[#FAF4E8]"
+                      : "border-[#E8E2D8] bg-[#FDFCF9] hover:border-[#C8973A] hover:bg-[#FAF4E8]"
+                  }`}
+                >
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[14px] leading-none">{audienceIcon[option.value] || "•"}</span>
+                    <div className="text-[14px] font-semibold text-[#0A0A0A]">{option.label}</div>
                   </div>
+                  <div className="text-[11px] text-[#7A7570]">{option.tooltip}</div>
+                </button>
+              );
+            })}
+          </div>
+          {data.trainingAudience === "team" && (
+            <div className="mt-2">
+              <Input
+                type="number"
+                min="1"
+                value={data.teamSize || ""}
+                onChange={(e) => updateData("teamSize", parseInt(e.target.value))}
+                placeholder="Team size"
+                className="h-9 border border-[#E8E2D8] bg-[#FDFCF9] rounded-[3px] max-w-xs"
+              />
+            </div>
+          )}
+          {data.trainingAudience === "department" && (
+            <div className="mt-2 flex flex-wrap gap-2">
+              <Select value={data.department || ""} onValueChange={(value) => updateData("department", value)}>
+                <SelectTrigger className="h-9 border border-[#E8E2D8] bg-[#FDFCF9] rounded-[3px] max-w-xs">
+                  <SelectValue placeholder="Department..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {departments.map((dept) => (
+                    <SelectItem key={`dept-${dept}`} value={dept}>{dept}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Input
+                type="number"
+                min="1"
+                value={data.teamSize || ""}
+                onChange={(e) => updateData("teamSize", parseInt(e.target.value))}
+                placeholder="Team size"
+                className="h-9 border border-[#E8E2D8] bg-[#FDFCF9] rounded-[3px] max-w-xs"
+              />
+            </div>
+          )}
+          {data.trainingAudience === "organization" && (
+            <div className="mt-2 max-w-xs">
+              <Select value={data.companySize || ""} onValueChange={(value) => updateData("companySize", value)}>
+                <SelectTrigger className="h-9 border border-[#E8E2D8] bg-[#FDFCF9] rounded-[3px]">
+                  <SelectValue placeholder="Org size..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {companySizes.map((size) => (
+                    <SelectItem key={`size-${size}`} value={size}>{size}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </div>
+
+        <div>
+          <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#3C3A36] mb-2">
+            Preferred Delivery Mode
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { value: "online", label: "Virtual / Live Online" },
+              { value: "in-person", label: "In-Person" },
+              { value: "hybrid", label: "Blended" },
+              { value: "self-paced", label: "Self-Paced (LMS)" },
+            ].map((mode) => {
+              const isSelected = data.preferredFormat === mode.value;
+              return (
+                <button
+                  key={`mode-${mode.value}`}
+                  type="button"
+                  onClick={() => updateData("preferredFormat", mode.value)}
+                  className={`px-3 py-1.5 rounded-full border text-[12px] transition-colors ${
+                    isSelected
+                      ? "border-[#C8973A] bg-[#C8973A] text-white"
+                      : "border-[#E8E2D8] bg-[#FDFCF9] text-[#3C3A36] hover:border-[#C8973A] hover:text-[#C8973A]"
+                  }`}
+                >
+                  {mode.label}
                 </button>
               );
             })}
           </div>
         </div>
-      )}
 
-      {/* ZONE 2: FULL CATALOG SEARCH (MIDDLE) */}
-      <div className="space-y-4 animate-fade-in-up delay-200">
-        <div>
-          <h3 className="text-xl font-bold text-[#2E4059] mb-1">
-            Browse All Topics
-          </h3>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B7280]" />
-            <Input
-              type="text"
-              placeholder="Search topics (e.g., 'Excel', 'Customer Service', 'Safety'...)"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-12 border-2 border-slate-200 focus:border-[#FDC700] rounded-xl transition-all duration-300"
-            />
-          </div>
-        </div>
-
-        {/* Search Results */}
-        {searchQuery.trim() && (
-          <div className="space-y-2 max-h-[300px] overflow-y-auto">
-            {filteredSearchResults.length > 0 ? (
-              filteredSearchResults.map((topic) => (
-                <button
-                  key={topic.id}
-                  type="button"
-                  onClick={() => toggleTopic(topic.id)}
-                  className="w-full p-3 rounded-lg border border-slate-200 hover:border-[#FDC700] hover:bg-[#FDC700]/5 transition-all duration-200 text-left group"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-sm text-[#2E4059] mb-1">{topic.title}</h4>
-                      <div className="flex items-center gap-2 text-xs text-[#6B7280]">
-                        <span>{topic.category}</span>
-                        <span>•</span>
-                        <span>{topic.duration}</span>
-                      </div>
-                    </div>
-                    <Plus className="w-4 h-4 text-[#6B7280] group-hover:text-[#FDC700] transition-colors" />
-                  </div>
-                </button>
-              ))
-            ) : (
-              <div className="text-center py-6 text-[#6B7280]">
-                <p className="text-sm mb-2">No topics found matching "{searchQuery}"</p>
-                <p className="text-xs">Try different keywords or browse all topics above</p>
-              </div>
-            )}
+        {selectedCount === 0 && !isLoadingAI && (
+          <div className="text-[12px] text-[#7A7570]">
+            Choose at least one topic or describe a custom request for a tailored plan.
           </div>
         )}
-
-        {/* Custom Request Field - as per spec */}
-        <div className="pt-4 border-t border-slate-200">
-          <Label className="text-sm font-semibold text-[#2E4059] mb-2 block">
-            Can't find it? Describe a custom topic.
-          </Label>
-          <Textarea
-            placeholder="Describe a custom topic (150-character limit)"
-            value={customTopicInput}
-            onChange={(e) => {
-              if (e.target.value.length <= 150) {
-                setCustomTopicInput(e.target.value);
-                // Auto-save to data.customTopics if filled (as per spec: counts as one selection)
-                if (e.target.value.trim()) {
-                  updateData("customTopics", [e.target.value.trim()]);
-                } else {
-                  updateData("customTopics", []);
-                }
-              }
-            }}
-            className="min-h-[80px] border-2 border-slate-200 focus:border-[#FDC700] rounded-xl transition-all resize-none"
-            maxLength={150}
-          />
-          <p className="text-xs text-[#6B7280] mt-1 text-right">
-            {customTopicInput.length}/150
-          </p>
-          <p className="text-xs text-[#6B7280] mt-1">
-            If filled, it counts as one selection for validation/pricing.
-          </p>
-        </div>
-      </div>
-
-      {/* ZONE 3: SELECTED TOPICS SUMMARY (BOTTOM) */}
-      {selectedCount > 0 && (
-        <div className="space-y-4 animate-fade-in-up delay-300">
-          <div className="bg-gradient-to-r from-[#FDC700]/10 to-[#F5AF19]/10 rounded-xl border-2 border-[#FDC700]/20 p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-[#2E4059]">
-                Selected Topics
-              </h3>
-              <div className="flex items-center gap-4 text-sm font-semibold text-[#2E4059]">
-                <span>Total Module Count: {totalModules}</span>
-                <span className="text-[#6B7280]">•</span>
-                <span>Total Estimated Duration: {totalDurationHours} Hours</span>
-              </div>
-            </div>
-            
-            {/* Selected Chips */}
-            <div className="flex flex-wrap gap-2">
-              {selectedTopics.map((topic) => (
-                <div
-                  key={topic.id}
-                  className="group flex items-center gap-2 px-3 py-1.5 bg-[#FDC700] text-[#2E4059] rounded-full text-sm font-medium hover:bg-[#F5AF19] transition-all duration-200 animate-scale-in"
-                >
-                  <span>{topic.title}</span>
-                  <button
-                    onClick={() => toggleTopic(topic.id)}
-                    className="hover:bg-[#2E4059]/10 rounded-full p-0.5 transition-colors"
-                    type="button"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              ))}
-              {hasCustomTopic && data.customTopics && data.customTopics[0]?.trim() && (
-                <div
-                  key="custom-topic"
-                  className="group flex items-center gap-2 px-3 py-1.5 bg-[#FDC700] text-[#2E4059] rounded-full text-sm font-medium hover:bg-[#F5AF19] transition-all duration-200 animate-scale-in"
-                >
-                  <span>{data.customTopics[0]}</span>
-                  <button
-                    onClick={() => {
-                      setCustomTopicInput("");
-                      updateData("customTopics", []);
-                    }}
-                    className="hover:bg-[#2E4059]/10 rounded-full p-0.5 transition-colors"
-                    type="button"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              )}
-            </div>
+        {selectedCount > 12 && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-[4px] p-3">
+            <p className="text-[12px] text-yellow-800">
+              <span className="font-semibold">Note:</span> Large portfolios are delivered as phased programs.
+            </p>
           </div>
-        </div>
-      )}
-
-      {/* Validation Message */}
-      {selectedCount === 0 && !isLoadingAI && (
-        <div className="text-center py-8 text-[#6B7280]">
-          <p className="text-sm">Choose at least one topic or describe a custom request for a tailored plan.</p>
-        </div>
-      )}
-
-      {/* Warning for >12 topics */}
-      {selectedCount > 12 && (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 animate-fade-in-up">
-          <p className="text-sm text-yellow-800">
-            <span className="font-semibold">Note:</span> Large training portfolios are delivered as phased programs. You can continue, but we will structure them into stages.
-          </p>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
 
 // Summary Step Component
-function SummaryStep({ data }: { data: TrainingData }) {
+function SummaryStep({
+  data,
+}: {
+  data: TrainingData;
+}) {
   const getTrainingSupportLabels = () => {
     const labels: Record<string, string> = {
       "soft-skill": "Soft Skill",
@@ -931,68 +997,158 @@ function SummaryStep({ data }: { data: TrainingData }) {
     return [...topics, ...(data.customTopics || [])];
   };
 
+  const selectedTopics = getSelectedTopics();
+  const totalHours = (data.selectedTopics || []).reduce((sum, id) => {
+    const topic = allTrainingTopics.find((t) => t.id === id);
+    return sum + (topic?.duration_hours || 0);
+  }, 0);
+  const primaryGoal = data.outcomes?.[0] || "N/A";
+  const capabilityAreas = getTrainingSupportLabels().join(", ") || "N/A";
+  const audienceLabel =
+    data.trainingAudience === "myself"
+      ? "Individual"
+      : data.trainingAudience === "team"
+      ? `My Team (${data.teamSize || "N/A"})`
+      : data.trainingAudience === "department"
+      ? `${data.department || "Department"} (${data.teamSize || "N/A"})`
+      : data.trainingAudience === "organization"
+      ? `Entire Organization (${data.companySize || "N/A"})`
+      : "N/A";
+  const today = new Date().toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
   return (
     <div>
-      <h2 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-2">
-        Training Summary
+      <div className="text-[11px] font-semibold tracking-[0.16em] uppercase text-[#B8862F] mb-3">
+        Capability Development - Your Plan
+      </div>
+      <h2
+        className="text-[46px] sm:text-[56px] leading-[1.02] font-bold text-[#171717] mb-2"
+        style={{ fontFamily: "'Playfair Display', serif" }}
+      >
+        Your Capability<br />
+        <em className="text-[#C8973A] italic font-bold">Development Plan</em>
       </h2>
-      <p className="text-lg text-[#6B7280] mb-6">
-        Review your training selections before proceeding.
+      <p className="text-[14px] text-[#5F5A55] mb-6 max-w-2xl">
+        A SewAsset specialist will confirm this plan within 24 hours. Book a call to secure your dates.
       </p>
 
-      <div className="space-y-6">
-        {/* Training Support */}
-        <div className="p-4 bg-slate-50 rounded-lg">
-          <h3 className="font-semibold text-[#2E4059] mb-2">Training Support Needed</h3>
-          <div className="flex flex-wrap gap-2">
-            {getTrainingSupportLabels().map((label, idx) => (
-              <span key={idx} className="px-3 py-1 bg-white border border-slate-200 rounded-full text-sm">
-                {label}
-              </span>
-            ))}
+      <div className="border border-[#E8E2D8] bg-[#FDFCF9] rounded-[3px] overflow-hidden">
+        <div className="bg-[#1A1815] px-4 py-4 border-b border-[#2A2722]">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="text-[#C8973A] text-[14px] font-semibold" style={{ fontFamily: "'Playfair Display', serif" }}>
+                SewAsset™ Catalyst
+              </div>
+              <div className="text-white text-[40px] leading-tight font-bold mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+                Capability Development Plan
+              </div>
+              <div className="text-[#B5ACA0] text-[11px] mt-1">Prepared {today}</div>
+            </div>
+            <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#C8973A] border border-[#5A4A2E] px-2 py-1 rounded-[2px]">
+              Draft Proposal
+            </div>
           </div>
         </div>
 
-        {/* Outcomes */}
-        <div className="p-4 bg-slate-50 rounded-lg">
-          <h3 className="font-semibold text-[#2E4059] mb-2">Desired Outcomes</h3>
-          <div className="flex flex-wrap gap-2">
-            {data.outcomes.map((outcome, idx) => (
-              <span key={idx} className="px-3 py-1 bg-white border border-slate-200 rounded-full text-sm">
-                {outcome}
-              </span>
-            ))}
+        <div className="p-4 space-y-4">
+          <div>
+            <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#B8862F] mb-2 border-b border-[#E8E2D8] pb-1">
+              Plan Overview
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div className="border border-[#E8E2D8] bg-white p-2.5">
+                <div className="text-[10px] text-[#7A7570] uppercase tracking-[0.08em]">Capability Areas</div>
+                <div className="text-[13px] font-semibold text-[#0A0A0A] mt-0.5">{capabilityAreas}</div>
+              </div>
+              <div className="border border-[#E8E2D8] bg-white p-2.5">
+                <div className="text-[10px] text-[#7A7570] uppercase tracking-[0.08em]">Primary Goals</div>
+                <div className="text-[13px] font-semibold text-[#0A0A0A] mt-0.5">{primaryGoal}</div>
+              </div>
+              <div className="border border-[#E8E2D8] bg-white p-2.5">
+                <div className="text-[10px] text-[#7A7570] uppercase tracking-[0.08em]">Audience</div>
+                <div className="text-[13px] font-semibold text-[#0A0A0A] mt-0.5">{audienceLabel}</div>
+              </div>
+              <div className="border border-[#E8E2D8] bg-white p-2.5">
+                <div className="text-[10px] text-[#7A7570] uppercase tracking-[0.08em]">Total Modules</div>
+                <div className="text-[13px] font-semibold text-[#0A0A0A] mt-0.5">
+                  {selectedTopics.length} module{selectedTopics.length === 1 ? "" : "s"} · {Math.max(totalHours, 0)} hrs
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        {/* Selected Topics */}
-        <div className="p-4 bg-slate-50 rounded-lg">
-          <h3 className="font-semibold text-[#2E4059] mb-2">Selected Training Topics</h3>
-          <div className="flex flex-wrap gap-2">
-            {getSelectedTopics().map((topic, idx) => (
-              <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-700 border border-blue-200 rounded-full text-sm">
-                {topic}
-              </span>
-            ))}
+          <div>
+            <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#B8862F] mb-2 border-b border-[#E8E2D8] pb-1">
+              Development Modules
+            </div>
+            <div className="space-y-1.5">
+              {selectedTopics.length > 0 ? (
+                selectedTopics.map((topic, idx) => (
+                  <div key={`${topic}-${idx}`} className="border border-[#E8E2D8] bg-white px-3 py-2 text-[13px] text-[#0A0A0A] flex justify-between">
+                    <span>{topic}</span>
+                    <span className="text-[#7A7570] text-[11px]">
+                      {allTrainingTopics.find((t) => t.title === topic)?.duration_hours || 8} hrs
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <div className="border border-[#E8E2D8] bg-white px-3 py-2 text-[12px] text-[#7A7570] italic">
+                  No modules selected yet.
+                </div>
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Audience */}
-        <div className="p-4 bg-slate-50 rounded-lg">
-          <h3 className="font-semibold text-[#2E4059] mb-2">Training Audience</h3>
-          <p className="text-sm text-slate-600">
-            {data.trainingAudience === "myself" && "Myself"}
-            {data.trainingAudience === "team" && `My Team (${data.teamSize || 'N/A'} people)`}
-            {data.trainingAudience === "department" && `${data.department || 'Department'} (${data.teamSize || 'N/A'} people)`}
-            {data.trainingAudience === "organization" && `Entire Organization (${data.companySize || 'N/A'})`}
-          </p>
+          <div>
+            <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#B8862F] mb-2 border-b border-[#E8E2D8] pb-1">
+              What Happens Next
+            </div>
+            <div className="space-y-2">
+              {[
+                "Planning Call - A SewAsset specialist reviews your plan, confirms scope, dates, and delivery format.",
+                "Full Proposal Delivered - Detailed capability plan with modules, timeline, and investment breakdown within 24 hours.",
+                "Capability Development Begins - In-person, virtual, or LMS - built around your team's schedule and context.",
+              ].map((item, idx) => (
+                <div key={`next-${idx}`} className="border border-[#EDE8DF] bg-[#FBF9F6] px-3 py-2 flex gap-2.5">
+                  <span className="w-5 h-5 rounded-full bg-[#C8973A] text-white text-[11px] font-bold flex items-center justify-center mt-0.5">
+                    {idx + 1}
+                  </span>
+                  <span className="text-[12px] text-[#3C3A36]">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="border border-[#E2D3B5] bg-[#FAF4E8] px-3 py-2 text-[12px] text-[#3C3A36]">
+            ⏰ This plan is held for <strong>7 days</strong>. Book your call to secure preferred dates.
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.location.href = "/";
+              }
+            }}
+            className="w-full h-[48px] rounded-[2px] bg-[#C8973A] text-[#0A0A0A] text-[16px] font-black uppercase tracking-[0.08em] hover:bg-[#B8862F] transition-colors"
+          >
+            📅 Book a Planning Call
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-export function TrainingFlow() {
+export function TrainingFlow({
+  onProgressChange,
+}: {
+  onProgressChange?: (percent: number) => void;
+}) {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [data, setData] = useState<TrainingData>(initialData);
@@ -1004,13 +1160,33 @@ export function TrainingFlow() {
   // Check if user is a consultant or business
   const [isConsultant, setIsConsultant] = useState(false);
   const [isBusiness, setIsBusiness] = useState(false);
+  const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
 
   const totalSteps = 6;
+  const displayStep = currentStep >= 3 ? currentStep - 1 : currentStep;
+  const displayTotalSteps = totalSteps - 1;
 
   // Check sessionStorage for consultant or business role
   useEffect(() => {
     if (typeof window !== "undefined") {
       const selectedRole = sessionStorage.getItem("selectedRole");
+      const savedFlow = sessionStorage.getItem("trainingFlowState");
+      if (savedFlow) {
+        try {
+          const parsed = JSON.parse(savedFlow) as {
+            currentStep?: number;
+            data?: TrainingData;
+          };
+          if (parsed.data) {
+            setData({ ...initialData, ...parsed.data });
+          }
+          if (parsed.currentStep && parsed.currentStep >= 1 && parsed.currentStep <= 6) {
+            setCurrentStep(parsed.currentStep);
+          }
+        } catch (error) {
+          console.error("Failed to restore training flow state:", error);
+        }
+      }
       if (selectedRole === "consultant") {
         setIsConsultant(true);
       } else if (selectedRole === "business") {
@@ -1018,6 +1194,30 @@ export function TrainingFlow() {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setSaveState("saving");
+    const timeout = setTimeout(() => {
+      sessionStorage.setItem(
+        "trainingFlowState",
+        JSON.stringify({ currentStep, data })
+      );
+      setSaveState("saved");
+    }, 250);
+
+    return () => clearTimeout(timeout);
+  }, [currentStep, data]);
+
+  useEffect(() => {
+    if (!onProgressChange) return;
+    // UX requirement: once user generates the plan (summary screen), show full progress.
+    const percent =
+      currentStep >= 5
+        ? 100
+        : Math.round((displayStep / displayTotalSteps) * 100);
+    onProgressChange(percent);
+  }, [currentStep, displayStep, displayTotalSteps, onProgressChange]);
 
   const updateData = (field: keyof TrainingData, value: any) => {
     setData((prev) => ({ ...prev, [field]: value }));
@@ -1087,6 +1287,8 @@ export function TrainingFlow() {
       if (!data.email) stepErrors.push("Please enter your email.");
       if (!data.phone) stepErrors.push("Please enter your phone number.");
       if (!data.country) stepErrors.push("Please enter your country.");
+      if (!data.learningGoal) stepErrors.push("Please select your learning goal.");
+      if (!data.preferredFormat) stepErrors.push("Please select preferred training format.");
     }
 
     if (stepErrors.length > 0) {
@@ -1100,6 +1302,14 @@ export function TrainingFlow() {
   const handleNext = () => {
     if (validateStep(currentStep)) {
       if (currentStep < totalSteps) {
+        // Temporarily skip Step 2 (audience screen) from UI flow.
+        if (currentStep === 1) {
+          if (!data.trainingAudience) {
+            updateData("trainingAudience", "myself");
+          }
+          setCurrentStep(3);
+          return;
+        }
         setCurrentStep(currentStep + 1);
       } else {
         handleSubmit();
@@ -1109,6 +1319,11 @@ export function TrainingFlow() {
 
   const handleBack = () => {
     if (currentStep > 1) {
+      // Keep backward navigation aligned with temporary Step 2 skip.
+      if (currentStep === 3) {
+        setCurrentStep(1);
+        return;
+      }
       setCurrentStep(currentStep - 1);
     }
   };
@@ -1932,109 +2147,54 @@ export function TrainingFlow() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-      {/* Enhanced Progress Indicator */}
-      <div className="mb-10 animate-fade-in-up">
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-sm font-semibold text-slate-600">
-            Step {currentStep} of {totalSteps}
-          </span>
-          <span className="text-sm font-semibold text-[#2E4059] bg-[#FDC700]/10 px-3 py-1 rounded-full">
-            {Math.round((currentStep / totalSteps) * 100)}% Complete
-          </span>
-        </div>
-        <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden shadow-inner">
-          <div
-            className="bg-gradient-to-r from-[#FDC700] via-[#F5AF19] to-[#FDC700] h-3 rounded-full transition-all duration-500 ease-out relative overflow-hidden"
-            style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-          </div>
-        </div>
-      </div>
-
-      <Card className="p-6 sm:p-8 lg:p-10 bg-white shadow-2xl border-2 border-slate-100 rounded-2xl animate-fade-in-up delay-200">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+      <Card className="p-0 bg-transparent shadow-none border-0 rounded-none animate-fade-in-up delay-200">
         {/* Step 1: Training Support Selection */}
         {currentStep === 1 && (
           <div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-2">
-              What training support do you need right now?
+            <div className="text-[10px] font-semibold tracking-[0.18em] uppercase text-[#C8973A] mb-3">
+              Capability Development - Step 2 of 5
+            </div>
+            <h2 className="text-[44px] sm:text-[52px] leading-[1.06] font-bold text-[#171717] mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Select your <em className="text-[#C8973A] not-italic">capability areas</em>
             </h2>
-            <p className="text-lg text-[#6B7280] mb-8">
-              Select one or more training categories. You can pick as many as needed.
+            <p className="text-[13px] text-[#6B7280] mb-6 max-w-2xl">
+              Choose the development areas that match your priorities. Select all that apply.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
               {trainingSupportOptions.map((option) => {
                 const isSelected = data.trainingSupport.includes(option.value);
-                const subcategories = option.tooltip.split(',').map(s => s.trim());
-                const IconComponent = getCategoryIcon(option.value);
+                const icon = getCategoryEmoji(option.value);
                 
                 return (
-                  <TooltipProvider key={option.value} delayDuration={200}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
+                  <div key={option.value}>
                   <button
                     onClick={() => toggleTrainingSupport(option.value)}
-                          className={`w-full p-6 rounded-lg border-2 text-left transition-all relative group ${
+                          className={`w-full p-4 rounded-[4px] border text-left transition-colors duration-150 ease-out relative ${
                             isSelected
-                              ? "border-[#FFC72F] bg-[#FFC72F]/10 shadow-md"
-                              : "border-slate-200 hover:border-[#FFC72F]/50 bg-white hover:shadow-sm"
+                              ? "border-[#C8973A] bg-[#FAF4E8]"
+                              : "border-[#E8E2D8] bg-[#FDFCF9] hover:border-[#C8973A] hover:bg-[#FAF4E8]"
                           }`}
                         >
-                          {/* Checkbox in top right */}
-                          <div className="absolute top-4 right-4">
-                            <div
-                              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
-                                isSelected
-                              ? "border-[#FFC72F] bg-[#FFC72F]"
-                                  : "border-slate-300 bg-white"
-                          }`}
-                        >
-                              {isSelected && (
-                            <div className="w-2.5 h-2.5 rounded-full bg-white" />
+                          {isSelected && (
+                            <span className="absolute top-2 right-2 w-[17px] h-[17px] rounded-full bg-[#C8973A] text-white text-[10px] font-bold flex items-center justify-center">
+                              ✓
+                            </span>
                           )}
-                        </div>
-                      </div>
-
-                          {/* Icon */}
-                          <div className="mb-4">
-                            <IconComponent 
-                              className={`w-8 h-8 ${
-                                isSelected ? "text-[#FFC72F]" : "text-slate-400"
-                              }`} 
-                            />
+                          <div className="flex items-center gap-2 mb-1 pr-5">
+                            <span className="text-[14px] leading-none">{icon}</span>
+                            <h3 className="text-[14px] font-bold text-[#0A0A0A]">
+                              {option.label}
+                            </h3>
                           </div>
 
-                          {/* Title */}
-                          <h3 className="text-lg font-bold text-[#2E4059] mb-2 pr-8">
-                            {option.label}
-                          </h3>
-
                           {/* Description - using first part of tooltip as description */}
-                          <p className="text-sm text-slate-600 line-clamp-2">
-                            {getCategoryDescription(option.value)}
+                          <p className="text-[11px] text-[#7A7570] leading-[1.35] line-clamp-2">
+                            {option.tooltip}
                           </p>
                         </button>
-                          </TooltipTrigger>
-                      <TooltipContent 
-                        side="top" 
-                        className="max-w-sm p-4 bg-slate-800 text-white border-0 shadow-xl"
-                      >
-                        <div className="space-y-2">
-                          <p className="font-semibold mb-2 text-sm">{option.label} includes:</p>
-                          <ul className="space-y-1">
-                            {subcategories.map((subcat, idx) => (
-                              <li key={idx} className="text-sm flex items-start">
-                                <span className="mr-2">•</span>
-                                <span>{subcat}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                  </div>
                 );
               })}
             </div>
@@ -2205,51 +2365,61 @@ export function TrainingFlow() {
         {/* Step 3: Outcomes Selection */}
         {currentStep === 3 && (
           <div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-2">
-              What are your training goals?
+            <div className="text-[11px] font-semibold tracking-[0.16em] uppercase text-[#B8862F] mb-3">
+              Capability Development - Step 2 of 5
+            </div>
+            <h2
+              className="text-[48px] sm:text-[58px] leading-[1.04] font-bold text-[#111111] mb-2"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              What <em className="text-[#C8973A] not-italic">outcomes</em> matter most?
             </h2>
-            <p className="text-lg text-[#6B7280] mb-8">
-              Select the goals this training should help achieve. This helps us recommend the most relevant topics.
+            <p className="text-[14px] text-[#5F5A55] mb-6 max-w-2xl">
+              Select the performance results you want this development program to achieve.
             </p>
 
-            {/* Main Outcome Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-              {outcomeCategories.map((category, index) => {
-                const hasSelected = hasSelectedSubcategory(category);
-                const isExpanded = expandedCategories[category.name] || false;
-                
-                const handleToggleExpand = () => {
-                  // Toggle this specific category independently
-                  setExpandedCategories(prev => ({
-                    ...prev,
-                    [category.name]: !prev[category.name]
-                  }));
-                };
-                
-                return (
-                  <OutcomeCategoryCard
-                    key={`outcome-category-${category.name}`}
-                    category={category}
-                    hasSelected={hasSelected}
-                    selectedOutcomes={data.outcomes}
-                    onToggleOutcome={toggleOutcome}
-                    isExpanded={isExpanded}
-                    onToggleExpand={handleToggleExpand}
-                  />
-                );
-              })}
+            <div className="space-y-4">
+              {outcomeCategories.map((category) => (
+                <div key={`outcome-group-${category.name}`}>
+                  <div className="text-[11px] font-bold tracking-[0.12em] uppercase text-[#B8862F] mb-2 pb-1 border-b border-[#E8E2D8]">
+                    {category.name}
+                  </div>
+                  <div className="flex flex-wrap gap-2.5">
+                    {category.outcomes.map((outcome) => {
+                      const selected = data.outcomes.includes(outcome);
+                      return (
+                        <button
+                          key={`outcome-pill-${outcome}`}
+                          type="button"
+                          onClick={() => toggleOutcome(outcome)}
+                          className={`px-3.5 py-2 rounded-full border text-[13px] font-medium transition-all duration-150 ${
+                            selected
+                              ? "border-[#C8973A] bg-[#C8973A] text-white shadow-sm"
+                              : "border-[#E8E2D8] bg-[#FDFCF9] text-[#3C3A36] hover:border-[#C8973A] hover:text-[#C8973A] hover:bg-[#FFF9EE]"
+                          }`}
+                        >
+                          {outcome}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
 
             <div className="mt-6">
-              <Label htmlFor="specificNotes">
-                Optional — any unique goals or challenges.
+              <Label
+                htmlFor="specificNotes"
+                className="text-[11px] font-bold tracking-[0.12em] uppercase text-[#3C3A36]"
+              >
+                Anything specific to add? (Optional)
               </Label>
               <Textarea
                 id="specificNotes"
                 value={data.specificNotes || ""}
                 onChange={(e) => updateData("specificNotes", e.target.value)}
-                placeholder="Short notes help us personalize your training recommendation."
-                className="mt-2"
+                placeholder="e.g. We are preparing for ISO certification and need compliance training across two departments..."
+                className="mt-2 border-[#E8E2D8] bg-[#FDFCF9] min-h-[92px] text-[12px] placeholder:text-[#9A948D]"
                 rows={4}
               />
             </div>
@@ -2354,7 +2524,7 @@ export function TrainingFlow() {
               {/* Optional Fields Section */}
               <div>
                 <h3 className="text-lg font-semibold text-[#2E4059] mb-4 pb-2 border-b border-slate-200">
-                  Additional Information <span className="text-sm font-normal text-slate-500">(Optional)</span>
+                  Additional Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
@@ -2372,7 +2542,7 @@ export function TrainingFlow() {
 
                   <div className="space-y-2">
                     <Label htmlFor="learningGoal" className="text-[#2E4059] font-medium">
-                      Learning Goal
+                      Learning Goal <span className="text-red-500">*</span>
                     </Label>
                 <Select
                   value={data.learningGoal || ""}
@@ -2418,7 +2588,7 @@ export function TrainingFlow() {
 
                   <div className="space-y-2">
                     <Label htmlFor="preferredFormat" className="text-[#2E4059] font-medium">
-                  Preferred Training Format
+                  Preferred Training Format <span className="text-red-500">*</span>
                 </Label>
                 <Select
                   value={data.preferredFormat || ""}
@@ -2455,31 +2625,35 @@ export function TrainingFlow() {
             onClick={handleBack}
             disabled={currentStep === 1}
             variant="outline"
-            className="disabled:opacity-50"
+            className="h-10 px-8 rounded-[2px] border border-[#E8E2D8] bg-[#FDFCF9] text-[#7A7570] text-[12px] font-medium hover:bg-[#FDFCF9] hover:border-[#CFC7BC] hover:text-[#3C3A36] disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Back
+            ← Back
           </Button>
-          <Button
-            onClick={handleNext}
-            disabled={
-              isSubmitting || 
-              (currentStep === 4 && (data.selectedTopics?.length || 0) === 0 && (!data.customTopics || data.customTopics.length === 0 || !data.customTopics[0]?.trim()))
-            }
-            className="bg-[#FFC72F] text-[#2E4059] font-bold hover:bg-[#FFC72F]/90 disabled:opacity-50"
-          >
-            {isSubmitting ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#2E4059] mr-2"></div>
-                Submitting...
-              </>
-            ) : currentStep === 4 ? (
-              "Continue → Audience"
-            ) : currentStep === totalSteps ? (
-              "Submit"
-            ) : (
-              "Continue"
-            )}
-          </Button>
+          {currentStep !== 5 ? (
+            <Button
+              onClick={handleNext}
+              disabled={isSubmitting}
+              className="h-[54px] px-14 rounded-[2px] bg-[#FFC72F] text-[#2E4059] text-[12px] font-black uppercase tracking-[0.12em] hover:bg-[#F5AF19] disabled:opacity-45 disabled:cursor-not-allowed transition-colors duration-150"
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#2E4059] mr-2"></div>
+                  Submitting...
+                </>
+              ) : currentStep === 4 ? (
+                "Generate Capability Plan →"
+              ) : currentStep === totalSteps ? (
+                "Submit"
+              ) : (
+                "Continue →"
+              )}
+            </Button>
+          ) : (
+            <div />
+          )}
+        </div>
+        <div className="mt-3 text-right text-xs text-slate-500">
+          {saveState === "saving" ? "Saving progress..." : "Progress auto-saved"}
         </div>
       </Card>
     </div>
@@ -2490,18 +2664,18 @@ export function TrainingFlow() {
 const trainingSupportOptions = [
   {
     value: "soft-skill",
-    label: "Soft Skill",
+    label: "Soft Skills",
     tooltip:
       "Communication, teamwork, time management, conflict resolution, coaching",
   },
   {
     value: "technical-hard-skill",
-    label: "Technical/Hard Skill",
+    label: "Technical / Hard Skills",
     tooltip: "Software, system skills, regulatory, safety, internal policies",
   },
   {
     value: "behavior-mindset",
-    label: "Behavior & Mindset",
+    label: "Behavioral & Mindset",
     tooltip:
       "Accountability, professionalism, motivation, collaboration, trust, engagement, culture-building",
   },
@@ -2512,7 +2686,7 @@ const trainingSupportOptions = [
   },
   {
     value: "compliance-mandatory",
-    label: "Compliance/Mandatory",
+    label: "Compliance & Mandatory",
     tooltip: "Regulatory, safety, internal policies",
   },
   {
@@ -2522,7 +2696,7 @@ const trainingSupportOptions = [
   },
   {
     value: "industry-specific",
-    label: "Industry/Department Specific Skill",
+    label: "Industry / Department Specific",
     tooltip: "Sales, customer service, finance, logistics, HR, tech, etc.",
   },
   {

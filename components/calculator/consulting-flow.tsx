@@ -200,6 +200,7 @@ export function ConsultingFlow() {
   const [errors, setErrors] = useState<Record<number, string[]>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
 
   // Load saved data from sessionStorage and check for existing identity
   useEffect(() => {
@@ -223,7 +224,12 @@ export function ConsultingFlow() {
   // Save data to sessionStorage on change
   useEffect(() => {
     if (typeof window !== "undefined") {
+      setSaveState("saving");
+      const timeout = setTimeout(() => {
       sessionStorage.setItem("consultingData", JSON.stringify(data));
+        setSaveState("saved");
+      }, 250);
+      return () => clearTimeout(timeout);
     }
   }, [data]);
 
@@ -1429,9 +1435,9 @@ export function ConsultingFlow() {
           </Button>
           <Button
             onClick={handleNext}
-            className="px-8 py-3 bg-[#FDC700] text-[#2E4059] hover:bg-[#F5AF19] font-bold rounded-xl"
+            className="px-8 py-3 bg-[#FDC700] text-[#2E4059] hover:bg-[#F5AF19] font-bold rounded-xl transition-all duration-300 hover:-translate-y-0.5"
           >
-            Continue
+            {currentStage === 9 ? "Save & Continue → Final Review" : "Save & Continue"}
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
@@ -1442,11 +1448,16 @@ export function ConsultingFlow() {
         <div className="flex justify-center mt-8">
           <Button
             onClick={() => setCurrentStage(1)}
-            className="px-8 py-3 bg-[#FDC700] text-[#2E4059] hover:bg-[#F5AF19] font-bold rounded-xl"
+            className="px-8 py-3 bg-[#FDC700] text-[#2E4059] hover:bg-[#F5AF19] font-bold rounded-xl transition-all duration-300 hover:-translate-y-0.5"
           >
-            Continue
+            Save & Continue
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
+        </div>
+      )}
+      {(currentStage > 0 || currentStage === -1) && (
+        <div className="mt-3 text-right text-xs text-slate-500">
+          {saveState === "saving" ? "Saving progress..." : "Progress auto-saved"}
         </div>
       )}
     </div>
