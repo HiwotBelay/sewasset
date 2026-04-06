@@ -102,6 +102,12 @@
     transition: color 0.35s;
 }
 
+.c-nav-tm {
+    font-size: 0.6rem;
+    color: var(--gold);
+    margin-left: 2px;
+}
+
 .c-nav.scrolled .c-nav-logo-main {
     color: var(--ink);
 }

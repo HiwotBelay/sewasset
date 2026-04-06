@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { TrainingFlow } from "@/components/calculator/training-flow";
+import { CatalystTrainingWizard } from "@/components/calculator/catalyst-training-wizard";
 import { ArrowLeft } from "lucide-react";
 import "../catalyst-tool.css";
 
@@ -13,7 +13,6 @@ export default function TrainingPage() {
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [disclaimerAccepted, setDisclaimerAccepted] = useState(false);
-  const [progressPercent, setProgressPercent] = useState(20);
 
   useEffect(() => {
     // Only run on client
@@ -39,7 +38,11 @@ export default function TrainingPage() {
   }
 
   if (!disclaimerAccepted) {
-    return null; // Will redirect
+    return (
+      <div className="min-h-screen bg-[#f7f3ec] flex items-center justify-center px-4">
+        <p className="text-[#2E4059] text-sm font-medium">Redirecting to terms of use…</p>
+      </div>
+    );
   }
 
   return (
@@ -56,11 +59,8 @@ export default function TrainingPage() {
           </Link>
         </div>
       </div>
-      <div className="tool-progress">
-        <div className="tool-progress-fill" style={{ width: `${progressPercent}%` }} />
-      </div>
 
-      <TrainingFlow onProgressChange={setProgressPercent} />
+      <CatalystTrainingWizard />
     </div>
   );
 }

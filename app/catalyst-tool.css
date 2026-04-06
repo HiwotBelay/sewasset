@@ -10,37 +10,74 @@
   --tool-mid: #7a7570;
   --tool-blue: #3b5998;
   --tool-blue-lt: #eaf0fa;
+  /* Live review (overridden inside .tool-overlay to match --tool-gold) */
+  --live-accent: var(--tool-gold);
+  --live-peach: color-mix(in srgb, var(--tool-gold) 12%, var(--tool-white));
+  --live-body-text: #6d6760;
 }
 
+/* Catalyst tool — same brand as landing / disclaimer (:root --tool-gold, --tool-ink, …) */
 .tool-overlay {
+  /* Accent = company gold (not reference mock orange). Override :root --tool-gold to rebrand. */
+  --cw-accent: var(--tool-gold);
+  --cw-accent-soft: color-mix(in srgb, var(--tool-gold) 16%, var(--tool-white));
+  --cw-on-accent: var(--tool-ink);
+  --live-accent: var(--cw-accent);
+  --live-peach: var(--cw-accent-soft);
+  --cw-accent-dark: color-mix(in srgb, var(--cw-accent), #2a2010 26%);
+  --cw-accent-hover: color-mix(in srgb, var(--cw-accent), #000 12%);
+  --cw-accent-badge-bg: color-mix(in srgb, var(--cw-accent-soft), var(--cw-accent) 10%);
+  --cw-accent-border-35: color-mix(in srgb, var(--cw-accent) 38%, transparent);
+  --cw-accent-border-40: color-mix(in srgb, var(--cw-accent) 44%, transparent);
+  --cw-shadow-accent: color-mix(in srgb, var(--cw-accent) 32%, transparent);
+  /* Badges on white / light panels */
+  --cw-badge-bg: color-mix(in srgb, var(--cw-accent) 20%, var(--tool-white));
+  --cw-badge-text: var(--tool-ink);
+  --cw-badge-border: color-mix(in srgb, var(--cw-accent) 42%, transparent);
+  /* Pill on dark navy plan header */
+  --cw-chip-on-dark-bg: color-mix(in srgb, var(--cw-accent) 28%, transparent);
+  --cw-chip-on-dark-text: color-mix(in srgb, #fff 52%, var(--cw-accent) 48%);
+  --cw-chip-on-dark-border: color-mix(in srgb, var(--cw-accent) 48%, transparent);
+  --cw-focus-ring: color-mix(in srgb, var(--cw-accent) 35%, transparent);
+  --cw-green: #38a169;
+  --cw-green-dark: #2f855a;
+  --cw-ink: #0a0a0a;
+  --cw-ink-soft: var(--tool-ink);
+  --cw-mid: var(--tool-mid);
+  --cw-mist: var(--tool-mist);
+  --cw-paper: var(--tool-paper);
+  --cw-surface: var(--tool-white);
   min-height: 100vh;
-  background: var(--tool-paper);
-  color: var(--tool-ink);
+  background: var(--cw-paper);
+  color: var(--cw-ink-soft);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .tool-nav {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(247, 243, 236, 0.97);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--tool-mist);
+  border-bottom: 1px solid var(--cw-mist);
   padding: 0 48px;
-  height: 62px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
 }
 
 .tool-logo {
-  font-family: "Playfair Display", serif;
-  font-size: 1.1rem;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.05rem;
   font-weight: 900;
-  color: var(--tool-ink);
+  color: var(--cw-ink);
+  letter-spacing: -0.02em;
 }
 
 .tool-logo span {
-  color: var(--tool-gold);
+  color: var(--cw-accent);
 }
 
 .tool-nav-right {
@@ -61,25 +98,31 @@
 
 .tool-path-badge.show-training {
   display: block;
-  background: rgba(245, 235, 213, 1);
-  color: var(--tool-gold);
+  background: var(--cw-accent-badge-bg);
+  color: var(--cw-accent-dark);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 800;
 }
 
 .tool-path-badge.show-consulting {
   display: block;
   background: var(--tool-blue-lt);
   color: var(--tool-blue);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 800;
 }
 
 .close-tool {
-  padding: 8px 14px;
-  background: none;
-  border: 1px solid var(--tool-mist);
-  border-radius: 2px;
-  font-family: "Syne", sans-serif;
-  font-size: 0.72rem;
+  padding: 8px 16px;
+  background: var(--cw-surface);
+  border: 1px solid var(--cw-mist);
+  border-radius: 999px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.7rem;
   font-weight: 700;
-  color: var(--tool-mid);
+  color: var(--cw-mid);
   cursor: pointer;
   letter-spacing: 0.06em;
   transition: all 0.2s;
@@ -90,15 +133,15 @@
 }
 
 .close-tool:hover {
-  border-color: #b84c2b;
-  color: #b84c2b;
+  border-color: var(--cw-accent);
+  color: var(--cw-accent-dark);
 }
 
 .tool-progress {
   height: 3px;
   background: var(--tool-mist);
   position: sticky;
-  top: 62px;
+  top: 64px;
   z-index: 49;
 }
 
@@ -107,6 +150,152 @@
   width: 0%;
   background: linear-gradient(90deg, var(--tool-gold), var(--tool-gold2));
   transition: width 0.5s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* 6-step stepper (identity & wizard steps) */
+.tool-stepper-wrap {
+  position: sticky;
+  top: 64px;
+  z-index: 48;
+  background: rgba(247, 243, 236, 0.98);
+  border-bottom: 1px solid var(--tool-mist);
+  padding: 18px clamp(18px, 4vw, 48px) 16px;
+}
+
+.tool-stepper {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: min(1120px, 100%);
+  margin: 0 auto;
+  gap: 0;
+}
+
+.tool-step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.tool-step-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Syne", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  background: var(--tool-white);
+  color: var(--tool-mid);
+  border: 2px solid var(--tool-mist);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.tool-step-circle.is-active {
+  background: var(--tool-gold);
+  color: var(--tool-ink);
+  border-color: rgba(46, 64, 89, 0.18);
+  box-shadow: 0 2px 10px rgba(253, 199, 0, 0.35);
+}
+
+.tool-step-label {
+  margin-top: 8px;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tool-gold);
+  text-align: center;
+  max-width: 100px;
+  line-height: 1.25;
+  min-height: 2.5em;
+}
+
+.tool-step-item.is-future .tool-step-label {
+  visibility: hidden;
+  min-height: 2.5em;
+}
+
+.tool-step-connector {
+  flex: 1 1 0;
+  min-width: 16px;
+  height: 2px;
+  background: var(--tool-mist);
+  margin-top: 15px;
+  align-self: flex-start;
+}
+
+.identity-shell {
+  width: 100%;
+  max-width: min(1120px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) min(300px, 34%);
+  gap: 22px 28px;
+  align-items: start;
+}
+
+.identity-shell-main {
+  min-width: 0;
+}
+
+/* Live review — 20px card, wide-track heading, peach strip + 7px rail, navy “display” emphasis */
+.live-review {
+  position: sticky;
+  top: 132px;
+  background: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 28px 26px 26px;
+  box-shadow: 0 4px 22px rgba(46, 64, 89, 0.07);
+}
+
+.live-review-title {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--live-accent);
+  margin: 0;
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #e8e3dc;
+}
+
+.live-review-box {
+  margin: 0;
+  background: var(--live-peach);
+  border-left: 7px solid var(--live-accent);
+  padding: 20px 20px 20px 22px;
+  border-radius: 0 16px 16px 0;
+  font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  font-weight: 400;
+  color: var(--live-body-text);
+}
+
+/* Same body sans as tool chrome (ref: Live Review matches main UI) */
+.live-review-box strong {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: inherit;
+  letter-spacing: normal;
+  color: var(--tool-ink);
+}
+
+.live-review.consulting-path .live-review-title {
+  color: var(--tool-blue);
+  letter-spacing: 0.22em;
+}
+
+.live-review.consulting-path .live-review-box {
+  background: #f2f5fb;
+  border-left: 7px solid var(--tool-blue);
 }
 
 .tool-main {
@@ -124,6 +313,10 @@
 
 .tscreen.active {
   display: block;
+}
+
+.tscreen-wide {
+  max-width: min(1120px, 100%);
 }
 
 @keyframes fadeUp {
@@ -362,9 +555,31 @@
 }
 
 .id-icon {
-  font-size: 1.15rem;
-  margin-bottom: 10px;
   display: block;
+}
+
+.id-icon-pad {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.id-icon-individual {
+  background: rgba(124, 58, 237, 0.14);
+}
+
+.id-icon-business {
+  background: rgba(59, 89, 152, 0.16);
+}
+
+.id-icon-consultant {
+  background: rgba(253, 199, 0, 0.22);
 }
 
 .id-name {
@@ -462,75 +677,205 @@
   max-width: 100%;
 }
 
+/* Bold elevated fieldsets (Individual, Business, Consultant) */
+.role-form-elevated {
+  border: 1.5px solid rgba(46, 64, 89, 0.13);
+  border-radius: 14px;
+  padding: 22px 20px 20px;
+  background: linear-gradient(168deg, rgba(255, 252, 244, 0.98) 0%, var(--tool-white) 42%, #f5f0e8 100%);
+  box-shadow:
+    0 10px 36px rgba(46, 64, 89, 0.08),
+    0 0 0 1px rgba(253, 199, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.rf-role-intro {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(253, 199, 0, 0.42);
+}
+
+.rf-role-kicker {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--tool-gold);
+  margin: 0 0 8px;
+}
+
+.rf-role-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+  font-weight: 800;
+  color: var(--tool-ink);
+  line-height: 1.15;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.rf-role-sub {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--tool-mid);
+  line-height: 1.5;
+  max-width: 52ch;
+}
+
+.role-form-elevated .rf-field span {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--tool-ink);
+}
+
+.role-form-elevated .rf-field input,
+.role-form-elevated .rf-field select {
+  font-weight: 700;
+  font-size: 0.9rem;
+  height: 44px;
+  border: 2px solid #d4cdc2;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fffefb 0%, #fffdf9 100%);
+  box-shadow: inset 0 2px 4px rgba(46, 64, 89, 0.04);
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.role-form-elevated .rf-field input::placeholder {
+  font-weight: 600;
+  color: #9a9288;
+}
+
+.role-form-elevated .rf-field input:hover,
+.role-form-elevated .rf-field select:hover {
+  border-color: rgba(253, 199, 0, 0.65);
+}
+
+.role-form-elevated .rf-field input:focus,
+.role-form-elevated .rf-field select:focus {
+  border-color: var(--tool-gold);
+  box-shadow:
+    inset 0 2px 4px rgba(46, 64, 89, 0.04),
+    0 0 0 3px rgba(253, 199, 0, 0.22);
+}
+
+.role-form-elevated .rf-field-choice select {
+  appearance: none;
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%232e4059' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-color: #fffefb;
+  cursor: pointer;
+}
+
+.role-form-elevated .rf-check {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed rgba(46, 64, 89, 0.12);
+  align-items: center;
+}
+
+.role-form-elevated .rf-check span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--tool-ink);
+}
+
+.role-form-elevated .rf-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--tool-gold);
+  cursor: pointer;
+}
+
+.rf-grid-business-choices {
+  margin-top: 14px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(46, 64, 89, 0.12);
+}
+
+@media (max-width: 900px) {
+  .role-form-elevated {
+    padding: 18px 14px 16px;
+  }
+}
+
 /* Bottom nav */
 .bottom-nav {
   position: sticky;
   bottom: 0;
   z-index: 55;
-  padding: 13px 18px;
-  background: rgba(247, 243, 236, 0.97);
+  padding: 14px 24px;
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(12px);
-  border-top: 1px solid var(--tool-mist);
+  border-top: 1px solid var(--cw-mist);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
 }
 
 .btn-back {
-  padding: 10px 22px;
-  border: 1.5px solid var(--tool-mist);
-  border-radius: 2px;
-  font-family: "Syne", sans-serif;
-  font-size: 0.78rem;
+  padding: 12px 24px;
+  border: 2px solid var(--cw-mist);
+  border-radius: 999px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8rem;
   font-weight: 700;
-  color: var(--tool-mid);
+  color: var(--cw-mid);
   cursor: pointer;
-  background: var(--tool-white);
+  background: var(--cw-surface);
   transition: all 0.18s;
 }
 
 .btn-back:hover {
-  border-color: var(--tool-ink);
-  color: var(--tool-ink);
+  border-color: var(--cw-ink-soft);
+  color: var(--cw-ink);
 }
 
 .btn-next {
-  padding: 11px 30px;
-  background: var(--tool-ink);
-  color: var(--tool-white);
+  padding: 14px 32px;
+  background: var(--cw-ink);
+  color: #fff;
   border: none;
-  border-radius: 2px;
-  font-family: "Syne", sans-serif;
-  font-size: 0.78rem;
+  border-radius: 999px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8rem;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.2s;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
 
 .btn-next:hover {
-  background: var(--tool-gold);
-  color: var(--tool-ink);
+  background: var(--cw-accent);
+  color: var(--cw-on-accent);
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(200, 151, 58, 0.28);
+  box-shadow: 0 8px 24px var(--cw-shadow-accent);
 }
 
 .btn-next:disabled {
-  background: var(--tool-mist);
-  color: var(--tool-mid);
+  background: var(--cw-mist);
+  color: var(--cw-mid);
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
 .nav-hint-txt {
-  font-size: 0.7rem;
-  color: var(--tool-mid);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cw-mid);
   text-align: center;
   flex: 1;
 }
@@ -674,9 +1019,26 @@
   .tool-nav {
     padding: 0 16px;
   }
+  .tool-stepper-wrap {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .tool-stepper {
+    max-width: 100%;
+  }
+  .tool-step-connector {
+    min-width: 8px;
+  }
   .tool-main {
     padding-left: 14px;
     padding-right: 14px;
+  }
+  .identity-shell {
+    grid-template-columns: 1fr;
+  }
+  .live-review {
+    position: static;
+    order: -1;
   }
   .gate-grid,
   .id-grid {

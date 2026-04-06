@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { ConsultingFlow } from "@/components/calculator/consulting-flow";
+import { CatalystConsultingWizard } from "@/components/calculator/catalyst-consulting-wizard";
 import "../catalyst-tool.css";
 
 export const dynamic = "force-dynamic";
@@ -38,7 +38,11 @@ export default function ConsultingPage() {
   }
 
   if (!disclaimerAccepted) {
-    return null; // Will redirect
+    return (
+      <div className="min-h-screen bg-[#f7f3ec] flex items-center justify-center px-4">
+        <p className="text-[#2E4059] text-sm font-medium">Redirecting to terms of use…</p>
+      </div>
+    );
   }
 
   return (
@@ -55,11 +59,8 @@ export default function ConsultingPage() {
           </Link>
         </div>
       </div>
-      <div className="tool-progress">
-        <div className="tool-progress-fill" style={{ width: "10%" }} />
-      </div>
 
-      <ConsultingFlow />
+      <CatalystConsultingWizard />
     </div>
   );
 }

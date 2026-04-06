@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect, type ChangeEvent } from "react";
+import { useState, useEffect, type ChangeEvent, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import "../catalyst-tool.css";
-import { Playfair_Display, Syne } from "next/font/google";
+import { ROUTE_IDENTITY_COMPLETE_KEY } from "@/lib/route-selection-bridge";
 
-const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "700", "900"] });
-const syne = Syne({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
+const STEPPER_STEPS = [1, 2, 3, 4, 5, 6] as const;
 
 export default function RouteSelectionPage() {
   const router = useRouter();
@@ -21,15 +20,24 @@ export default function RouteSelectionPage() {
     fullName: "",
     email: "",
     phone: "",
-    preferredFormat: "",
+    country: "Ethiopia",
+    preferredFormat: "virtual-live",
     jobTitle: "",
     company: "",
     workEmail: "",
     industry: "",
     companySize: "",
+    authorityLevel: "decision-maker",
     budgetBand: "",
     firm: "",
+    clientIndustry: "",
+    clientCompanySize: "",
     purpose: "",
+    yearsExperience: "",
+    areaOfInterest: "",
+    educationLevel: "degree",
+    learningGoal: "upskilling",
+    fundingSource: "self-funded",
   });
   const [agreeNda, setAgreeNda] = useState(false);
   const [identityError, setIdentityError] = useState("");
@@ -45,28 +53,33 @@ export default function RouteSelectionPage() {
     const accepted = sessionStorage.getItem("disclaimerAccepted");
     if (!accepted) {
       router.push("/disclaimer");
-    } else {
-      setDisclaimerAccepted(true);
-      const route = sessionStorage.getItem("selectedRoute");
-      const savedProfile = sessionStorage.getItem("routeSelectionProfile");
-      if (savedProfile) {
-        try {
-          const parsed = JSON.parse(savedProfile) as typeof profile;
-          setProfile((prev) => ({ ...prev, ...parsed }));
-        } catch {
-          // Ignore malformed session data
-        }
-      }
-      const savedNda = sessionStorage.getItem("routeSelectionNda");
-      if (savedNda === "true") setAgreeNda(true);
-      if (route === "training" || route === "consulting") {
-        setSelectedRoute(route);
-      } else {
-        setSelectedRoute("training");
-      }
-      setStage(1);
+      return;
     }
-  }, []);
+    setDisclaimerAccepted(true);
+
+    const route = sessionStorage.getItem("selectedRoute");
+    const savedStage = sessionStorage.getItem("routeSelectionStage");
+
+    const savedProfile = sessionStorage.getItem("routeSelectionProfile");
+    if (savedProfile) {
+      try {
+        const parsed = JSON.parse(savedProfile) as typeof profile;
+        setProfile((prev) => ({ ...prev, ...parsed }));
+      } catch {
+        /* ignore */
+      }
+    }
+    const savedNda = sessionStorage.getItem("routeSelectionNda");
+    if (savedNda === "true") setAgreeNda(true);
+
+    if (savedStage === "1" && (route === "training" || route === "consulting")) {
+      setSelectedRoute(route);
+      setStage(1);
+    } else {
+      setStage(0);
+      setSelectedRoute(route === "training" || route === "consulting" ? route : "");
+    }
+  }, [router]);
 
   useEffect(() => {
     if (!triOpen) return;
@@ -98,25 +111,34 @@ export default function RouteSelectionPage() {
     if (!selectedRole) return "Please select your role.";
     if (selectedRole === "individual") {
       if (!profile.fullName.trim()) return "Full name is required.";
-      if (!profile.email.trim()) return "Email is required.";
-      if (!profile.phone.trim()) return "Phone is required.";
+      if (!profile.email.trim()) return "Personal email is required.";
+      if (!profile.country.trim()) return "Country is required.";
+      if (!profile.jobTitle.trim()) return "Current job title is required.";
+      if (!profile.yearsExperience) return "Years of experience is required.";
+      if (!profile.areaOfInterest.trim()) return "Area of interest is required.";
+      if (!profile.educationLevel) return "Education level is required.";
+      if (!profile.learningGoal) return "Learning goal is required.";
       if (!profile.preferredFormat) return "Preferred format is required.";
+      if (!profile.fundingSource) return "Funding source is required.";
       return "";
     }
     if (selectedRole === "business") {
       if (!profile.fullName.trim()) return "Full name is required.";
-      if (!profile.jobTitle.trim()) return "Job title is required.";
-      if (!profile.company.trim()) return "Company is required.";
       if (!profile.workEmail.trim()) return "Work email is required.";
+      if (!profile.company.trim()) return "Company name is required.";
+      if (!profile.authorityLevel) return "Authority level is required.";
       if (!profile.industry) return "Industry is required.";
       if (!profile.companySize) return "Company size is required.";
-      if (!profile.budgetBand) return "Budget band is required.";
       return "";
     }
-    if (!profile.fullName.trim()) return "Full name is required.";
-    if (!profile.firm.trim()) return "Firm is required.";
-    if (!profile.email.trim()) return "Email is required.";
+    if (!profile.fullName.trim()) return "Your full name is required.";
+    if (!profile.firm.trim()) return "Firm name is required.";
+    if (!profile.email.trim()) return "Work email is required.";
+    if (!profile.phone.trim()) return "Phone number is required.";
+    if (!profile.country.trim()) return "Country is required.";
     if (!profile.purpose) return "Purpose is required.";
+    if (!profile.clientIndustry) return "Client industry is required.";
+    if (!profile.clientCompanySize) return "Client company size is required.";
     if (!agreeNda) return "You must agree to the terms.";
     return "";
   };
@@ -125,28 +147,119 @@ export default function RouteSelectionPage() {
     if (!selectedRole) return null;
 
     if (selectedRole === "individual") {
+      const req = (
+        <span style={{ color: "var(--tool-gold)", fontWeight: 900 }} aria-hidden>
+          *
+        </span>
+      );
       return (
-        <div className="role-form">
+        <div className="role-form role-form-elevated">
+          <header className="rf-role-intro">
+            <p className="rf-role-kicker">Individual</p>
+            <h3 className="rf-role-title">Your profile &amp; learning context</h3>
+            <p className="rf-role-sub">
+              Sharper module picks, pacing, and format when we know your goals, experience, and constraints.
+            </p>
+          </header>
           <div className="rf-grid two">
             <label className="rf-field">
-              <span>FULL NAME *</span>
+              <span>
+                FULL NAME {req}
+              </span>
               <input placeholder="Your name" value={profile.fullName} onChange={updateProfile("fullName")} />
             </label>
             <label className="rf-field">
-              <span>EMAIL *</span>
-              <input placeholder="you@email.com" value={profile.email} onChange={updateProfile("email")} />
+              <span>
+                PERSONAL EMAIL {req}
+              </span>
+              <input type="email" placeholder="you@email.com" value={profile.email} onChange={updateProfile("email")} />
             </label>
             <label className="rf-field">
-              <span>PHONE *</span>
-              <input placeholder="+251..." value={profile.phone} onChange={updateProfile("phone")} />
+              <span>PHONE NUMBER</span>
+              <input type="tel" placeholder="+251..." value={profile.phone} onChange={updateProfile("phone")} />
             </label>
             <label className="rf-field">
-              <span>PREFERRED FORMAT *</span>
+              <span>
+                COUNTRY {req}
+              </span>
+              <input placeholder="e.g. Ethiopia" value={profile.country} onChange={updateProfile("country")} />
+            </label>
+            <label className="rf-field">
+              <span>
+                CURRENT JOB TITLE {req}
+              </span>
+              <input placeholder="e.g. Sales Executive" value={profile.jobTitle} onChange={updateProfile("jobTitle")} />
+            </label>
+            <label className="rf-field rf-field-choice">
+              <span>
+                YEARS OF EXPERIENCE {req}
+              </span>
+              <select value={profile.yearsExperience} onChange={updateProfile("yearsExperience")}>
+                <option value="">Select...</option>
+                <option value="0-2">0–2 years</option>
+                <option value="3-5">3–5 years</option>
+                <option value="6-10">6–10 years</option>
+                <option value="10+">10+ years</option>
+              </select>
+            </label>
+            <label className="rf-field">
+              <span>
+                AREA OF INTEREST {req}
+              </span>
+              <input
+                placeholder="e.g. Data Science, Leadership"
+                value={profile.areaOfInterest}
+                onChange={updateProfile("areaOfInterest")}
+              />
+            </label>
+            <label className="rf-field rf-field-choice">
+              <span>
+                EDUCATION LEVEL {req}
+              </span>
+              <select value={profile.educationLevel} onChange={updateProfile("educationLevel")}>
+                <option value="">Select...</option>
+                <option value="certificate">Certificate</option>
+                <option value="diploma">Diploma</option>
+                <option value="degree">Degree</option>
+                <option value="masters">Masters / postgraduate</option>
+                <option value="phd">PhD</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+            <label className="rf-field rf-field-choice">
+              <span>
+                LEARNING GOAL {req}
+              </span>
+              <select value={profile.learningGoal} onChange={updateProfile("learningGoal")}>
+                <option value="">Select...</option>
+                <option value="upskilling">Upskilling</option>
+                <option value="reskilling">Reskilling</option>
+                <option value="certification">Certification prep</option>
+                <option value="leadership">Leadership growth</option>
+                <option value="career-shift">Career shift</option>
+              </select>
+            </label>
+            <label className="rf-field rf-field-choice">
+              <span>
+                PREFERRED FORMAT {req}
+              </span>
               <select value={profile.preferredFormat} onChange={updateProfile("preferredFormat")}>
                 <option value="">Select...</option>
                 <option value="virtual-live">Virtual / Live</option>
                 <option value="in-person">In-Person</option>
                 <option value="self-paced">Self-paced (LMS)</option>
+              </select>
+            </label>
+            <label className="rf-field rf-field-choice">
+              <span>
+                FUNDING SOURCE {req}
+              </span>
+              <select value={profile.fundingSource} onChange={updateProfile("fundingSource")}>
+                <option value="">Select...</option>
+                <option value="self-funded">Self-funded</option>
+                <option value="employer">Employer-sponsored</option>
+                <option value="scholarship">Scholarship / grant</option>
+                <option value="other">Other</option>
               </select>
             </label>
           </div>
@@ -155,34 +268,65 @@ export default function RouteSelectionPage() {
     }
 
     if (selectedRole === "business") {
+      const req = (
+        <span style={{ color: "var(--tool-gold)", fontWeight: 900 }} aria-hidden>
+          *
+        </span>
+      );
       return (
-        <div className="role-form">
+        <div className="role-form role-form-elevated">
+          <header className="rf-role-intro">
+            <p className="rf-role-kicker">Business / Organization</p>
+            <h3 className="rf-role-title">Tell us about your company</h3>
+            <p className="rf-role-sub">Bold fields shape approvals, benchmarking, and team-scale recommendations.</p>
+          </header>
           <div className="rf-grid two">
             <label className="rf-field">
-              <span>FULL NAME *</span>
-              <input placeholder="Your full name" value={profile.fullName} onChange={updateProfile("fullName")} />
+              <span>
+                FULL NAME {req}
+              </span>
+              <input placeholder="Full name" value={profile.fullName} onChange={updateProfile("fullName")} />
             </label>
             <label className="rf-field">
-              <span>JOB TITLE *</span>
-              <input placeholder="e.g HR Director" value={profile.jobTitle} onChange={updateProfile("jobTitle")} />
+              <span>
+                WORK EMAIL {req}
+              </span>
+              <input type="email" placeholder="you@company.com" value={profile.workEmail} onChange={updateProfile("workEmail")} />
             </label>
             <label className="rf-field">
-              <span>COMPANY *</span>
+              <span>JOB TITLE</span>
+              <input placeholder="e.g. HR Manager" value={profile.jobTitle} onChange={updateProfile("jobTitle")} />
+            </label>
+            <label className="rf-field">
+              <span>
+                COMPANY NAME {req}
+              </span>
               <input placeholder="Company name" value={profile.company} onChange={updateProfile("company")} />
             </label>
-            <label className="rf-field">
-              <span>WORK EMAIL *</span>
-              <input placeholder="you@company.com" value={profile.workEmail} onChange={updateProfile("workEmail")} />
-            </label>
           </div>
-          <div className="rf-grid three">
-            <label className="rf-field">
-              <span>INDUSTRY *</span>
+          <div className="rf-grid three rf-grid-business-choices">
+            <label className="rf-field rf-field-choice">
+              <span>
+                AUTHORITY LEVEL {req}
+              </span>
+              <select value={profile.authorityLevel} onChange={updateProfile("authorityLevel")}>
+                <option value="decision-maker">Decision maker</option>
+                <option value="influencer">Influencer / recommender</option>
+                <option value="people-culture">People &amp; culture lead</option>
+                <option value="finance-procurement">Finance / procurement</option>
+                <option value="line-manager">Line manager</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+            <label className="rf-field rf-field-choice">
+              <span>
+                INDUSTRY {req}
+              </span>
               <select value={profile.industry} onChange={updateProfile("industry")}>
                 <option value="">Select...</option>
                 <option value="manufacturing">Manufacturing</option>
-                <option value="financial-services">Financial Services</option>
-                <option value="telecom-tech">Telecom & Tech</option>
+                <option value="financial-services">Financial services</option>
+                <option value="telecom-tech">Telecom &amp; tech</option>
                 <option value="retail">Retail</option>
                 <option value="healthcare">Healthcare</option>
                 <option value="government">Government</option>
@@ -191,25 +335,17 @@ export default function RouteSelectionPage() {
                 <option value="other">Other</option>
               </select>
             </label>
-            <label className="rf-field">
-              <span>COMPANY SIZE *</span>
+            <label className="rf-field rf-field-choice">
+              <span>
+                COMPANY SIZE {req}
+              </span>
               <select value={profile.companySize} onChange={updateProfile("companySize")}>
                 <option value="">Select...</option>
-                <option value="1-50">1-50</option>
-                <option value="51-200">51-200</option>
-                <option value="201-500">201-500</option>
-                <option value="501-1000">501-1000</option>
-                <option value="1000+">1000+</option>
-              </select>
-            </label>
-            <label className="rf-field">
-              <span>BUDGET BAND *</span>
-              <select value={profile.budgetBand} onChange={updateProfile("budgetBand")}>
-                <option value="">Select...</option>
-                <option value="under-50k">Under 50k ETB</option>
-                <option value="50k-150k">50k - 150k ETB</option>
-                <option value="150k-500k">150k - 500k ETB</option>
-                <option value="500k+">500k+ ETB</option>
+                <option value="1-50">1–50</option>
+                <option value="51-200">51–200</option>
+                <option value="201-500">201–500</option>
+                <option value="501-1000">501–1,000</option>
+                <option value="1000+">1,000+</option>
               </select>
             </label>
           </div>
@@ -217,35 +353,101 @@ export default function RouteSelectionPage() {
       );
     }
 
+    const req = (
+      <span style={{ color: "var(--tool-gold)", fontWeight: 900 }} aria-hidden>
+        *
+      </span>
+    );
     return (
-      <div className="role-form">
+      <div className="role-form role-form-elevated">
+        <header className="rf-role-intro">
+          <p className="rf-role-kicker">Consultant / Partner</p>
+          <h3 className="rf-role-title">Your firm &amp; client context</h3>
+          <p className="rf-role-sub">
+            We use this to benchmark responsibly, keep outputs client-appropriate, and protect SewAsset IP in partner
+            engagements.
+          </p>
+        </header>
         <div className="rf-grid two">
           <label className="rf-field">
-            <span>FULL NAME *</span>
+            <span>
+              YOUR FULL NAME {req}
+            </span>
             <input placeholder="Your name" value={profile.fullName} onChange={updateProfile("fullName")} />
           </label>
           <label className="rf-field">
-            <span>FIRM *</span>
+            <span>
+              FIRM NAME {req}
+            </span>
             <input placeholder="Firm name" value={profile.firm} onChange={updateProfile("firm")} />
           </label>
           <label className="rf-field">
-            <span>EMAIL *</span>
-            <input placeholder="you@firm.com" value={profile.email} onChange={updateProfile("email")} />
+            <span>
+              WORK EMAIL {req}
+            </span>
+            <input type="email" placeholder="you@firm.com" value={profile.email} onChange={updateProfile("email")} />
           </label>
           <label className="rf-field">
-            <span>PURPOSE *</span>
+            <span>
+              PHONE NUMBER {req}
+            </span>
+            <input type="tel" placeholder="+251..." value={profile.phone} onChange={updateProfile("phone")} />
+          </label>
+          <label className="rf-field rf-field-choice">
+            <span>
+              PURPOSE {req}
+            </span>
             <select value={profile.purpose} onChange={updateProfile("purpose")}>
               <option value="">Select...</option>
               <option value="support-client">Supporting a client</option>
-              <option value="research-benchmarking">Research & benchmarking</option>
+              <option value="research-benchmarking">Research &amp; benchmarking</option>
               <option value="partnership-inquiry">Partnership inquiry</option>
+            </select>
+          </label>
+          <label className="rf-field">
+            <span>
+              COUNTRY LOCATED? {req}
+            </span>
+            <input placeholder="e.g. Ethiopia" value={profile.country} onChange={updateProfile("country")} />
+          </label>
+          <label className="rf-field rf-field-choice">
+            <span>
+              CLIENT INDUSTRY (FOR CONTEXT) {req}
+            </span>
+            <select value={profile.clientIndustry} onChange={updateProfile("clientIndustry")}>
+              <option value="">Select...</option>
+              <option value="manufacturing">Manufacturing</option>
+              <option value="financial-services">Financial services</option>
+              <option value="telecom-tech">Telecom &amp; tech</option>
+              <option value="retail">Retail</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="government">Government</option>
+              <option value="logistics">Logistics</option>
+              <option value="ngo">NGO</option>
+              <option value="professional-services">Professional services</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+          <label className="rf-field rf-field-choice">
+            <span>
+              CLIENT COMPANY SIZE {req}
+            </span>
+            <select value={profile.clientCompanySize} onChange={updateProfile("clientCompanySize")}>
+              <option value="">Select...</option>
+              <option value="1-50">1–50</option>
+              <option value="51-200">51–200</option>
+              <option value="201-500">201–500</option>
+              <option value="501-1000">501–1,000</option>
+              <option value="1000+">1,000+</option>
+              <option value="unknown">Prefer not to say / varies</option>
             </select>
           </label>
         </div>
         <label className="rf-check">
           <input type="checkbox" checked={agreeNda} onChange={(e) => setAgreeNda(e.target.checked)} />
           <span>
-            I agree not to replicate SewAsset&apos;s proprietary frameworks, catalog structures, or SPSC™ methodology. *
+            I agree not to replicate SewAsset&apos;s proprietary frameworks, catalog structures, or SPSC™ methodology.{" "}
+            {req}
           </span>
         </label>
       </div>
@@ -255,6 +457,8 @@ export default function RouteSelectionPage() {
   const handleContinueGate = () => {
     if (!selectedRoute) return;
     if (selectedRoute === "not-sure") return;
+    sessionStorage.setItem("selectedRoute", selectedRoute);
+    sessionStorage.setItem("routeSelectionStage", "1");
     setStage(1);
   };
 
@@ -262,10 +466,56 @@ export default function RouteSelectionPage() {
     if (!triRec) return;
     setSelectedRoute(triRec);
     sessionStorage.setItem("selectedRoute", triRec);
+    sessionStorage.setItem("routeSelectionStage", "1");
     setTriOpen(false);
-    // After triage, go to identity gate (matches the "Use Recommendation" intent)
     setStage(1);
   };
+
+  const liveReviewAside =
+    stage === 1 && selectedRoute && selectedRoute !== "not-sure" ? (
+      <aside
+        className={`live-review ${selectedRoute === "consulting" ? "consulting-path" : ""}`}
+        aria-label="Live review"
+      >
+        <div className="live-review-title">Live review</div>
+        <div className="live-review-box">
+          <strong>Direction:</strong>{" "}
+          {selectedRoute === "consulting" ? (
+            <>
+              You are building a <strong>Capability Transformation</strong> diagnostic, gap map, and business case.
+            </>
+          ) : (
+            <>
+              You are building a <strong>Capability Development Plan</strong>.
+            </>
+          )}
+          {selectedRole === "individual" && (
+            <>
+              <br />
+              <br />
+              You chose <strong>Individual</strong>; questions and module picks will follow your personal goals, format,
+              and context.
+            </>
+          )}
+          {selectedRole === "business" && (
+            <>
+              <br />
+              <br />
+              You chose <strong>Business / Organization</strong>; we’ll align recommendations to team scale and
+              sponsorship.
+            </>
+          )}
+          {selectedRole === "consultant" && (
+            <>
+              <br />
+              <br />
+              You chose <strong>Consultant / Partner</strong>. Client industry and company size tune benchmarks; deliverables
+              stay proposal-ready and IP-safe.
+            </>
+          )}
+        </div>
+      </aside>
+    ) : null;
 
   const handleContinueIdentity = () => {
     if (!selectedRoute || !selectedRole) return;
@@ -276,11 +526,13 @@ export default function RouteSelectionPage() {
     }
     sessionStorage.setItem("selectedRoute", selectedRoute);
     sessionStorage.setItem("selectedRole", selectedRole);
+    /** Wizards consume this once so “Who are you” is not repeated (matches single-file HTML flow). */
+    sessionStorage.setItem(ROUTE_IDENTITY_COMPLETE_KEY, "true");
     router.push(selectedRoute === "training" ? "/training" : "/consulting");
   };
 
   return (
-    <div className={`tool-overlay ${syne.className}`}>
+    <div className="tool-overlay">
       {!isClient || !disclaimerAccepted ? (
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
@@ -295,6 +547,13 @@ export default function RouteSelectionPage() {
               Sew<span>Asset</span>™ Catalyst
             </div>
             <div className="tool-nav-right">
+              {stage === 1 && selectedRoute && selectedRoute !== "not-sure" && (
+                <span
+                  className={`tool-path-badge ${selectedRoute === "training" ? "show-training" : "show-consulting"}`}
+                >
+                  {selectedRoute === "training" ? "Capability Development" : "Capability Transformation"}
+                </span>
+              )}
               <button
                 className="close-tool"
                 onClick={() => router.push("/")}
@@ -305,12 +564,27 @@ export default function RouteSelectionPage() {
             </div>
           </div>
 
-          <div className="tool-progress">
-            <div
-              className="tool-progress-fill"
-              style={{ width: stage === 0 ? "0%" : "55%" }}
-            />
-          </div>
+          {stage === 0 && (
+            <div className="tool-progress">
+              <div className="tool-progress-fill" style={{ width: "6%" }} />
+            </div>
+          )}
+
+          {stage === 1 && (
+            <div className="tool-stepper-wrap">
+              <div className="tool-stepper" role="list" aria-label="Assessment progress, step 1 of 6">
+                {STEPPER_STEPS.map((n, i) => (
+                  <Fragment key={n}>
+                    <div className={`tool-step-item ${n > 1 ? "is-future" : ""}`} role="listitem">
+                      <div className={`tool-step-circle ${n === 1 ? "is-active" : ""}`}>{n}</div>
+                      <div className="tool-step-label">{n === 1 ? "Who you are" : "\u00a0"}</div>
+                    </div>
+                    {i < STEPPER_STEPS.length - 1 ? <div className="tool-step-connector" aria-hidden /> : null}
+                  </Fragment>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="tool-main">
             {/* s0 Gate */}
@@ -367,53 +641,77 @@ export default function RouteSelectionPage() {
             </div>
 
             {/* Identity gate */}
-            <div className={`tscreen ${stage === 1 ? "active" : ""}`}>
-              <div className="t-eyebrow">
-                Capability {selectedRoute === "consulting" ? "Transformation" : "Development"} · Step 1 of 6
-              </div>
-              <div className="t-title">
-                Who are <em>you?</em>
-              </div>
-              <div className="t-sub">
-                This personalizes your entire experience - the questions, the recommendations, and the final output.
-              </div>
+            <div className={`tscreen tscreen-wide ${stage === 1 ? "active" : ""}`}>
+              <div className="identity-shell">
+                <div className="identity-shell-main">
+                  <div className="t-eyebrow">
+                    Capability {selectedRoute === "consulting" ? "Transformation" : "Development"} · Step 1 of 6
+                  </div>
+                  <div className="t-title">
+                    Who are <em>you?</em>
+                  </div>
+                  <div className="t-sub">
+                    This personalizes your entire experience — the questions, the recommendations, and the final output.
+                  </div>
 
-              <div className="id-grid">
-                <div
-                  className={`id-card ${selectedRole === "individual" ? "sel" : ""}`}
-                  onClick={() => handleRoleSelect("individual")}
-                  role="button"
-                  tabIndex={0}
-                >
-                  <span className="id-icon">👤</span>
-                  <div className="id-name">Individual</div>
-                  <div className="id-desc">Personal learning and professional development.</div>
-                </div>
+                  <div className="id-grid">
+                    <div
+                      className={`id-card ${selectedRole === "individual" ? "sel" : ""}`}
+                      data-role="individual"
+                      onClick={() => handleRoleSelect("individual")}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <span className="id-icon">
+                        <span className="id-icon-pad id-icon-individual" aria-hidden>
+                          👤
+                        </span>
+                      </span>
+                      <div className="id-name">Individual</div>
+                      <div className="id-desc">Personal learning and professional development.</div>
+                    </div>
 
-                <div
-                  className={`id-card ${selectedRole === "business" ? "sel" : ""}`}
-                  onClick={() => handleRoleSelect("business")}
-                  role="button"
-                  tabIndex={0}
-                >
-                  <span className="id-icon">🏢</span>
-                  <div className="id-name">Business / Organization</div>
-                  <div className="id-desc">HR manager, department head, or executive requesting capability development for a team.</div>
-                </div>
+                    <div
+                      className={`id-card ${selectedRole === "business" ? "sel" : ""}`}
+                      data-role="business"
+                      onClick={() => handleRoleSelect("business")}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <span className="id-icon">
+                        <span className="id-icon-pad id-icon-business" aria-hidden>
+                          🏢
+                        </span>
+                      </span>
+                      <div className="id-name">Business / Organization</div>
+                      <div className="id-desc">
+                        HR manager, department head, or executive requesting capability development for a team.
+                      </div>
+                    </div>
 
-                <div
-                  className={`id-card ${selectedRole === "consultant" ? "sel" : ""}`}
-                  onClick={() => handleRoleSelect("consultant")}
-                  role="button"
-                  tabIndex={0}
-                >
-                  <span className="id-icon">🤝</span>
-                  <div className="id-name">Consultant / Partner</div>
-                  <div className="id-desc">Building a capability proposal for a client or benchmarking on their behalf.</div>
+                    <div
+                      className={`id-card ${selectedRole === "consultant" ? "sel" : ""}`}
+                      data-role="consultant"
+                      onClick={() => handleRoleSelect("consultant")}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <span className="id-icon">
+                        <span className="id-icon-pad id-icon-consultant" aria-hidden>
+                          🤝
+                        </span>
+                      </span>
+                      <div className="id-name">Consultant / Partner</div>
+                      <div className="id-desc">Building a capability proposal for a client or benchmarking on their behalf.</div>
+                    </div>
+                  </div>
+                  {renderRoleForm()}
+                  {identityError && (
+                    <div style={{ marginTop: 10, color: "#b84c2b", fontSize: "0.8rem" }}>{identityError}</div>
+                  )}
                 </div>
+                {liveReviewAside}
               </div>
-              {renderRoleForm()}
-              {identityError && <div style={{ marginTop: 10, color: "#b84c2b", fontSize: "0.8rem" }}>{identityError}</div>}
             </div>
           </div>
 
@@ -421,14 +719,17 @@ export default function RouteSelectionPage() {
             <button
               className="btn-back"
               style={{ visibility: stage === 0 ? "hidden" : "visible" }}
-              onClick={() => setStage(0)}
+              onClick={() => {
+                sessionStorage.setItem("routeSelectionStage", "0");
+                setStage(0);
+              }}
               type="button"
             >
               ← Back
             </button>
 
             <span className="nav-hint-txt">
-              {stage === 0 ? "Choose your path to continue" : "Select your role to continue"}
+              {stage === 0 ? "Choose your path to begin" : "Tell us who you are"}
             </span>
 
             <button

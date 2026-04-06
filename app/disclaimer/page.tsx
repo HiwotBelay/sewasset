@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle2, Shield, FileText, Lock, ArrowLeft, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { ROUTE_IDENTITY_COMPLETE_KEY } from "@/lib/route-selection-bridge";
 
 export default function DisclaimerPage() {
   const router = useRouter();
@@ -17,24 +18,34 @@ export default function DisclaimerPage() {
   }, []);
 
   const handleAccept = () => {
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("disclaimerAccepted", "true");
-      router.push("/route-selection");
+    if (typeof window === "undefined") return;
+    sessionStorage.setItem("disclaimerAccepted", "true");
+    const raw = new URLSearchParams(window.location.search).get("next");
+    const next = raw ? decodeURIComponent(raw).trim() : "";
+    const safe = next.startsWith("/") && !next.startsWith("//") ? next : "/route-selection";
+    if (safe === "/route-selection") {
+      sessionStorage.removeItem("routeSelectionStage");
+      sessionStorage.removeItem("selectedRoute");
+      sessionStorage.removeItem(ROUTE_IDENTITY_COMPLETE_KEY);
     }
+    router.push(safe);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#FDC700]/10 rounded-full blur-3xl animate-float"></div>
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#3B5998]/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-[#FDC700]/5 to-[#3B5998]/5 rounded-full blur-3xl"></div>
+    <div className="min-h-screen bg-[#f7f3ec] relative overflow-hidden">
+      {/* Brand-warm accents (navy + gold, same family as landing) */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#FDC700]/14 rounded-full blur-3xl animate-float" />
+      <div
+        className="absolute bottom-0 left-0 w-80 h-80 bg-[#2E4059]/08 rounded-full blur-3xl animate-float"
+        style={{ animationDelay: "1s" }}
+      />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-[#FDC700]/8 to-[#2E4059]/6 rounded-full blur-3xl" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10">
         {/* Back to Home Link */}
-        <Link 
-          href="/" 
-          className="inline-flex items-center gap-2 text-[#6B7280] hover:text-[#2E4059] font-semibold mb-6 transition-all duration-300 group"
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-[#7a7570] hover:text-[#2E4059] font-semibold mb-6 transition-all duration-300 group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
           <span>Back to Home</span>
@@ -42,7 +53,7 @@ export default function DisclaimerPage() {
 
         <Card 
           ref={sectionRef}
-          className={`p-6 sm:p-8 bg-white/95 backdrop-blur-xl shadow-2xl border-2 border-slate-200/50 rounded-2xl transition-all duration-1000 ${
+          className={`p-6 sm:p-8 bg-[#fdfcf9]/95 backdrop-blur-xl shadow-2xl border-2 border-[#e8e2d8]/80 rounded-2xl transition-all duration-1000 ${
             isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'
           }`}
         >
@@ -54,17 +65,20 @@ export default function DisclaimerPage() {
             <h1 className="text-4xl sm:text-5xl font-bold text-[#2E4059] mb-3 transform transition-all duration-700 delay-200">
               Privacy & Engagement Terms
             </h1>
-            <p className="text-lg text-[#6B7280] max-w-xl mx-auto transform transition-all duration-700 delay-300">
+            <p className="text-lg text-[#7a7570] max-w-xl mx-auto transform transition-all duration-700 delay-300">
               Please read and accept the following terms before proceeding
             </p>
           </div>
 
           <div className="space-y-6 mb-8">
-            <section className={`group p-5 rounded-xl bg-gradient-to-br from-slate-50 to-white border border-slate-200 hover:border-[#FDC700] transition-all duration-300 hover:shadow-lg transform transition-all duration-500 ${
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-            }`} style={{ transitionDelay: '400ms' }}>
-              <h2 className="text-2xl font-bold text-[#2E4059] mb-3 flex items-center gap-2 group-hover:text-[#1A1F2E] transition-colors duration-300">
-                <FileText className="w-5 h-5 text-[#3B5998]" />
+            <section
+              className={`group p-5 rounded-xl bg-gradient-to-br from-[#fdfcf9] to-white border border-[#e8e2d8] hover:border-[#FDC700] transition-all duration-300 hover:shadow-lg transform transition-all duration-500 ${
+                isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+              }`}
+              style={{ transitionDelay: "400ms" }}
+            >
+              <h2 className="text-2xl font-bold text-[#2E4059] mb-3 flex items-center gap-2 group-hover:text-[#1e2d40] transition-colors duration-300">
+                <FileText className="w-5 h-5 text-[#2E4059]" />
                 Terms for Strategic Analysis
               </h2>
               <p className="text-sm text-slate-700 leading-relaxed">
@@ -72,10 +86,13 @@ export default function DisclaimerPage() {
               </p>
             </section>
 
-            <section className={`group p-5 rounded-xl bg-gradient-to-br from-slate-50 to-white border border-slate-200 hover:border-[#FDC700] transition-all duration-300 hover:shadow-lg transform transition-all duration-500 ${
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-            }`} style={{ transitionDelay: '500ms' }}>
-              <h2 className="text-2xl font-bold text-[#2E4059] mb-3 flex items-center gap-2 group-hover:text-[#1A1F2E] transition-colors duration-300">
+            <section
+              className={`group p-5 rounded-xl bg-gradient-to-br from-[#fdfcf9] to-white border border-[#e8e2d8] hover:border-[#FDC700] transition-all duration-300 hover:shadow-lg transform transition-all duration-500 ${
+                isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+              }`}
+              style={{ transitionDelay: "500ms" }}
+            >
+              <h2 className="text-2xl font-bold text-[#2E4059] mb-3 flex items-center gap-2 group-hover:text-[#1e2d40] transition-colors duration-300">
                 <Lock className="w-5 h-5 text-[#FDC700]" />
                 Confidentiality & Data Protection
               </h2>
@@ -109,11 +126,14 @@ export default function DisclaimerPage() {
               </div>
             </section>
 
-            <section className={`group p-5 rounded-xl bg-gradient-to-br from-slate-50 to-white border border-slate-200 hover:border-[#FDC700] transition-all duration-300 hover:shadow-lg transform transition-all duration-500 ${
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-            }`} style={{ transitionDelay: '700ms' }}>
-              <h2 className="text-2xl font-bold text-[#2E4059] mb-3 flex items-center gap-2 group-hover:text-[#1A1F2E] transition-colors duration-300">
-                <FileText className="w-5 h-5 text-[#3B5998]" />
+            <section
+              className={`group p-5 rounded-xl bg-gradient-to-br from-[#fdfcf9] to-white border border-[#e8e2d8] hover:border-[#FDC700] transition-all duration-300 hover:shadow-lg transform transition-all duration-500 ${
+                isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+              }`}
+              style={{ transitionDelay: "700ms" }}
+            >
+              <h2 className="text-2xl font-bold text-[#2E4059] mb-3 flex items-center gap-2 group-hover:text-[#1e2d40] transition-colors duration-300">
+                <FileText className="w-5 h-5 text-[#2E4059]" />
                 Strategic Analysis Notice
               </h2>
               <div className="space-y-2.5 text-sm text-slate-700 leading-relaxed">
@@ -130,10 +150,10 @@ export default function DisclaimerPage() {
             </section>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-6 border-t border-slate-200">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-6 border-t border-[#e8e2d8]">
             <Button
               asChild
-              className="px-6 py-2.5 bg-gradient-to-r from-slate-600 to-slate-700 text-white font-semibold rounded-lg hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 relative overflow-hidden group"
+              className="px-6 py-2.5 bg-[#2E4059] hover:bg-[#253649] text-white font-semibold rounded-lg hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 relative overflow-hidden group"
             >
               <Link href="/" className="flex items-center gap-2">
                 <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
