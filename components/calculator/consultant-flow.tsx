@@ -7,6 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ConsultantData {
   name: string;
@@ -167,7 +174,7 @@ export function ConsultantFlow() {
             Your Information
           </h2>
           <p className="text-lg text-[#6B7280] mb-8">
-            Please provide your details so we can assist you with strategic consulting.
+            Consultant / partner details — we use this to scope benchmarking or client support requests.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -181,7 +188,7 @@ export function ConsultantFlow() {
                   id="name"
                   value={data.name}
                   onChange={(e) => updateData("name", e.target.value)}
-                  placeholder="Personal"
+                  placeholder="Enter your full name"
                   className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
                 {errors.name && <p className="text-sm text-red-600">{errors.name}</p>}
@@ -196,7 +203,7 @@ export function ConsultantFlow() {
                   type="tel"
                   value={data.phone}
                   onChange={(e) => updateData("phone", e.target.value)}
-                  placeholder="Personal"
+                  placeholder="e.g. +251 9xx xxx xxxx"
                   className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
                 {errors.phone && <p className="text-sm text-red-600">{errors.phone}</p>}
@@ -210,7 +217,7 @@ export function ConsultantFlow() {
                   id="areaOfInterest"
                   value={data.areaOfInterest}
                   onChange={(e) => updateData("areaOfInterest", e.target.value)}
-                  placeholder="Personal"
+                  placeholder="e.g. Leadership, sales capability, culture"
                   className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
               </div>
@@ -237,7 +244,7 @@ export function ConsultantFlow() {
                   id="clientInformation"
                   value={data.clientInformation}
                   onChange={(e) => updateData("clientInformation", e.target.value)}
-                  placeholder="Personal"
+                  placeholder="Client or assignment context (for ROI)"
                   className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
               </div>
@@ -254,7 +261,7 @@ export function ConsultantFlow() {
                   type="email"
                   value={data.email}
                   onChange={(e) => updateData("email", e.target.value)}
-                  placeholder="Personal"
+                  placeholder="you@email.com"
                   className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
                 {errors.email && <p className="text-sm text-red-600">{errors.email}</p>}
@@ -268,7 +275,7 @@ export function ConsultantFlow() {
                   id="country"
                   value={data.country}
                   onChange={(e) => updateData("country", e.target.value)}
-                  placeholder="Personal"
+                  placeholder="Country"
                   className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
                 {errors.country && <p className="text-sm text-red-600">{errors.country}</p>}
@@ -282,7 +289,7 @@ export function ConsultantFlow() {
                   id="consultancyCompany"
                   value={data.consultancyCompany}
                   onChange={(e) => updateData("consultancyCompany", e.target.value)}
-                  placeholder="Personal"
+                  placeholder="Consultancy or firm name"
                   className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                 />
                 {errors.consultancyCompany && <p className="text-sm text-red-600">{errors.consultancyCompany}</p>}
@@ -290,15 +297,21 @@ export function ConsultantFlow() {
 
               <div className="space-y-2">
                 <Label htmlFor="purpose" className="text-[#2E4059] font-medium">
-                  Purpose (helping a client / benchmarking / research) <span className="text-red-500">*</span>
+                  Purpose <span className="text-red-500">*</span>
                 </Label>
-                <Input
-                  id="purpose"
-                  value={data.purpose}
-                  onChange={(e) => updateData("purpose", e.target.value)}
-                  placeholder="(helping a client / benchmarking / research)"
-                  className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
-                />
+                <Select value={data.purpose} onValueChange={(v) => updateData("purpose", v)}>
+                  <SelectTrigger
+                    id="purpose"
+                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20"
+                  >
+                    <SelectValue placeholder="Select purpose..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="support-client">Supporting a client</SelectItem>
+                    <SelectItem value="research-benchmarking">Research &amp; benchmarking</SelectItem>
+                    <SelectItem value="partnership-inquiry">Partnership inquiry</SelectItem>
+                  </SelectContent>
+                </Select>
                 {errors.purpose && <p className="text-sm text-red-600">{errors.purpose}</p>}
               </div>
             </div>

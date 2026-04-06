@@ -117,7 +117,7 @@
 
 .tscreen {
   width: 100%;
-  max-width: 840px;
+  max-width: min(960px, 100%);
   display: none;
   animation: fadeUp 0.38s cubic-bezier(.4, 0, .2, 1);
 }
@@ -380,8 +380,10 @@
   line-height: 1.45;
 }
 
-/* Role details form (matches reference screen style) */
+/* Role details form — full width to align with identity cards above */
 .role-form {
+  width: 100%;
+  box-sizing: border-box;
   background: var(--tool-white);
   border: 1px solid #ece6dd;
   border-radius: 2px;
@@ -419,6 +421,8 @@
 
 .rf-field input,
 .rf-field select {
+  width: 100%;
+  box-sizing: border-box;
   height: 34px;
   border: 1px solid #e5ddd2;
   border-radius: 1px;

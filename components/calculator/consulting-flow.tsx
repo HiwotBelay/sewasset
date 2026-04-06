@@ -37,6 +37,11 @@ interface ConsultingData {
   // Stage 2: Alignment
   whyNow: string;
   sponsor: string[];
+  sponsorCsuiteDetail: string;
+  sponsorDepartmentHeadsDetail: string;
+  sponsorFrontlineDetail: string;
+  sponsorEmployeesDetail: string;
+  sponsorLnDetail: string;
   successDefinition: string;
   
   // Stage 3: Department & Goals
@@ -94,6 +99,11 @@ const initialData: ConsultingData = {
   coiSignal: "",
   whyNow: "",
   sponsor: [],
+  sponsorCsuiteDetail: "",
+  sponsorDepartmentHeadsDetail: "",
+  sponsorFrontlineDetail: "",
+  sponsorEmployeesDetail: "",
+  sponsorLnDetail: "",
   successDefinition: "",
   affectedDepartments: [],
   improvementGoals: [],
@@ -208,7 +218,8 @@ export function ConsultingFlow() {
       const saved = sessionStorage.getItem("consultingData");
       if (saved) {
         try {
-          setData(JSON.parse(saved));
+          const parsed = JSON.parse(saved) as Partial<ConsultingData>;
+          setData({ ...initialData, ...parsed });
         } catch (e) {
           console.error("Error loading saved data:", e);
         }
@@ -257,6 +268,16 @@ export function ConsultingFlow() {
       case 2:
         if (!data.whyNow.trim()) newErrors.push("Please explain why now is the right time");
         if (data.sponsor.length === 0) newErrors.push("Please select at least one stakeholder");
+        if (data.sponsor.includes("C-suite") && !data.sponsorCsuiteDetail.trim())
+          newErrors.push("Please specify which C-suite role(s) are involved (e.g. CFO, COO, CMO)");
+        if (data.sponsor.includes("Department Heads") && !data.sponsorDepartmentHeadsDetail.trim())
+          newErrors.push("Please name the responsible department head(s)");
+        if (data.sponsor.includes("Frontline Managers") && !data.sponsorFrontlineDetail.trim())
+          newErrors.push("Please specify which frontline manager(s) or groups");
+        if (data.sponsor.includes("Employees") && !data.sponsorEmployeesDetail.trim())
+          newErrors.push("Please specify which employee group(s)");
+        if (data.sponsor.includes("L&D Team") && !data.sponsorLnDetail.trim())
+          newErrors.push("Please describe the L&D team or owner(s) involved");
         if (!data.successDefinition.trim()) newErrors.push("Please define what success looks like");
         break;
       case 3:
@@ -586,6 +607,20 @@ export function ConsultingFlow() {
       </div>
 
       <Card className="p-6 space-y-6">
+        {data.problem.trim() && (
+          <div className="rounded-xl border-2 border-[#FDC700]/45 bg-[#FDC700]/8 p-4 text-[#2E4059]">
+            <p className="text-sm font-semibold text-[#2E4059] mb-1">From Discovery</p>
+            <p className="text-sm text-[#6B7280] leading-relaxed">
+              You said: &quot;
+              {data.problem.length > 200 ? `${data.problem.slice(0, 200)}…` : data.problem}
+              &quot;
+            </p>
+            <p className="text-xs text-[#6B7280] mt-2">
+              Let&apos;s align the context below with what you shared in Stage&nbsp;1.
+            </p>
+          </div>
+        )}
+
         <div>
           <Label className="text-base font-semibold text-[#2E4059] mb-2 block">
             Why is now the right time to solve this? <span className="text-red-500">*</span>
@@ -603,16 +638,33 @@ export function ConsultingFlow() {
             Key Stakeholders / Responsible Party (select multiple) <span className="text-red-500">*</span>
           </Label>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {["CEO", "C-Suite Executive", "Department Heads", "Frontline Managers", "HR", "L&D Team", "Employees", "Clients/Customers"].map((stakeholder) => (
+            {[
+              "CEO",
+              "C-suite",
+              "Department Heads",
+              "Frontline Managers",
+              "HR",
+              "L&D Team",
+              "Employees",
+              "Clients/Customers",
+            ].map((stakeholder) => (
               <button
                 key={stakeholder}
                 type="button"
                 onClick={() => {
                   const current = data.sponsor;
-                  const updated = current.includes(stakeholder)
-                    ? current.filter(s => s !== stakeholder)
+                  const removing = current.includes(stakeholder);
+                  const updated = removing
+                    ? current.filter((s) => s !== stakeholder)
                     : [...current, stakeholder];
                   updateData("sponsor", updated);
+                  if (removing) {
+                    if (stakeholder === "C-suite") updateData("sponsorCsuiteDetail", "");
+                    if (stakeholder === "Department Heads") updateData("sponsorDepartmentHeadsDetail", "");
+                    if (stakeholder === "Frontline Managers") updateData("sponsorFrontlineDetail", "");
+                    if (stakeholder === "Employees") updateData("sponsorEmployeesDetail", "");
+                    if (stakeholder === "L&D Team") updateData("sponsorLnDetail", "");
+                  }
                 }}
                 className={`p-3 rounded-xl border-2 transition-all duration-200 ${
                   data.sponsor.includes(stakeholder)
@@ -624,6 +676,72 @@ export function ConsultingFlow() {
               </button>
             ))}
           </div>
+
+          {data.sponsor.includes("C-suite") && (
+            <div className="mt-3">
+              <Label className="text-sm font-medium text-[#2E4059]">
+                Which C-suite role(s)? <span className="text-red-500">*</span>
+              </Label>
+              <Textarea
+                value={data.sponsorCsuiteDetail}
+                onChange={(e) => updateData("sponsorCsuiteDetail", e.target.value)}
+                placeholder="e.g. CFO, COO, CMO — who sponsors or owns this work?"
+                className="mt-1 min-h-[72px] border-2 border-slate-200 focus:border-[#FDC700] rounded-xl"
+              />
+            </div>
+          )}
+          {data.sponsor.includes("Department Heads") && (
+            <div className="mt-3">
+              <Label className="text-sm font-medium text-[#2E4059]">
+                Which department head(s) are responsible? <span className="text-red-500">*</span>
+              </Label>
+              <Textarea
+                value={data.sponsorDepartmentHeadsDetail}
+                onChange={(e) => updateData("sponsorDepartmentHeadsDetail", e.target.value)}
+                placeholder="e.g. Head of Finance, Head of Sales — name the accountable leaders"
+                className="mt-1 min-h-[72px] border-2 border-slate-200 focus:border-[#FDC700] rounded-xl"
+              />
+            </div>
+          )}
+          {data.sponsor.includes("Frontline Managers") && (
+            <div className="mt-3">
+              <Label className="text-sm font-medium text-[#2E4059]">
+                Which frontline manager(s) or teams? <span className="text-red-500">*</span>
+              </Label>
+              <Textarea
+                value={data.sponsorFrontlineDetail}
+                onChange={(e) => updateData("sponsorFrontlineDetail", e.target.value)}
+                placeholder="Name roles, teams, or individuals involved on the front line"
+                className="mt-1 min-h-[72px] border-2 border-slate-200 focus:border-[#FDC700] rounded-xl"
+              />
+            </div>
+          )}
+          {data.sponsor.includes("Employees") && (
+            <div className="mt-3">
+              <Label className="text-sm font-medium text-[#2E4059]">
+                Which employee group(s)? <span className="text-red-500">*</span>
+              </Label>
+              <Textarea
+                value={data.sponsorEmployeesDetail}
+                onChange={(e) => updateData("sponsorEmployeesDetail", e.target.value)}
+                placeholder="e.g. branch staff, call-center agents, warehouse crew"
+                className="mt-1 min-h-[72px] border-2 border-slate-200 focus:border-[#FDC700] rounded-xl"
+              />
+            </div>
+          )}
+          {data.sponsor.includes("L&D Team") && (
+            <div className="mt-3">
+              <Label className="text-sm font-medium text-[#2E4059]">
+                L&D — who is involved? <span className="text-red-500">*</span>
+              </Label>
+              <Textarea
+                value={data.sponsorLnDetail}
+                onChange={(e) => updateData("sponsorLnDetail", e.target.value)}
+                placeholder="Describe the L&D team, lead, or partners involved in this capability work"
+                className="mt-1 min-h-[80px] border-2 border-slate-200 focus:border-[#FDC700] rounded-xl"
+              />
+            </div>
+          )}
         </div>
 
         <div>
@@ -641,14 +759,43 @@ export function ConsultingFlow() {
     </div>
   );
 
-  const renderStage3 = () => (
+  const renderStage3 = () => {
+    const discoverySnippet = data.problem.trim()
+      ? data.problem.length > 110
+        ? `${data.problem.slice(0, 110)}…`
+        : data.problem
+      : "";
+    const alignmentSnippet = data.whyNow.trim()
+      ? data.whyNow.length > 110
+        ? `${data.whyNow.slice(0, 110)}…`
+        : data.whyNow
+      : "";
+
+    return (
     <div className="space-y-6 animate-fade-in-up">
       <div>
         <h2 className="text-3xl sm:text-4xl font-bold text-[#2E4059] mb-2">
           Stage 3: Department & Goals
         </h2>
-        <p className="text-lg text-[#6B7280]">
-          Identify affected areas and improvement objectives
+        <p className="text-lg text-[#6B7280] leading-relaxed">
+          {discoverySnippet || alignmentSnippet ? (
+            <>
+              {discoverySnippet ? (
+                <>
+                  In Discovery you described: &quot;{discoverySnippet}&quot;
+                  {alignmentSnippet ? " " : ""}
+                </>
+              ) : null}
+              {alignmentSnippet ? (
+                <>
+                  In Alignment you noted: &quot;{alignmentSnippet}&quot;{" "}
+                </>
+              ) : null}
+              Now tell us which departments and improvement goals matter most.
+            </>
+          ) : (
+            "Identify affected areas and improvement objectives."
+          )}
         </p>
       </div>
 
@@ -722,7 +869,8 @@ export function ConsultingFlow() {
         </div>
       </Card>
     </div>
-  );
+    );
+  };
 
   const renderStage4 = () => {
     const handlePillarToggle = (pillarId: string) => {

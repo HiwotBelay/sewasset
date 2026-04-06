@@ -1700,7 +1700,7 @@ export function TrainingFlow({
                     id="business-name"
                     value={businessData.name}
                     onChange={(e) => updateBusinessData("name", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="Enter your full name"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                   {businessErrors.name && <p className="text-sm text-red-600">{businessErrors.name}</p>}
@@ -1715,7 +1715,7 @@ export function TrainingFlow({
                     type="tel"
                     value={businessData.mobileNumber}
                     onChange={(e) => updateBusinessData("mobileNumber", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="e.g. +251 9xx xxx xxxx"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                   {businessErrors.mobileNumber && <p className="text-sm text-red-600">{businessErrors.mobileNumber}</p>}
@@ -1729,7 +1729,7 @@ export function TrainingFlow({
                     id="business-job-title"
                     value={businessData.jobTitle}
                     onChange={(e) => updateBusinessData("jobTitle", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="e.g. HR Director, L&D Manager"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -1742,7 +1742,7 @@ export function TrainingFlow({
                     id="business-company-name"
                     value={businessData.companyName}
                     onChange={(e) => updateBusinessData("companyName", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="Registered company name"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                   {businessErrors.companyName && <p className="text-sm text-red-600">{businessErrors.companyName}</p>}
@@ -1756,7 +1756,7 @@ export function TrainingFlow({
                     id="business-industry"
                     value={businessData.industry}
                     onChange={(e) => updateBusinessData("industry", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="e.g. Manufacturing, Telecom, NGO"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -1783,7 +1783,7 @@ export function TrainingFlow({
                     id="business-region"
                     value={businessData.region}
                     onChange={(e) => updateBusinessData("region", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="Region or state"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -1796,7 +1796,7 @@ export function TrainingFlow({
                     id="business-landmark"
                     value={businessData.specificLandmark}
                     onChange={(e) => updateBusinessData("specificLandmark", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="Landmark, area, or directions"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -1809,7 +1809,7 @@ export function TrainingFlow({
                     id="business-office"
                     value={businessData.officeNumber}
                     onChange={(e) => updateBusinessData("officeNumber", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="Office / suite / floor"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -1822,7 +1822,7 @@ export function TrainingFlow({
                     id="business-mode"
                     value={businessData.preferredMode}
                     onChange={(e) => updateBusinessData("preferredMode", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="e.g. Phone, WhatsApp, Email"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -1839,7 +1839,7 @@ export function TrainingFlow({
                     type="email"
                     value={businessData.companyEmail}
                     onChange={(e) => updateBusinessData("companyEmail", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="you@company.com"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                   {businessErrors.companyEmail && <p className="text-sm text-red-600">{businessErrors.companyEmail}</p>}
@@ -1853,7 +1853,7 @@ export function TrainingFlow({
                     id="business-country"
                     value={businessData.country}
                     onChange={(e) => updateBusinessData("country", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="Country"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                   {businessErrors.country && <p className="text-sm text-red-600">{businessErrors.country}</p>}
@@ -1867,7 +1867,7 @@ export function TrainingFlow({
                     id="business-department"
                     value={businessData.department}
                     onChange={(e) => updateBusinessData("department", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="e.g. HR, Operations, Sales"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -1880,7 +1880,7 @@ export function TrainingFlow({
                     id="business-type"
                     value={businessData.companyType}
                     onChange={(e) => updateBusinessData("companyType", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="e.g. PLC, Share company, NGO"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -1893,7 +1893,7 @@ export function TrainingFlow({
                     id="business-size"
                     value={businessData.companySize}
                     onChange={(e) => updateBusinessData("companySize", e.target.value)}
-                    placeholder="(helping a client / benchmarking / research)"
+                    placeholder="e.g. 51–200 employees"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -1920,7 +1920,7 @@ export function TrainingFlow({
                     id="business-city"
                     value={businessData.citySubcity}
                     onChange={(e) => updateBusinessData("citySubcity", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="City or subcity"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -1933,7 +1933,7 @@ export function TrainingFlow({
                     id="business-building"
                     value={businessData.bldgName}
                     onChange={(e) => updateBusinessData("bldgName", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="Building name"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -1946,7 +1946,7 @@ export function TrainingFlow({
                     id="business-authority"
                     value={businessData.authorityLevel}
                     onChange={(e) => updateBusinessData("authorityLevel", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="e.g. Decision maker, Influencer"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -2000,7 +2000,7 @@ export function TrainingFlow({
                     id="consultant-name"
                     value={consultantData.name}
                     onChange={(e) => updateConsultantData("name", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="Enter your full name"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                   {consultantErrors.name && <p className="text-sm text-red-600">{consultantErrors.name}</p>}
@@ -2015,7 +2015,7 @@ export function TrainingFlow({
                     type="tel"
                     value={consultantData.phone}
                     onChange={(e) => updateConsultantData("phone", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="e.g. +251 9xx xxx xxxx"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                   {consultantErrors.phone && <p className="text-sm text-red-600">{consultantErrors.phone}</p>}
@@ -2029,7 +2029,7 @@ export function TrainingFlow({
                     id="consultant-area"
                     value={consultantData.areaOfInterest}
                     onChange={(e) => updateConsultantData("areaOfInterest", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="e.g. Leadership, sales capability, culture"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -2056,7 +2056,7 @@ export function TrainingFlow({
                     id="consultant-client"
                     value={consultantData.clientInformation}
                     onChange={(e) => updateConsultantData("clientInformation", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="Client or assignment context (for ROI)"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                 </div>
@@ -2073,7 +2073,7 @@ export function TrainingFlow({
                     type="email"
                     value={consultantData.email}
                     onChange={(e) => updateConsultantData("email", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="you@email.com"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                   {consultantErrors.email && <p className="text-sm text-red-600">{consultantErrors.email}</p>}
@@ -2087,7 +2087,7 @@ export function TrainingFlow({
                     id="consultant-country"
                     value={consultantData.country}
                     onChange={(e) => updateConsultantData("country", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="Country"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                   {consultantErrors.country && <p className="text-sm text-red-600">{consultantErrors.country}</p>}
@@ -2101,7 +2101,7 @@ export function TrainingFlow({
                     id="consultant-company"
                     value={consultantData.consultancyCompany}
                     onChange={(e) => updateConsultantData("consultancyCompany", e.target.value)}
-                    placeholder="Personal"
+                    placeholder="Consultancy or firm name"
                     className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
                   />
                   {consultantErrors.consultancyCompany && <p className="text-sm text-red-600">{consultantErrors.consultancyCompany}</p>}
@@ -2109,15 +2109,24 @@ export function TrainingFlow({
 
                 <div className="space-y-2">
                   <Label htmlFor="consultant-purpose" className="text-[#2E4059] font-medium">
-                    Purpose (helping a client / benchmarking / research) <span className="text-red-500">*</span>
+                    Purpose <span className="text-red-500">*</span>
                   </Label>
-                  <Input
-                    id="consultant-purpose"
+                  <Select
                     value={consultantData.purpose}
-                    onChange={(e) => updateConsultantData("purpose", e.target.value)}
-                    placeholder="(helping a client / benchmarking / research)"
-                    className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20 transition-all"
-                  />
+                    onValueChange={(v) => updateConsultantData("purpose", v)}
+                  >
+                    <SelectTrigger
+                      id="consultant-purpose"
+                      className="border-slate-200 focus:border-[#FFC72F] focus:ring-[#FFC72F]/20"
+                    >
+                      <SelectValue placeholder="Select purpose..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="support-client">Supporting a client</SelectItem>
+                      <SelectItem value="research-benchmarking">Research &amp; benchmarking</SelectItem>
+                      <SelectItem value="partnership-inquiry">Partnership inquiry</SelectItem>
+                    </SelectContent>
+                  </Select>
                   {consultantErrors.purpose && <p className="text-sm text-red-600">{consultantErrors.purpose}</p>}
                 </div>
               </div>

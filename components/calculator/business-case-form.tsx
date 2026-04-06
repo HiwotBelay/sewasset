@@ -75,6 +75,7 @@ export interface BusinessCaseData {
   departmentHeadsDetails: string;
   frontlineManagersDetails: string;
   employeesDetails: string;
+  lndTeamDetails: string;
   strategyTimeline: string;
   alignmentNarrative: string;
   // People Alignment
@@ -197,6 +198,7 @@ const initialData: BusinessCaseData = {
   departmentHeadsDetails: "",
   frontlineManagersDetails: "",
   employeesDetails: "",
+  lndTeamDetails: "",
   strategyTimeline: "",
   alignmentNarrative: "",
   behavioralChangeSupported: "",
@@ -442,6 +444,13 @@ export function BusinessCaseForm() {
           )
             stepErrors.push(
               "Please specify which Employee group(s) are involved"
+            );
+          if (
+            data.stakeholders?.includes("L&D Team") &&
+            !data.lndTeamDetails.trim()
+          )
+            stepErrors.push(
+              "Please describe the L&D team or owner(s) involved"
             );
         }
         break;
@@ -1460,6 +1469,8 @@ function AlignmentStep({
         updateData("frontlineManagersDetails", "");
       } else if (stakeholder === "Employees") {
         updateData("employeesDetails", "");
+      } else if (stakeholder === "L&D Team") {
+        updateData("lndTeamDetails", "");
       }
     }
   };
@@ -1529,13 +1540,11 @@ function AlignmentStep({
       </div>
       {data.hasStrategicAlignment === "Yes" && (
         <>
-          // A. Core Strategy Alignment
           <div className="mb-6 pt-4 border-t-2 border-[#2E4059]">
             <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
               A. Core Strategy Alignment
             </h3>
 
-            // Cost of Inaction - Moved Up and Bolded
             <div className="mb-6">
               <Label className="text-[#2E4059] font-bold text-base sm:text-lg">
                 Cost of Inaction (Annual, ETB){" "}
@@ -1632,7 +1641,6 @@ function AlignmentStep({
             </div>
           </div>
 
-          // Conditional fields for specific stakeholders
           {data.stakeholders?.includes("C-suite") && (
             <div>
               <Label className="text-[#2E4059] font-semibold">
@@ -1713,6 +1721,21 @@ function AlignmentStep({
             </div>
           )}
 
+          {data.stakeholders?.includes("L&D Team") && (
+            <div>
+              <Label className="text-[#2E4059] font-semibold">
+                L&D — who is involved? <span className="text-red-500">*</span>
+              </Label>
+              <Textarea
+                value={data.lndTeamDetails}
+                onChange={(e) => updateData("lndTeamDetails", e.target.value)}
+                className="mt-1 min-h-[80px]"
+                placeholder="Describe the L&D team, lead, or partners involved"
+                required
+              />
+            </div>
+          )}
+
           <div>
             <Label className="text-[#2E4059] font-semibold">
               Alignment Narrative (how this supports strategy)
@@ -1725,7 +1748,6 @@ function AlignmentStep({
             />
           </div>
 
-          // B. People Alignment
           <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
             <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
               B. People Alignment (The Sponsorship Check)
@@ -1788,7 +1810,6 @@ function AlignmentStep({
             </div>
           </div>
 
-          // C. System/Process Alignment
           <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
             <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
               C. System/Process Alignment (The Bottleneck Check)
@@ -1845,7 +1866,6 @@ function AlignmentStep({
             </div>
           </div>
 
-          // D. Culture Alignment
           <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
             <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
               D. Culture Alignment (The Sustainability Check)
@@ -1908,7 +1928,6 @@ function AlignmentStep({
             </div>
           </div>
 
-          // Solution Risk Assessment
           <div className="mt-6 pt-6 border-t-2 border-[#2E4059]">
             <h3 className="text-lg sm:text-xl font-bold text-[#2E4059] mb-4">
               Solution Risk Assessment (SewAsset Perspective)
@@ -2778,7 +2797,6 @@ function ProgramStep({
         </p>
 
         <div className="space-y-6">
-          // People & Culture Consulting
           <div className="p-4 border border-slate-200 rounded-lg bg-slate-50">
             <div className="flex items-center gap-2 mb-3">
               <h4 className="text-base font-bold text-[#2E4059]">
@@ -2828,7 +2846,6 @@ function ProgramStep({
             </p>
           </div>
 
-          // System & Process Consulting
           <div className="p-4 border border-slate-200 rounded-lg bg-slate-50">
             <div className="flex items-center gap-2 mb-3">
               <h4 className="text-base font-bold text-[#2E4059]">
@@ -2875,7 +2892,6 @@ function ProgramStep({
             </p>
           </div>
 
-          // Strategy & Leadership Consulting
           <div className="p-4 border border-slate-200 rounded-lg bg-slate-50">
             <div className="flex items-center gap-2 mb-3">
               <h4 className="text-base font-bold text-[#2E4059]">
