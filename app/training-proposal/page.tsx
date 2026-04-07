@@ -15,11 +15,11 @@ export default function TrainingProposalPage() {
     // Load training data from sessionStorage
     if (typeof window !== "undefined") {
       const saved = sessionStorage.getItem("trainingSubmissionData");
-      if (saved) {
+      if (saved?.trim()) {
         try {
           setTrainingData(JSON.parse(saved));
-        } catch (e) {
-          console.error("Error loading training data:", e);
+        } catch {
+          sessionStorage.removeItem("trainingSubmissionData");
         }
       } else {
         // If no data, redirect to home

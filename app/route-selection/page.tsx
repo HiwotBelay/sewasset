@@ -72,12 +72,16 @@ export default function RouteSelectionPage() {
     const savedNda = sessionStorage.getItem("routeSelectionNda");
     if (savedNda === "true") setAgreeNda(true);
 
-    if (savedStage === "1" && (route === "training" || route === "consulting")) {
-      setSelectedRoute(route);
+    /* Consulting defers “Who you are” to /consulting; only training uses stage 1 on this page */
+    if (savedStage === "1" && route === "training") {
+      setSelectedRoute("training");
       setStage(1);
     } else {
       setStage(0);
       setSelectedRoute(route === "training" || route === "consulting" ? route : "");
+      if (route === "consulting") {
+        sessionStorage.removeItem("routeSelectionStage");
+      }
     }
   }, [router]);
 
@@ -458,6 +462,12 @@ export default function RouteSelectionPage() {
     if (!selectedRoute) return;
     if (selectedRoute === "not-sure") return;
     sessionStorage.setItem("selectedRoute", selectedRoute);
+    if (selectedRoute === "consulting") {
+      sessionStorage.removeItem("routeSelectionStage");
+      sessionStorage.removeItem(ROUTE_IDENTITY_COMPLETE_KEY);
+      router.push("/consulting");
+      return;
+    }
     sessionStorage.setItem("routeSelectionStage", "1");
     setStage(1);
   };
@@ -466,8 +476,14 @@ export default function RouteSelectionPage() {
     if (!triRec) return;
     setSelectedRoute(triRec);
     sessionStorage.setItem("selectedRoute", triRec);
-    sessionStorage.setItem("routeSelectionStage", "1");
     setTriOpen(false);
+    if (triRec === "consulting") {
+      sessionStorage.removeItem("routeSelectionStage");
+      sessionStorage.removeItem(ROUTE_IDENTITY_COMPLETE_KEY);
+      router.push("/consulting");
+      return;
+    }
+    sessionStorage.setItem("routeSelectionStage", "1");
     setStage(1);
   };
 
@@ -519,6 +535,11 @@ export default function RouteSelectionPage() {
 
   const handleContinueIdentity = () => {
     if (!selectedRoute || !selectedRole) return;
+    if (selectedRoute === "consulting") {
+      sessionStorage.removeItem(ROUTE_IDENTITY_COMPLETE_KEY);
+      router.push("/consulting");
+      return;
+    }
     const validationError = getIdentityValidationError();
     if (validationError) {
       setIdentityError(validationError);
@@ -526,9 +547,9 @@ export default function RouteSelectionPage() {
     }
     sessionStorage.setItem("selectedRoute", selectedRoute);
     sessionStorage.setItem("selectedRole", selectedRole);
-    /** Wizards consume this once so “Who are you” is not repeated (matches single-file HTML flow). */
+    /** Training wizard consumes this once so “Who you are” is not repeated after /route-selection. */
     sessionStorage.setItem(ROUTE_IDENTITY_COMPLETE_KEY, "true");
-    router.push(selectedRoute === "training" ? "/training" : "/consulting");
+    router.push("/training");
   };
 
   return (

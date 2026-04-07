@@ -3,15 +3,8 @@
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import "@/app/catalyst-flow-theme.css";
 import { useRouter } from "next/navigation";
-import { ROUTE_IDENTITY_COMPLETE_KEY, peekRouteIdentityPayload, type RouteIdentityPayload } from "@/lib/route-selection-bridge";
-import {
-  mapRouteAuthority,
-  mapRouteClientCompanySize,
-  mapRouteClientIndustry,
-  mapRouteCompanySize,
-  mapRouteConsultPurpose,
-  mapRouteIndustrySlug,
-} from "@/lib/route-selection-field-maps";
+import { ROUTE_IDENTITY_COMPLETE_KEY, peekRouteIdentityPayload } from "@/lib/route-selection-bridge";
+import { readSessionJson } from "@/lib/session-json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,7 +26,6 @@ import {
 } from "@/lib/catalyst-consulting-config";
 
 const STORAGE_KEY = "catalystConsultingWizard_v1";
-const CONSULTING_FROM_ROUTE_KEY = "catalystConsultingFromRouteSelection";
 
 export type ConsultingWizardStep =
   | "c0"
@@ -221,10 +213,6 @@ interface CState {
   unlockBestTime: string;
   consent: boolean;
   leadScore: number;
-  /** When true, advance c0 → c1 without showing cid (identity already captured on /route-selection). */
-  skipConsultingIdentityStep: boolean;
-  /** Consulting + Individual from route: hide role cards on cid, show only training-path prompt. */
-  identityLockedFromRoute: boolean;
 }
 
 let kpiYesSeq = 0;
@@ -288,57 +276,7 @@ const defaultCState = (): CState => ({
   unlockBestTime: "",
   consent: false,
   leadScore: 0,
-  skipConsultingIdentityStep: false,
-  identityLockedFromRoute: false,
 });
-
-function applyConsultingFromRouteSelection(base: CState, p: RouteIdentityPayload): CState {
-  const profile = p.profile;
-  if (p.role === "business") {
-    return {
-      ...base,
-      cIdentity: "business",
-      skipConsultingIdentityStep: true,
-      identityLockedFromRoute: false,
-      business: {
-        ...base.business,
-        fullName: profile.fullName ?? "",
-        workEmail: profile.workEmail ?? "",
-        jobTitle: profile.jobTitle ?? "",
-        companyName: profile.company ?? "",
-        authorityLevel: mapRouteAuthority(profile.authorityLevel ?? ""),
-        industry: mapRouteIndustrySlug(profile.industry ?? ""),
-        companySize: mapRouteCompanySize(profile.companySize ?? ""),
-      },
-    };
-  }
-  if (p.role === "consultant") {
-    return {
-      ...base,
-      cIdentity: "consultant",
-      skipConsultingIdentityStep: true,
-      identityLockedFromRoute: false,
-      consultant: {
-        ...base.consultant,
-        fullName: profile.fullName ?? "",
-        firm: profile.firm ?? "",
-        email: profile.email ?? "",
-        phone: profile.phone ?? "",
-        purpose: mapRouteConsultPurpose(profile.purpose ?? ""),
-        country: profile.country || "Ethiopia",
-        clientIndustry: mapRouteClientIndustry(profile.clientIndustry ?? ""),
-        clientCompanySize: mapRouteClientCompanySize(profile.clientCompanySize ?? ""),
-        nda: p.nda,
-      },
-    };
-  }
-  return {
-    ...base,
-    cIdentity: "individual",
-    skipConsultingIdentityStep: false,
-    identityLockedFromRoute: true,
-  };
-}
 
 function stepIx(s: ConsultingWizardStep) {
   return STEP_ORDER.indexOf(s);
@@ -532,20 +470,13 @@ export function CatalystConsultingWizard({ onProgressChange }: { onProgressChang
 
   useEffect(() => {
     try {
-      const incoming = peekRouteIdentityPayload();
-      if (incoming?.route === "consulting") {
+      /* Identity for consulting is only on step cid — ignore stale route-selection payload */
+      if (peekRouteIdentityPayload()?.route === "consulting") {
         sessionStorage.removeItem(ROUTE_IDENTITY_COMPLETE_KEY);
-        const merged = applyConsultingFromRouteSelection(defaultCState(), incoming);
-        setState(merged);
-        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-        sessionStorage.setItem(CONSULTING_FROM_ROUTE_KEY, "1");
-        setStorageReady(true);
-        return;
       }
 
-      const raw = sessionStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const p = JSON.parse(raw) as Partial<CState>;
+      const p = readSessionJson<Partial<CState>>(STORAGE_KEY);
+      if (p) {
         setState({
           ...defaultCState(),
           ...p,
@@ -554,8 +485,6 @@ export function CatalystConsultingWizard({ onProgressChange }: { onProgressChang
           spscComments: p.spscComments || {},
           kpiYesRows: p.kpiYesRows?.length ? p.kpiYesRows : defaultCState().kpiYesRows,
           kpiPartialRows: p.kpiPartialRows?.length ? p.kpiPartialRows : defaultCState().kpiPartialRows,
-          skipConsultingIdentityStep: p.skipConsultingIdentityStep ?? false,
-          identityLockedFromRoute: p.identityLockedFromRoute ?? false,
         });
       }
     } catch {
@@ -591,8 +520,7 @@ export function CatalystConsultingWizard({ onProgressChange }: { onProgressChang
 
   const showConsultingChrome = state.step !== "unlock" && state.step !== "final";
   const showConsultingSidebar =
-    showConsultingChrome &&
-    !(state.step === "cid" && state.cIdentity === "individual" && !state.identityLockedFromRoute);
+    showConsultingChrome && !(state.step === "cid" && state.cIdentity === "individual");
 
   const affDeptsLabel = useMemo(() => {
     let d = state.affDepts.join(", ");
@@ -747,10 +675,7 @@ export function CatalystConsultingWizard({ onProgressChange }: { onProgressChang
 
     const i = stepIx(state.step);
     if (i < STEP_ORDER.length - 1) {
-      let nextStep = STEP_ORDER[i + 1]!;
-      if (state.skipConsultingIdentityStep && state.step === "c0" && nextStep === "cid") {
-        nextStep = "c1";
-      }
+      const nextStep = STEP_ORDER[i + 1]!;
       setState((s) => ({ ...s, step: nextStep }));
     }
   };
@@ -758,10 +683,7 @@ export function CatalystConsultingWizard({ onProgressChange }: { onProgressChang
   const goBack = () => {
     const i = stepIx(state.step);
     if (i <= 0) return;
-    let prevStep = STEP_ORDER[i - 1]!;
-    if (state.skipConsultingIdentityStep && state.step === "c1" && prevStep === "cid") {
-      prevStep = "c0";
-    }
+    const prevStep = STEP_ORDER[i - 1]!;
     setState((s) => ({ ...s, step: prevStep }));
   };
 
@@ -836,7 +758,6 @@ export function CatalystConsultingWizard({ onProgressChange }: { onProgressChang
 
   const resetAndHome = () => {
     sessionStorage.removeItem(STORAGE_KEY);
-    sessionStorage.removeItem(CONSULTING_FROM_ROUTE_KEY);
     setState(defaultCState());
     window.location.href = "/";
   };
@@ -959,42 +880,32 @@ export function CatalystConsultingWizard({ onProgressChange }: { onProgressChang
       {state.step === "cid" && (
         <div className="space-y-6">
           <div className="cw-step-eyebrow">Capability Transformation · Step 2 of 12</div>
-          {state.identityLockedFromRoute ? (
-            <>
-              <h2 className="cw-step-title">
-                Your <em>next step</em>
-              </h2>
-              <p className="text-sm text-[#6B7280]">
-                You already chose <strong>Individual</strong> when you started. The deep diagnostic is designed for teams and organizations.
-              </p>
-            </>
-          ) : (
-            <h2 className="cw-step-title">
-              Tell us <em>who you are</em>
-            </h2>
-          )}
-          {!state.identityLockedFromRoute && (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {(
-                [
-                  { id: "individual" as const, icon: "👤", name: "Individual", desc: "Personal or academic use of the diagnostic framework." },
-                  { id: "business" as const, icon: "🏢", name: "Business / Organization", desc: "I represent a company and am authorized or influential in this decision." },
-                  { id: "consultant" as const, icon: "🤝", name: "Consultant / Partner", desc: "Building a capability transformation proposal for a client." },
-                ] as const
-              ).map((x) => (
-                <button
-                  key={x.id}
-                  type="button"
-                  onClick={() => setState((s) => ({ ...s, cIdentity: x.id }))}
-                  className={`${cardBase} ${state.cIdentity === x.id ? cardSel : ""}`}
-                >
-                  <span className="text-2xl block mb-2">{x.icon}</span>
-                  <div className="font-bold text-sm text-[#0f172a] mb-1">{x.name}</div>
-                  <div className="text-[11px] text-[#6B7280] leading-snug">{x.desc}</div>
-                </button>
-              ))}
-            </div>
-          )}
+          <h2 className="cw-step-title">
+            Tell us <em>who you are</em>
+          </h2>
+          <p className="cw-step-lead text-sm text-[#6B7280]">
+            This personalizes questions and outputs. The deep diagnostic is designed for organizations; if you&apos;re here for personal upskilling only, we&apos;ll point you to Capability Development.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {(
+              [
+                { id: "individual" as const, icon: "👤", name: "Individual", desc: "Personal or academic use of the diagnostic framework." },
+                { id: "business" as const, icon: "🏢", name: "Business / Organization", desc: "I represent a company and am authorized or influential in this decision." },
+                { id: "consultant" as const, icon: "🤝", name: "Consultant / Partner", desc: "Building a capability transformation proposal for a client." },
+              ] as const
+            ).map((x) => (
+              <button
+                key={x.id}
+                type="button"
+                onClick={() => setState((s) => ({ ...s, cIdentity: x.id }))}
+                className={`${cardBase} ${state.cIdentity === x.id ? cardSel : ""}`}
+              >
+                <span className="text-2xl block mb-2">{x.icon}</span>
+                <div className="font-bold text-sm text-[#0f172a] mb-1">{x.name}</div>
+                <div className="text-[11px] text-[#6B7280] leading-snug">{x.desc}</div>
+              </button>
+            ))}
+          </div>
 
           {state.cIdentity === "individual" && (
             <div className="rounded-md border-2 border-[var(--cw-accent)] bg-[var(--cw-accent-soft)] p-8 text-center space-y-4">

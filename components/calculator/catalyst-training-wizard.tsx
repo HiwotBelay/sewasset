@@ -4,6 +4,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import "@/app/catalyst-flow-theme.css";
 import { ROUTE_IDENTITY_COMPLETE_KEY, peekRouteIdentityPayload, type RouteIdentityPayload } from "@/lib/route-selection-bridge";
+import { readSessionJson } from "@/lib/session-json";
 import {
   mapRouteAuthority,
   mapRouteClientCompanySize,
@@ -298,9 +299,8 @@ export function CatalystTrainingWizard({
         return;
       }
 
-      const raw = sessionStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as Partial<WizardState>;
+      const parsed = readSessionJson<Partial<WizardState>>(STORAGE_KEY);
+      if (parsed) {
         setState(() => ({ ...defaultState(), ...parsed, step: parsed.step ?? "id" }));
       }
     } catch {

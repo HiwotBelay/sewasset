@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "clean": "node scripts/clean-next.cjs",
+    "dev": "next dev --turbopack",
+    "dev:webpack": "next dev",
+    "dev:clean": "npm run clean && next dev --turbopack",
     "lint": "eslint .",
     "start": "next start"
   },

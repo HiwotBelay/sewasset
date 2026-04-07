@@ -1,4 +1,4 @@
-/** Sync identity collected on /route-selection into Catalyst wizards (HTML prototype: gate is s0 only, then sT-id once). */
+/** Sync identity from /route-selection into the training wizard only. Consulting collects “Who you are” inside /consulting. */
 
 export const ROUTE_IDENTITY_COMPLETE_KEY = "routeSelectionIdentityComplete";
 
@@ -21,14 +21,20 @@ export function peekRouteIdentityPayload(): RouteIdentityPayload | null {
   const role = sessionStorage.getItem("selectedRole") as RouteSelectionRole | null;
   if (role !== "individual" && role !== "business" && role !== "consultant") return null;
   const raw = sessionStorage.getItem("routeSelectionProfile");
-  if (!raw) return null;
+  if (raw == null || !String(raw).trim()) return null;
+  let profile: RouteProfile;
   try {
-    const profile = JSON.parse(raw) as RouteProfile;
-    const nda = sessionStorage.getItem("routeSelectionNda") === "true";
-    return { role, profile, nda, route };
+    profile = JSON.parse(raw) as RouteProfile;
   } catch {
+    try {
+      sessionStorage.removeItem("routeSelectionProfile");
+    } catch {
+      /* ignore */
+    }
     return null;
   }
+  const nda = sessionStorage.getItem("routeSelectionNda") === "true";
+  return { role, profile, nda, route };
 }
 
 export function consumeRouteIdentityPayload(): RouteIdentityPayload | null {
